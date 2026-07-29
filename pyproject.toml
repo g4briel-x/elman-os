@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elman-os-kernel"
+version = "0.3.1"
+description = "Foundation Kit multi-agents et métacognitif intégrant le Kernel MVP ELMAN-OS"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Proprietary - ELMAN Technologies" }
+authors = [
+  { name = "ELMAN Technologies" }
+]
+dependencies = []
+
+[project.optional-dependencies]
+api = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1"
+]
+studio = [
+  "flet>=0.25,<1"
+]
+dev = [
+  "pytest>=8,<10"
+]
+
+[project.scripts]
+elman-os = "elman_os.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]

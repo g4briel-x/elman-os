@@ -1,0 +1,31 @@
+{
+  "version": "0.3.1",
+  "max_iterations": 5,
+  "max_same_failure": 2,
+  "max_no_progress": 2,
+  "minimum_progress_delta": 0.01,
+  "max_cost_units": 100.0,
+  "max_elapsed_seconds": 3600.0,
+  "human_approval_required_for": [
+    "production_deploy",
+    "store_publication",
+    "activate_paid_service",
+    "use_real_customer_data",
+    "create_or_rotate_secret",
+    "destructive_migration",
+    "delete_resource",
+    "send_external_message",
+    "activate_learning_proposal"
+  ],
+  "learning_policy": {
+    "automatic_prompt_mutation": false,
+    "automatic_policy_activation": false,
+    "requires_verified_success": true,
+    "requires_human_approval": true
+  },
+  "memory_policy": {
+    "store_raw_secrets": false,
+    "require_provenance": true,
+    "semantic_memory_requires_approval": true
+  }
+}

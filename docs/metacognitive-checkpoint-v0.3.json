@@ -1,0 +1,101 @@
+{
+  "task_id": "elman-kernel-mvp-v0.3",
+  "objective": "Faire évoluer le noyau ELMAN-OS vers un MVP local Python-first capable de planifier un pipeline multi-agents, générer un projet SaaS borné, persister les exécutions et imposer les approbations humaines.",
+  "mode": "change",
+  "risk_level": "high",
+  "professional_standard": "15-plus-years-equivalent",
+  "selected_agents": [
+    "Nexus",
+    "Cartographer",
+    "Atlas",
+    "Apex",
+    "Sentinel",
+    "Proof",
+    "Skeptic",
+    "Scribe"
+  ],
+  "facts": [
+    {
+      "claim": "Le kit v0.2.1 contient 21 profils, une boucle métacognitive bornée, deux plugins et 27 tests déclarés.",
+      "evidence": "Inspection locale de elman-os-v0.2.1/src, tests et documentation."
+    },
+    {
+      "claim": "La politique v0.2.1 bloque encore Dart, Kotlin, Swift, Rust et d'autres langages partout.",
+      "evidence": "elman-os-v0.2.1/src/elman_os/technology_policy.py"
+    }
+  ],
+  "assumptions": [
+    {
+      "claim": "Le prochain jalon attendu est le Kernel MVP v0.3 convenu dans l'échange précédent.",
+      "validation": "Le périmètre reste local, réversible et sans déploiement ni service payant."
+    }
+  ],
+  "unknowns": [
+    "Fournisseur de modèle IA qui sera retenu pour la première intégration réelle.",
+    "Choix définitif entre PostgreSQL et un service compatible pour la production."
+  ],
+  "risks": [
+    {
+      "risk": "Présenter un générateur déterministe local comme une plateforme complète de production.",
+      "impact": "high",
+      "mitigation": "Qualifier explicitement le livrable de Kernel MVP et documenter les fonctions encore simulées."
+    },
+    {
+      "risk": "Permettre à un langage spécialisé de contaminer le noyau Python.",
+      "impact": "high",
+      "mitigation": "Politique de frontières exécutable et tests négatifs par emplacement."
+    },
+    {
+      "risk": "Écriture hors workspace ou mémorisation de secrets.",
+      "impact": "high",
+      "mitigation": "Résolution de chemins deny-by-default, redaction et tests de traversal."
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Conserver un noyau sans dépendance obligatoire et utiliser SQLite pour le MVP local.",
+      "evidence": "SQLite est inclus dans Python, vérifiable hors réseau et remplaçable par PostgreSQL via un adaptateur ultérieur.",
+      "rejected_alternative": "Rendre FastAPI, PostgreSQL, Flet ou un SDK IA obligatoires dès l'installation du noyau."
+    },
+    {
+      "decision": "Autoriser les autres langages uniquement dans des couches spécialisées approuvées.",
+      "evidence": "Cette politique respecte la règle Python-first sans interdire les stacks web, mobile, natives ou infrastructure adaptées.",
+      "rejected_alternative": "Interdire globalement tout langage non Python."
+    }
+  ],
+  "verification": [
+    {
+      "check": "Suite unittest du kernel",
+      "status": "passed",
+      "evidence": "44 tests exécutés avec succès dans le travail courant."
+    },
+    {
+      "check": "Compilation Python et audit des frontières",
+      "status": "passed",
+      "evidence": "compileall sans erreur et audit-stack retourne PASS."
+    },
+    {
+      "check": "Installation editable et parcours CLI",
+      "status": "passed",
+      "evidence": "Installation elman-os-kernel 0.3.0 avec outils de build préinstallés; doctor, plugins, demo, runs et generate exécutés."
+    },
+    {
+      "check": "Starter fullstack généré",
+      "status": "passed",
+      "evidence": "Compilation, audit-stack et 2 tests de domaine réussis dans un workspace temporaire."
+    },
+    {
+      "check": "Extras FastAPI et Flet",
+      "status": "skipped",
+      "evidence": "Dépendances optionnelles absentes du runtime; adaptateurs présents mais non exécutés."
+    }
+  ],
+  "quality_review": {
+    "self_review": "Revue contre les critères d'acceptation, la politique Python-first, les arrêts, les permissions et la documentation.",
+    "independent_review": "Proof et Skeptic : 44 tests, contre-exemples d'auto-approbation, traversal, écrasement, secret, permission humaine et langage hors couche.",
+    "known_material_defects": []
+  },
+  "confidence": "medium",
+  "status": "completed",
+  "next_action": "Construire v0.4 avec fournisseur IA configurable, sandbox d'exécution et workspace Git par tâche."
+}

@@ -1,0 +1,217 @@
+# ELMAN-OS Foundation Kit v0.3.1
+
+ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
+intention en application SaaS web, mobile ou full-stack traçable.
+
+Ce Foundation Kit actualise la fondation v0.2.1 avec toutes les capacités du
+Kernel MVP v0.3.0 et ses correctifs Windows v0.3.1. Il constitue le socle exécutable de référence, et non encore
+une plateforme autonome de production :
+
+- 1 orchestrateur : ELMAN Nexus ;
+- 15 agents spécialisés ;
+- 1 vérificateur final indépendant : ELMAN Proof ;
+- 4 agents métacognitifs internes ;
+- planification déterministe du pipeline ;
+- boucle d’amélioration bornée ;
+- mémoire de workflow et persistance SQLite ;
+- approbations humaines indépendantes ;
+- sandbox de génération par chemin ;
+- premier starter Python SaaS/mobile ;
+- 4 plugins internes à permissions ;
+- politique Python-first contrôlée par couche.
+
+Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
+rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
+
+## Statut fonctionnel
+
+| Capacité | Statut v0.3.1 |
+|---|---|
+| Registre des 21 agents | Exécutable |
+| Prompts et frontières d’autorité | Exécutables |
+| Boucle métacognitive et arrêts | Exécutables |
+| Pipeline SaaS/mobile | Planifiable |
+| Générateur de starter | Exécutable, déterministe |
+| Persistance locale | SQLite, exécutable |
+| Approbations humaines | Exécutables |
+| Plugins internes | 4 plugins exécutables |
+| API de contrôle | Adaptateur FastAPI optionnel |
+| Fournisseur IA réel | Non connecté |
+| ELMAN Studio | Non livré |
+| Sandbox de processus/conteneurs | Non livrée |
+| Déploiement production/stores | Interdit sans approbation |
+
+## Architecture agentique
+
+| Couche | Agents | Responsabilité |
+|---|---:|---|
+| Orchestration | 1 | Cadrage, routage, budgets et transitions |
+| Production | 15 | Produit, UX/UI, architecture, code, sécurité et livraison |
+| Vérification | 1 | Verdict indépendant avant livraison |
+| Métacognition | 4 | Supervision, réflexion, mémoire et apprentissage contrôlé |
+| **Total** | **21** | Rôles séparés et auditables |
+
+Les agents métacognitifs observent le pipeline sans produire le code du
+produit :
+
+- **ELMAN Supervisor** décide de continuer, corriger, arrêter ou escalader ;
+- **ELMAN Reflective** analyse l’écart entre intention, action et résultat ;
+- **ELMAN Memory** conserve les éléments autorisés avec provenance ;
+- **ELMAN Learning** propose des améliorations sans les activer seul.
+
+## Conditions d’arrêt
+
+La boucle s’arrête sur :
+
+- critères validés par Proof ;
+- itérations maximales ;
+- budget ou durée maximale ;
+- même échec répété ;
+- absence de progrès mesurable ;
+- finding critique ;
+- permission ou décision humaine manquante ;
+- annulation.
+
+Un succès technique mène à `ready_for_human_approval`, jamais à un déploiement
+automatique.
+
+## Politique technologique
+
+ELMAN-OS est **Python-first, pas Python-only** :
+
+- kernel, agents, orchestration, métacognition, API de contrôle, plugins et
+  tests du kernel : Python obligatoire ;
+- web : JavaScript/TypeScript autorisés dans les couches web approuvées ;
+- mobile : TypeScript, Dart, Kotlin, Swift ou Java autorisés dans les couches
+  mobiles approuvées ;
+- extension native : Rust/C/C++ autorisés dans une couche native isolée ;
+- données et plateforme : SQL, PowerShell ou shell autorisés dans les couches
+  dédiées ;
+- aucun langage spécialisé ne peut remplacer le kernel Python.
+
+L’installation du kernel nécessite uniquement Python et `pip`. Les outils
+Node, Flutter, Android, Xcode ou Rust restent optionnels et propres au produit
+qui les exige.
+
+## Installation rapide sous Windows
+
+```powershell
+Expand-Archive `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.3.1.zip" `
+  -DestinationPath "$env:USERPROFILE\Desktop"
+
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.3.1"
+
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools
+.\.venv\Scripts\python.exe -m pip install -e .
+
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -m elman_os doctor
+.\.venv\Scripts\python.exe -m elman_os agents
+.\.venv\Scripts\python.exe -m elman_os plugins
+.\.venv\Scripts\python.exe -m elman_os audit-stack .
+```
+
+## Planifier un SaaS
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os plan `
+  --name "ELMAN Tasks" `
+  --slug "elman-tasks" `
+  --kind saas `
+  --platform web `
+  --feature "authentification" `
+  --acceptance "Une tâche peut être créée et listée"
+```
+
+## Générer le premier starter
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os generate `
+  --name "ELMAN Tasks" `
+  --slug "elman-tasks" `
+  --kind fullstack `
+  --platform web `
+  --platform android `
+  --feature "authentification" `
+  --acceptance "Le domaine est couvert par des tests" `
+  --output generated
+```
+
+La commande écrit uniquement dans `generated\elman-tasks` et crée :
+
+- contrat ELMAN du projet ;
+- plan du pipeline ;
+- domaine Python et repository SQLite ;
+- API FastAPI optionnelle ;
+- interface mobile Flet optionnelle ;
+- tests `unittest` ;
+- dossier Proof avec critères en attente.
+
+## Démontrer et persister la boucle
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os demo `
+  --pass-on 3 `
+  --max-iterations 5 `
+  --database ".elman\elman.db"
+
+.\.venv\Scripts\python.exe -m elman_os runs `
+  --database ".elman\elman.db"
+```
+
+## API de contrôle optionnelle
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[api]"
+.\.venv\Scripts\python.exe -m elman_os serve
+```
+
+Endpoints initiaux :
+
+- `GET /health`
+- `GET /v1/agents`
+- `POST /v1/plans`
+- `POST /v1/projects`
+
+## Structure
+
+```text
+elman-os-foundation-kit-v0.3.1/
+├── CHANGELOG.md
+├── MIGRATION-v0.2.1-to-v0.3.0.md
+├── RELEASE-MANIFEST.json
+├── config/
+├── docs/
+├── examples/
+├── src/elman_os/
+│   ├── api.py
+│   ├── approvals.py
+│   ├── catalog.py
+│   ├── cli.py
+│   ├── generator.py
+│   ├── metacognition.py
+│   ├── persistence.py
+│   ├── planning.py
+│   ├── plugins.py
+│   ├── provider.py
+│   ├── service.py
+│   ├── technology_policy.py
+│   └── workflow.py
+├── tests/
+└── pyproject.toml
+```
+
+## Limites connues
+
+- le provider inclus reste déterministe et ne contacte aucun modèle ;
+- le générateur produit un starter, pas une application métier finalisée ;
+- SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
+- la sandbox actuelle protège les chemins, pas encore l’exécution de code non
+  fiable dans un conteneur isolé ;
+- FastAPI et Flet sont des extras optionnels non requis par le kernel ;
+- un build iOS signé exige macOS et Xcode.
+
+La prochaine étape est la v0.4 : fournisseur IA configurable, exécution isolée,
+workspace Git par tâche, événements temps réel et premier ELMAN Studio.

@@ -1,0 +1,142 @@
+{
+  "task_id": "elman-os-foundation-v0.2.1",
+  "objective": "Produire un kit fondateur ELMAN-OS à noyau Python, avec JavaScript/TypeScript autorisés uniquement dans des frontends bornés, 17 agents de chaîne, 4 agents métacognitifs, des plugins bornés et des conditions d'arrêt testées.",
+  "mode": "change",
+  "risk_level": "high",
+  "professional_standard": "15-plus-years-equivalent",
+  "selected_agents": [
+    "Nexus",
+    "Atlas",
+    "Sentinel",
+    "Proof",
+    "Skeptic",
+    "Scribe"
+  ],
+  "facts": [
+    {
+      "claim": "Le kit définit 21 profils uniques : 1 orchestrateur, 15 spécialistes, 1 vérificateur et 4 agents métacognitifs.",
+      "evidence": "src/elman_os/catalog.py et test_expected_agent_counts."
+    },
+    {
+      "claim": "La boucle implémente les arrêts par succès, limite d'itérations, budget, durée, finding critique, blocage externe, échec répété et absence de progrès.",
+      "evidence": "src/elman_os/metacognition.py et tests/test_metacognition.py."
+    },
+    {
+      "claim": "L'apprentissage produit une proposition non activée automatiquement et la mémoire masque les clés sensibles évidentes.",
+      "evidence": "LearningAgent, MemoryManager et tests MemoryAndLearningTests."
+    },
+    {
+      "claim": "Le kit ne contient aucune référence à un autre projet.",
+      "evidence": "Recherche insensible à la casse exécutée sur tout le bundle sans résultat."
+    },
+    {
+      "claim": "Le kernel ELMAN-OS est limité à Python et JavaScript/TypeScript ne sont autorisés que dans des zones frontend déclarées.",
+      "evidence": "src/elman_os/technology_policy.py, commande audit-stack et tests/test_technology_policy.py."
+    }
+  ],
+  "assumptions": [
+    {
+      "claim": "La première livraison attendue est un noyau de gouvernance et non une plateforme SaaS de génération complète prête pour la production.",
+      "validation": "Le README et l'architecture déclarent explicitement les limites de v0.2.1 et la roadmap du Kernel MVP."
+    },
+    {
+      "claim": "Python 3.11 ou ultérieur est disponible sur la machine de développement.",
+      "validation": "À confirmer sur l'environnement Windows de l'utilisateur avant installation."
+    }
+  ],
+  "unknowns": [
+    "Fournisseur et modèles IA à intégrer.",
+    "Budget mensuel de modèles et d'infrastructure.",
+    "Premier template SaaS exact du Kernel MVP.",
+    "Mode de déploiement initial : local, cloud privé ou SaaS multi-tenant."
+  ],
+  "risks": [
+    {
+      "risk": "Le provider déterministe ne démontre pas la qualité d'un modèle IA réel.",
+      "impact": "high",
+      "mitigation": "Ajouter un adaptateur de modèle derrière AgentProvider puis évaluer un corpus versionné."
+    },
+    {
+      "risk": "La sandbox, la persistance et l'isolation multi-tenant ne sont pas encore implémentées.",
+      "impact": "high",
+      "mitigation": "Les traiter comme gates obligatoires du Kernel MVP v0.3 avant toute donnée ou exécution non fiable."
+    },
+    {
+      "risk": "Une architecture à 21 rôles peut accroître coût et latence si tous sont activés.",
+      "impact": "medium",
+      "mitigation": "Nexus sélectionne le plus petit sous-ensemble nécessaire et Supervisor applique budgets et limites."
+    },
+    {
+      "risk": "Un frontend JavaScript/TypeScript ajoute une chaîne Node distincte et une surface de dépendances supplémentaire.",
+      "impact": "medium",
+      "mitigation": "L'option reste désactivée par défaut, confinée aux zones frontend et soumise aux contrôles Forge, Shield et Proof."
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Utiliser 15 spécialistes entre Nexus et Proof, plus 4 métacogniteurs internes.",
+      "evidence": "Cette séparation couvre le cycle web/mobile tout en maintenant auteur, vérificateur et superviseur indépendants.",
+      "rejected_alternative": "Un agent généraliste unique ou une nuée autonome non bornée."
+    },
+    {
+      "decision": "Interdire l'auto-modification silencieuse des prompts et politiques.",
+      "evidence": "ELMAN Learning ne retourne que des propositions et MemoryManager exige un approbateur pour la mémoire sémantique.",
+      "rejected_alternative": "Activation automatique des leçons après une seule réussite."
+    },
+    {
+      "decision": "Fournir deux plugins sûrs et refuser les plugins shell, réseau, secrets et déploiement dans v0.2.1.",
+      "evidence": "Le contrat de permissions et les tests de traversal établissent une base deny-by-default.",
+      "rejected_alternative": "Fournir immédiatement un exécuteur système général."
+    },
+    {
+      "decision": "Imposer Python au kernel et autoriser JavaScript/TypeScript uniquement dans des zones frontend approuvées.",
+      "evidence": "La politique centralisée protège src/elman_os et accepte les extensions frontend seulement sous les préfixes déclarés; les tests couvrent les cas permis et refusés.",
+      "rejected_alternative": "Interdire tous les frontends JavaScript/TypeScript, y compris lorsqu'ils sont techniquement justifiés."
+    }
+  ],
+  "verification": [
+    {
+      "check": "Compilation Python des sources, tests et exemple",
+      "status": "passed",
+      "evidence": "python -m compileall -q src tests examples."
+    },
+    {
+      "check": "Suite de tests unitaires",
+      "status": "passed",
+      "evidence": "27 tests exécutés avec succès : registre, prompts, mémoire, apprentissage, arrêts, plugins, frontières technologiques et workflow."
+    },
+    {
+      "check": "Démonstration de boucle rework puis validation",
+      "status": "passed",
+      "evidence": "Statut ready_for_human_approval après 3 itérations, stop_reason criteria_validated."
+    },
+    {
+      "check": "Validation syntaxique de la politique JSON",
+      "status": "passed",
+      "evidence": "python -m json.tool config/metacognitive-policy.json."
+    },
+    {
+      "check": "Isolation sémantique du projet",
+      "status": "passed",
+      "evidence": "Aucune référence interdite trouvée dans le bundle."
+    },
+    {
+      "check": "Politique du noyau Python et des frontends bornés",
+      "status": "passed",
+      "evidence": "La commande python -m elman_os audit-stack . retourne Technology policy audit: PASS; les tests acceptent JavaScript/TypeScript dans les zones frontend et les refusent dans le kernel."
+    },
+    {
+      "check": "Installation Python isolée",
+      "status": "passed",
+      "evidence": "Installation editable du paquet elman-os-kernel 0.2.1 dans un environnement virtuel temporaire, suivie des 27 tests, de l'audit de stack et d'une démonstration validée à l'itération 3."
+    }
+  ],
+  "quality_review": {
+    "self_review": "Le résultat a été revu contre le nombre d'agents, les limites de mandat, les conditions d'arrêt, la mémoire, l'apprentissage contrôlé, les plugins et la documentation.",
+    "independent_review": "Le mandat Proof a été appliqué séquentiellement par une suite de tests distincte de l'implémentation; aucun sous-agent indépendant n'a été invoqué.",
+    "known_material_defects": []
+  },
+  "confidence": "medium",
+  "status": "completed",
+  "next_action": "Construire v0.3 avec API, persistance, provider IA, sandbox et premier template SaaS de gestion de tâches."
+}

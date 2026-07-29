@@ -1,0 +1,57 @@
+{
+  "task_id": "elman-foundation-kit-v0.3.1-windows-compatibility",
+  "objective": "Corriger les régressions révélées par l'exécution réelle des tests sous Windows avec Python 3.13.5.",
+  "mode": "change",
+  "risk_level": "medium",
+  "facts": [
+    {
+      "claim": "Les 44 tests v0.3.0 ont été exécutés sous Windows et ont produit 6 erreurs, 3 échecs et des ResourceWarning.",
+      "evidence": "Sortie unittest fournie depuis Python 3.13.5 sous Windows."
+    },
+    {
+      "claim": "Les erreurs SQLite surviennent lors de la suppression de fichiers temporaires encore ouverts.",
+      "evidence": "WinError 32 sur elman.db et ResourceWarning signalant des connexions sqlite3 non fermées."
+    },
+    {
+      "claim": "Les trois échecs restants sont des différences de représentation de chemins.",
+      "evidence": "Alias Windows 8.3 SEPICT~1 et séparateurs antislash observés dans les assertions."
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Fermer explicitement chaque connexion SQLite dans un bloc finally.",
+      "evidence": "Le gestionnaire de contexte sqlite3 gère la transaction mais ne ferme pas la connexion."
+    },
+    {
+      "decision": "Conserver resolve() pour la sécurité et canonicaliser aussi le chemin attendu dans le test.",
+      "evidence": "Supprimer resolve() affaiblirait la protection contre la sortie du workspace."
+    },
+    {
+      "decision": "Exposer les chemins relatifs d'audit sous forme POSIX.",
+      "evidence": "Les sorties de plugin constituent un contrat sérialisable et doivent être identiques sur Windows, macOS et Linux."
+    }
+  ],
+  "verification": [
+    {
+      "check": "Suite unittest du kernel",
+      "status": "passed",
+      "evidence": "45 tests réussis avec ResourceWarning traités comme erreurs."
+    },
+    {
+      "check": "Starter généré",
+      "status": "passed",
+      "evidence": "Génération full-stack, audit technologique et 2 tests de domaine réussis."
+    },
+    {
+      "check": "Exécution Windows Python 3.13",
+      "status": "pending",
+      "evidence": "La correction finale doit être confirmée sur la machine Windows de l'utilisateur."
+    }
+  ],
+  "quality_review": {
+    "known_material_defects": [],
+    "status": "passed"
+  },
+  "confidence": "medium",
+  "status": "completed_with_windows_confirmation_pending"
+}

@@ -1,0 +1,91 @@
+{
+  "task_id": "elman-foundation-kit-v0.3.0-update",
+  "objective": "Actualiser le Foundation Kit ELMAN-OS v0.2.1 avec toutes les capacités vérifiées du Kernel MVP v0.3.0 et fournir un bundle cohérent et migrable.",
+  "mode": "change",
+  "risk_level": "medium",
+  "professional_standard": "15-plus-years-equivalent",
+  "selected_agents": [
+    "Nexus",
+    "Cartographer",
+    "Atlas",
+    "Apex",
+    "Sentinel",
+    "Proof",
+    "Skeptic",
+    "Scribe"
+  ],
+  "facts": [
+    {
+      "claim": "Le Foundation Kit v0.2.1 et le Kernel MVP v0.3.0 ont été résolus comme deux artefacts distincts.",
+      "evidence": "Archives persistantes inspectées et comparées pendant la mise à jour."
+    },
+    {
+      "claim": "Le Kernel MVP v0.3.0 contient 21 rôles agentiques, quatre plugins et 44 tests du kernel.",
+      "evidence": "Registre, manifests de plugins et suite unittest exécutée dans le travail courant."
+    }
+  ],
+  "assumptions": [
+    {
+      "claim": "Le nom Foundation Kit doit rester l’identité principale du livrable actualisé.",
+      "validation": "Le bundle final conserve Foundation Kit dans son nom et présente le Kernel MVP comme capacité intégrée."
+    }
+  ],
+  "unknowns": [
+    "Comportement exact de l’installation sur la machine Windows de l’utilisateur.",
+    "Fournisseur IA réel qui sera retenu pour la v0.4."
+  ],
+  "risks": [
+    {
+      "risk": "Confondre le Foundation Kit actualisé avec une plateforme prête pour la production.",
+      "impact": "medium",
+      "mitigation": "Conserver les limites explicites dans le README, l’architecture et le manifeste de version."
+    },
+    {
+      "risk": "Écraser une configuration locale v0.2.1 pendant la migration.",
+      "impact": "medium",
+      "mitigation": "Documenter une migration côte à côte et un report manuel des paramètres."
+    }
+  ],
+  "decisions": [
+    {
+      "decision": "Consolider v0.3.0 sous le nom Foundation Kit sans changer les imports ni la commande CLI.",
+      "evidence": "Cette approche préserve la compatibilité tout en donnant une identité unique au bundle actualisé.",
+      "rejected_alternative": "Créer une nouvelle base divergente ou renommer le paquet Python."
+    },
+    {
+      "decision": "Ajouter un journal des versions, un guide de migration et un manifeste de release.",
+      "evidence": "Ces fichiers rendent la mise à jour traçable et réversible sans modifier le comportement du kernel.",
+      "rejected_alternative": "Renommer uniquement l’archive sans documenter les différences."
+    }
+  ],
+  "verification": [
+    {
+      "check": "Suite unittest du kernel",
+      "status": "passed",
+      "evidence": "44 tests exécutés avec succès après consolidation."
+    },
+    {
+      "check": "Compilation, audit technologique et commandes CLI",
+      "status": "passed",
+      "evidence": "Compilation sans erreur, audit-stack PASS et parcours CLI exécuté."
+    },
+    {
+      "check": "Starter généré",
+      "status": "passed",
+      "evidence": "Génération bornée, compilation et 2 tests du starter réussis."
+    },
+    {
+      "check": "Exécution Windows et extras optionnels",
+      "status": "skipped",
+      "evidence": "PowerShell, FastAPI et Flet ne sont pas disponibles dans le runtime de contrôle."
+    }
+  ],
+  "quality_review": {
+    "self_review": "Revue de la cohérence des noms, chemins, versions, capacités, limites et instructions de migration.",
+    "independent_review": "Proof et Skeptic ont contrôlé les tests, les contre-exemples de sécurité, le contenu de l’archive et les affirmations de documentation.",
+    "known_material_defects": []
+  },
+  "confidence": "medium",
+  "status": "completed",
+  "next_action": "Exécuter les commandes PowerShell documentées sur Windows avant de démarrer la v0.4."
+}
