@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.3.1
+# ELMAN-OS — Architecture v0.4.0 alpha 1
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.3.1 intégrant le Kernel MVP  
+**Livrable :** Foundation Kit v0.4.0 alpha 1, contrat fournisseur IA  
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision
@@ -242,6 +242,18 @@ Tout plugin est refusé si une permission requise manque.
 
 FastAPI n’est pas une dépendance obligatoire du kernel. L’extra `[api]` doit
 être installé avant le démarrage du serveur.
+
+## 12.1 Contrat fournisseur IA
+
+`provider.py` sépare désormais le Kernel des SDK de modèles :
+
+- `AIProvider` définit `descriptor`, `generate()` et `close()` ;
+- `ModelRequest` borne modèle, messages, tokens, température et délai ;
+- `ModelResponse` conserve texte, terminaison, usage et identifiants ;
+- `ProviderError` normalise les défaillances et leur caractère retentable ;
+- `DeterministicModelProvider` vérifie le contrat sans réseau ni coût.
+
+Les adaptateurs réels ne sont pas encore inclus dans cette alpha.
 
 ## 13. Sécurité
 

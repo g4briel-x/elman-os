@@ -1,0 +1,45 @@
+{
+  "product": "ELMAN-OS",
+  "milestone": "v0.4.0-alpha.1",
+  "scope": "generic_ai_provider_contract",
+  "date": "2026-07-29",
+  "frame": {
+    "objective": "Decouple the kernel from vendor AI SDKs",
+    "excluded": [
+      "real provider adapters",
+      "secret loading",
+      "retry orchestration",
+      "budget enforcement",
+      "provider routing"
+    ]
+  },
+  "verify": {
+    "kernel_tests": {
+      "executed": 53,
+      "passed": 53
+    },
+    "resource_warnings_as_errors": true,
+    "python_compilation": true,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "risks": [
+    {
+      "id": "AI-ADAPTERS-UNVERIFIED",
+      "severity": "medium",
+      "status": "open",
+      "mitigation": "Implement each vendor adapter against the contract with isolated tests"
+    },
+    {
+      "id": "WINDOWS-ALPHA-UNVERIFIED",
+      "severity": "low",
+      "status": "open",
+      "mitigation": "Run the 53-test suite under Python 3.13 on Windows"
+    }
+  ],
+  "decision": {
+    "status": "pass_with_warnings",
+    "ready_for": "development_branch_review",
+    "not_ready_for": "production_or_real_api_credentials"
+  }
+}

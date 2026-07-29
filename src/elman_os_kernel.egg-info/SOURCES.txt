@@ -29,5 +29,6 @@ tests/test_metacognition.py
 tests/test_persistence.py
 tests/test_planning.py
 tests/test_plugins.py
+tests/test_provider.py
 tests/test_technology_policy.py
 tests/test_workflow.py

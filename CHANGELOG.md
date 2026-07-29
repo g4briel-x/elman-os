@@ -1,5 +1,29 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 1 — 2026-07-29
+
+### Ajouté
+
+- contrat générique `AIProvider` sans dépendance fournisseur ;
+- requêtes, réponses, messages, capacités et consommations typés ;
+- erreurs portables et indications de retry explicites ;
+- fournisseur déterministe sans réseau pour les tests ;
+- huit tests de contrat et documentation dédiée.
+
+### Limites
+
+- aucun adaptateur OpenAI, Anthropic, Google ou local n'est encore inclus ;
+- aucune clé API n'est lue ;
+- configuration, retries bornés, budgets et routage appartiennent aux
+  prochains lots v0.4.
+
+### Vérification
+
+- 53 tests du Kernel réussis ;
+- compilation Python réussie ;
+- audit technologique inchangé ;
+- aucun appel réseau ou payant.
+
 ## v0.3.1 — 2026-07-29
 
 Correctif de compatibilité Windows et Python 3.13 fondé sur l’exécution réelle

@@ -1,4 +1,4 @@
-# Installation du Foundation Kit ELMAN-OS v0.3.1 sous Windows PowerShell
+# Installation du Foundation Kit ELMAN-OS v0.4.0 alpha 1 sous Windows PowerShell
 
 PowerShell sert de terminal. Le kernel, les agents, l’orchestration, la
 métacognition, les plugins, la persistance et les tests sont exécutés par
@@ -19,10 +19,10 @@ projet n’ont pas été validées avec cette version.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.3.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.3.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.1"
 ```
 
 ## 3. Créer l’environnement
@@ -36,14 +36,15 @@ Il n’est pas nécessaire d’exécuter `Activate.ps1`.
 ## 4. Installer le Foundation Kit
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
 .\.venv\Scripts\python.exe -m pip install -e .
 ```
 
 ## 5. Vérifier
 
 ```powershell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -W error::ResourceWarning `
+  -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m elman_os doctor
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
@@ -99,7 +100,7 @@ L’extra API installe FastAPI et Uvicorn. Il n’est pas requis par le kernel.
 ```powershell
 git status -sb
 git add .
-git commit -m "fix: make ELMAN-OS v0.3.1 Windows compatible"
+git commit -m "feat: add generic AI provider contract"
 git push
 ```
 

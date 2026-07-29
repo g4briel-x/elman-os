@@ -1,4 +1,4 @@
-"""Command-line entry point for the ELMAN-OS Foundation Kit v0.3.1."""
+"""Command-line entry point for the ELMAN-OS Foundation Kit."""
 
 from __future__ import annotations
 
