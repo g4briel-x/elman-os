@@ -1,5 +1,12 @@
 # ELMAN-OS Foundation Kit v0.3.1
 
+![Version](https://img.shields.io/badge/version-0.3.1-blue)
+![Statut](https://img.shields.io/badge/statut-fondation%20ex%C3%A9cutable-yellow)
+![Licence](https://img.shields.io/badge/licence-priv%C3%A9%2Fusage%20interne-lightgrey)
+![Python](https://img.shields.io/badge/python-3.11%2B-informational)
+
+> **Usage interne — ELMAN Technologies.** Ce dépôt est privé et n'est pas destiné à une distribution publique.
+
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
@@ -12,7 +19,7 @@ une plateforme autonome de production :
 - 1 vérificateur final indépendant : ELMAN Proof ;
 - 4 agents métacognitifs internes ;
 - planification déterministe du pipeline ;
-- boucle d’amélioration bornée ;
+- boucle d'amélioration bornée ;
 - mémoire de workflow et persistance SQLite ;
 - approbations humaines indépendantes ;
 - sandbox de génération par chemin ;
@@ -23,12 +30,29 @@ une plateforme autonome de production :
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
 rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
+## Sommaire
+
+- [Statut fonctionnel](#statut-fonctionnel)
+- [Architecture agentique](#architecture-agentique)
+- [Conditions d'arrêt](#conditions-darrêt)
+- [Politique technologique](#politique-technologique)
+- [Prérequis](#prérequis)
+- [Installation rapide sous Windows](#installation-rapide-sous-windows)
+- [Planifier un SaaS](#planifier-un-saas)
+- [Générer le premier starter](#générer-le-premier-starter)
+- [Démontrer et persister la boucle](#démontrer-et-persister-la-boucle)
+- [API de contrôle optionnelle](#api-de-contrôle-optionnelle)
+- [Structure](#structure)
+- [Limites connues](#limites-connues)
+- [Contribution](#contribution)
+- [Mainteneur](#mainteneur)
+
 ## Statut fonctionnel
 
 | Capacité | Statut v0.3.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
-| Prompts et frontières d’autorité | Exécutables |
+| Prompts et frontières d'autorité | Exécutables |
 | Boucle métacognitive et arrêts | Exécutables |
 | Pipeline SaaS/mobile | Planifiable |
 | Générateur de starter | Exécutable, déterministe |
@@ -55,13 +79,13 @@ Les agents métacognitifs observent le pipeline sans produire le code du
 produit :
 
 - **ELMAN Supervisor** décide de continuer, corriger, arrêter ou escalader ;
-- **ELMAN Reflective** analyse l’écart entre intention, action et résultat ;
+- **ELMAN Reflective** analyse l'écart entre intention, action et résultat ;
 - **ELMAN Memory** conserve les éléments autorisés avec provenance ;
 - **ELMAN Learning** propose des améliorations sans les activer seul.
 
-## Conditions d’arrêt
+## Conditions d'arrêt
 
-La boucle s’arrête sur :
+La boucle s'arrête sur :
 
 - critères validés par Proof ;
 - itérations maximales ;
@@ -89,9 +113,16 @@ ELMAN-OS est **Python-first, pas Python-only** :
   dédiées ;
 - aucun langage spécialisé ne peut remplacer le kernel Python.
 
-L’installation du kernel nécessite uniquement Python et `pip`. Les outils
+L'installation du kernel nécessite uniquement Python et `pip`. Les outils
 Node, Flutter, Android, Xcode ou Rust restent optionnels et propres au produit
 qui les exige.
+
+## Prérequis
+
+- Windows 10/11 (support natif documenté ci-dessous ; macOS/Linux compatibles via le même kernel Python)
+- Python 3.11 ou supérieur
+- `pip` et `venv` disponibles
+- Git
 
 ## Installation rapide sous Windows
 
@@ -207,11 +238,21 @@ elman-os-foundation-kit-v0.3.1/
 
 - le provider inclus reste déterministe et ne contacte aucun modèle ;
 - le générateur produit un starter, pas une application métier finalisée ;
-- SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
-- la sandbox actuelle protège les chemins, pas encore l’exécution de code non
+- SQLite couvre le MVP local ; PostgreSQL reste une cible d'adaptateur ;
+- la sandbox actuelle protège les chemins, pas encore l'exécution de code non
   fiable dans un conteneur isolé ;
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
 La prochaine étape est la v0.4 : fournisseur IA configurable, exécution isolée,
 workspace Git par tâche, événements temps réel et premier ELMAN Studio.
+
+## Contribution
+
+Projet à usage interne — les contributions se font actuellement via branches
+de fonctionnalité (`feature/<nom>`) suivies d'une revue avant fusion sur
+`main`. Pas de processus de contribution externe à ce stade.
+
+## Mainteneur
+
+ELMAN Technologies — dépôt privé : [g4briel-x/ELMAN-OS](https://github.com/g4briel-x/ELMAN-OS)
