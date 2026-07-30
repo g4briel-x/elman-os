@@ -1,0 +1,20 @@
+{
+  "checkpoint": "v0.4.0-alpha.7",
+  "date": "2026-07-30",
+  "objective": "Stabiliser et valider le Kernel IA avant release candidate",
+  "proof": {
+    "kernel_tests": 160,
+    "tests_passed": 160,
+    "configuration_preflight": true,
+    "identity_quota_isolation": true,
+    "concurrency_and_cancellation": true,
+    "persistent_audit_recovery": true,
+    "tamper_detection": true,
+    "end_to_end_offline_pipeline": true,
+    "real_credentials_used": false,
+    "network_ai_calls": false,
+    "paid_calls": false
+  },
+  "verdict": "PASS",
+  "next_gate": "v0.4.0-release-candidate"
+}

@@ -1,0 +1,14 @@
+# Canonical cross-platform line endings
+* text=auto eol=lf
+
+# Binary files
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.pdf binary
+*.png binary
+*.pyc binary
+*.pyo binary
+*.whl binary
+*.zip binary

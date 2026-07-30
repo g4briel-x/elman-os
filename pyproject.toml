@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elman-os-kernel"
-version = "0.3.1"
-description = "Foundation Kit multi-agents et métacognitif intégrant le Kernel MVP ELMAN-OS"
+version = "0.4.0rc1"
+description = "Release candidate du Foundation Kit ELMAN-OS et de son Kernel IA auditable"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Proprietary - ELMAN Technologies" }

@@ -1,0 +1,42 @@
+{
+  "product": "ELMAN-OS",
+  "milestone": "v0.4.0-alpha.3",
+  "scope": "bounded_resilient_ai_execution",
+  "date": "2026-07-30",
+  "frame": {
+    "objective": "Bound AI calls with normalized failures, deadlines, retries and shared usage budgets",
+    "excluded": [
+      "real provider adapters",
+      "network calls",
+      "monetary price catalog",
+      "provider routing",
+      "production deployment"
+    ]
+  },
+  "verify": {
+    "kernel_tests": {
+      "executed": 82,
+      "passed": 82
+    },
+    "resource_warnings_as_errors": true,
+    "python_compilation": true,
+    "timeouts_checked": true,
+    "cancellation_propagation_checked": true,
+    "retry_bounds_checked": true,
+    "budget_preflight_checked": true,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "security_properties": [
+    "non-retryable failures stop immediately",
+    "retryable failures cannot exceed configured attempts",
+    "request and budget deadlines bound execution",
+    "insufficient token budget blocks calls before provider execution",
+    "provider response identity and output limits are verified"
+  ],
+  "decision": {
+    "status": "pass_with_warnings",
+    "ready_for": "development_branch_review",
+    "not_ready_for": "production_or_real_api_calls"
+  }
+}

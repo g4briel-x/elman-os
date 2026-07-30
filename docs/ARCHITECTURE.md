@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.3.1
+# ELMAN-OS — Architecture v0.4.0-rc.1
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.3.1 intégrant le Kernel MVP  
+**Livrable :** Foundation Kit v0.4.0-rc.1, runtime IA auditable
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision
@@ -242,6 +242,35 @@ Tout plugin est refusé si une permission requise manque.
 
 FastAPI n’est pas une dépendance obligatoire du kernel. L’extra `[api]` doit
 être installé avant le démarrage du serveur.
+
+## 12.1 Contrat fournisseur IA
+
+`provider.py` sépare désormais le Kernel des SDK de modèles :
+
+- `AIProvider` définit `descriptor`, `generate()` et `close()` ;
+- `ModelRequest` borne modèle, messages, tokens, température et délai ;
+- `ModelResponse` conserve texte, terminaison, usage et identifiants ;
+- `ProviderError` normalise les défaillances et leur caractère retentable ;
+- `DeterministicModelProvider` vérifie le contrat sans réseau ni coût.
+
+`openai_compatible.py` implémente l'adaptateur OpenAI/compatible avec un
+transport injecté. Le registre peut construire le transport standard ou un
+double hors réseau. Cette alpha valide le protocole, pas un service distant.
+
+## 12.2 Authentification et audit IA
+
+`audit.py` enveloppe l'exécuteur résilient :
+
+- un principal déjà vérifié par la frontière applicative est obligatoire ;
+- le rôle `ai.execute` et un motif contrôlé sont exigés avant l'appel ;
+- principal, tenant et requête sont remplacés par des empreintes HMAC ;
+- chaque événement signe son contenu et la signature précédente ;
+- prompts, réponses, secrets et métadonnées libres sont absents du schéma ;
+- l'échec de l'événement initial bloque l'appel fournisseur.
+
+Le Kernel livre un sink mémoire et un sink JSONL local durable. La validation
+JWT/OIDC, la rotation des clés, l'ancrage externe et un backend multi-instance
+sont des portes de production ultérieures.
 
 ## 13. Sécurité
 

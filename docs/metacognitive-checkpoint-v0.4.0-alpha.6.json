@@ -1,0 +1,38 @@
+{
+  "version": "0.4.0-alpha.6",
+  "date": "2026-07-30",
+  "objective": "Authentifier, autoriser et tracer les exécutions IA sans conserver les payloads.",
+  "decision": {
+    "status": "accepted_for_alpha",
+    "scope": [
+      "authenticated_execution_principal",
+      "role_based_execution_authorization",
+      "pseudonymized_minimal_audit_events",
+      "hmac_signed_event_chain",
+      "fail_closed_audit_start"
+    ],
+    "excluded": [
+      "jwt_signature_validation",
+      "persistent_audit_backend",
+      "key_rotation",
+      "external_signature_anchoring",
+      "real_network_calls"
+    ]
+  },
+  "evidence": {
+    "kernel_tests": 136,
+    "tests_passed": 136,
+    "python_compilation": true,
+    "technology_audit": "PASS",
+    "raw_prompt_or_response_logging": false,
+    "real_api_credentials_used": false,
+    "network_calls": 0,
+    "paid_calls": 0
+  },
+  "risks": [
+    "La frontière applicative doit valider les credentials avant de construire un principal.",
+    "Le sink mémoire n'assure pas une conservation durable.",
+    "La rotation des clés HMAC reste à concevoir avant la production."
+  ],
+  "next_gate": "Ajouter un backend d'audit durable et une validation d'identité intégrée avant la release v0.4 finale."
+}

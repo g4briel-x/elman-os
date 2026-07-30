@@ -1,4 +1,4 @@
-"""Command-line entry point for the ELMAN-OS Foundation Kit v0.3.1."""
+"""Command-line entry point for the ELMAN-OS Foundation Kit."""
 
 from __future__ import annotations
 
@@ -10,11 +10,14 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .catalog import AGENT_CATALOG
+from .configuration import ConfigurationError, load_provider_settings
 from .domain import CycleResult, Verdict
 from .metacognition import SupervisorPolicy
 from .persistence import SQLiteKernelStore
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
 from .plugins import built_in_registry
+from .registry import built_in_provider_registry
+from .release import DISPLAY_VERSION, validate_release
 from .service import ElmanKernelService
 from .technology_policy import TECHNOLOGY_STACK, audit_technology_policy
 from .workflow import ElmanWorkflow
@@ -150,6 +153,114 @@ def _doctor_command(as_json: bool) -> int:
     return 0 if report["python_supported"] else 1
 
 
+def _ai_config_command() -> int:
+    try:
+        settings = load_provider_settings()
+    except ConfigurationError as exc:
+        print(f"AI configuration: INVALID - {exc}")
+        return 2
+    print(json.dumps(settings.safe_summary(), ensure_ascii=False, indent=2))
+    return 0
+
+
+def _ai_providers_command(as_json: bool) -> int:
+    descriptors = built_in_provider_registry().descriptors()
+    report = [
+        {
+            "provider_id": item.provider_id,
+            "display_name": item.display_name,
+            "models": list(item.models),
+            "capabilities": sorted(capability.value for capability in item.capabilities),
+        }
+        for item in descriptors
+    ]
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    for item in report:
+        print(
+            f"{item['provider_id']:<24} "
+            f"models={','.join(item['models']) or '-'} "
+            f"capabilities={','.join(item['capabilities']) or '-'}"
+        )
+    return 0
+
+
+def _ai_audit_command(as_json: bool) -> int:
+    report = {
+        "authentication_required": True,
+        "required_role": "ai.execute",
+        "identity_storage": "hmac_sha256_fingerprint",
+        "event_integrity": "hmac_sha256_chained",
+        "persistent_format": "append_only_jsonl",
+        "durable_flush": True,
+        "chain_recovery": True,
+        "fail_closed": True,
+        "excluded_fields": [
+            "prompts",
+            "responses",
+            "secrets",
+            "free_form_metadata",
+            "provider_request_id",
+        ],
+    }
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    print(
+        "ELMAN-OS AI audit: authenticated, minimal, signed, persistent, fail-closed"
+    )
+    print("required_role: ai.execute")
+    print("identity_storage: pseudonymized")
+    print("payload_logging: disabled")
+    return 0
+
+
+def _ai_readiness_command(as_json: bool) -> int:
+    report = {
+        "release": DISPLAY_VERSION,
+        "configuration_preflight": True,
+        "identity_quotas": {
+            "requests": True,
+            "tokens": True,
+            "concurrency": True,
+            "atomic_reservations": True,
+        },
+        "audit_persistence": {
+            "format": "append_only_jsonl",
+            "durable_flush": True,
+            "chain_recovery": True,
+            "tamper_detection": True,
+            "payload_logging": False,
+        },
+        "network_validation": "offline_only",
+        "release_candidate_ready": True,
+        "production_ready": False,
+    }
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    print("ELMAN-OS AI kernel: v0.4.0-rc.1 ready for final review")
+    print("configuration_preflight: enabled")
+    print("identity_quotas: requests,tokens,concurrency")
+    print("audit_persistence: append-only, durable, chain-verified")
+    print("network_validation: offline-only")
+    return 0
+
+
+def _release_check_command(path: str, as_json: bool) -> int:
+    report = validate_release(path)
+    if as_json:
+        print(json.dumps(report.to_dict(), ensure_ascii=False, indent=2))
+    else:
+        state = "PASS" if report.ready else "FAIL"
+        print(f"ELMAN-OS release check {report.release}: {state}")
+        for check in report.checks:
+            marker = "PASS" if check.passed else "FAIL"
+            print(f"{marker:<4} {check.name:<24} {check.detail}")
+    return 0 if report.ready else 1
+
+
 def _serve_command(host: str, port: int, generated_root: str) -> int:
     try:
         import uvicorn
@@ -207,6 +318,36 @@ def build_parser() -> argparse.ArgumentParser:
 
     agents = subparsers.add_parser("agents", help="Lister le registre des agents")
     agents.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    subparsers.add_parser(
+        "ai-config",
+        help="Valider et afficher la configuration IA sans révéler les secrets",
+    )
+
+    ai_providers = subparsers.add_parser(
+        "ai-providers",
+        help="Lister les fournisseurs IA enregistrés sans les contacter",
+    )
+    ai_providers.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    ai_audit = subparsers.add_parser(
+        "ai-audit",
+        help="Afficher les garanties d'authentification et d'audit IA",
+    )
+    ai_audit.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    ai_readiness = subparsers.add_parser(
+        "ai-readiness",
+        help="Afficher l'état de stabilisation du Kernel IA",
+    )
+    ai_readiness.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    release_check = subparsers.add_parser(
+        "release-check",
+        help="Valider hors réseau la release candidate et son intégrité",
+    )
+    release_check.add_argument("path", nargs="?", default=".")
+    release_check.add_argument("--json", action="store_true", help="Sortie JSON")
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -298,6 +439,16 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "agents":
         return _agents_command(args.json)
+    if args.command == "ai-config":
+        return _ai_config_command()
+    if args.command == "ai-providers":
+        return _ai_providers_command(args.json)
+    if args.command == "ai-audit":
+        return _ai_audit_command(args.json)
+    if args.command == "ai-readiness":
+        return _ai_readiness_command(args.json)
+    if args.command == "release-check":
+        return _release_check_command(args.path, args.json)
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

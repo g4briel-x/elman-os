@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.3.1
+# Rôle des fichiers ELMAN-OS v0.4.0-rc.1
 
 ## Racine
 
@@ -8,7 +8,9 @@
 | `pyproject.toml` | packaging Python, CLI et extras optionnels |
 | `CHANGELOG.md` | historique des capacités ajoutées à la fondation |
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
+| `MIGRATION-v0.3.1-to-v0.4.0-rc.1.md` | migration, validation et retour arrière depuis v0.3.1 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
+| `RELEASE-CHECKSUMS.sha256` | empreintes de chaque fichier livré |
 
 ## Kernel
 
@@ -23,7 +25,14 @@
 | `src/elman_os/persistence.py` | rapports et approbations SQLite |
 | `src/elman_os/generator.py` | génération sécurisée du starter |
 | `src/elman_os/service.py` | composition planification/génération |
-| `src/elman_os/provider.py` | contrat d’adaptateur pour les modèles |
+| `src/elman_os/provider.py` | contrat IA générique, erreurs portables et fournisseur simulé |
+| `src/elman_os/configuration.py` | chargement validé des variables et masquage des secrets |
+| `src/elman_os/execution.py` | timeouts, retries, vérification des réponses et budgets IA |
+| `src/elman_os/registry.py` | registre, sélection, fallback et composition du runtime IA |
+| `src/elman_os/openai_compatible.py` | adaptateur OpenAI/compatible et transport HTTP injectable |
+| `src/elman_os/audit.py` | identité, autorisation, chaîne signée et persistance JSONL durable |
+| `src/elman_os/governance.py` | compatibilité, quotas par identité et runtime IA stabilisé |
+| `src/elman_os/release.py` | validation hors réseau, portabilité et intégrité SHA-256 |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -37,10 +46,25 @@
 | `docs/AGENT-PROMPTS.md` | contrat commun et instructions spécialisées |
 | `docs/TECHNOLOGY-POLICY.md` | règles Python-first par couche |
 | `docs/PLUGIN-CONTRACT.md` | permissions et extension des plugins |
+| `docs/AI-PROVIDER-CONTRACT.md` | frontière stable des futurs fournisseurs IA |
+| `docs/AI-CONFIGURATION.md` | variables, sécurité et commandes PowerShell |
+| `docs/AI-RUNTIME-RESILIENCE.md` | garanties d'exécution, erreurs, retries et budgets |
+| `docs/AI-PROVIDER-REGISTRY.md` | sélection, capacités et fallback contrôlé |
+| `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
+| `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
+| `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
+| `docs/RELEASE-CANDIDATE.md` | critères bloquants, limites et passage vers v0.4.0 |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.1.json` | contrôle du correctif Windows/Python 3.13 |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.1.json` | preuve bornée du contrat fournisseur IA |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.2.json` | preuve bornée de la configuration sécurisée |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.3.json` | preuve bornée du runtime IA résilient |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.5.json` | preuve bornée des adaptateurs testés hors réseau |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.6.json` | preuve bornée de l'authentification et de l'audit IA |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.7.json` | preuve de stabilisation du Kernel IA |
+| `docs/metacognitive-checkpoint-v0.4.0-rc.1.json` | preuve de validation de la release candidate |
 
 ## Tests
 
@@ -55,3 +79,11 @@
 | `test_generator.py` | sandbox, non-écrasement et starter |
 | `test_plugins.py` | permissions, approbation humaine et plugins |
 | `test_technology_policy.py` | frontières des langages |
+| `test_provider.py` | contrat IA, validations, erreurs et double sans réseau |
+| `test_configuration.py` | variables, limites, URL et absence de fuite des secrets |
+| `test_execution.py` | délais, retries, annulations, contrat de réponse et budgets |
+| `test_registry.py` | enregistrement, sélection, fallback et pipeline configuré |
+| `test_openai_compatible.py` | traduction HTTP, erreurs et transport simulé sans réseau |
+| `test_audit.py` | autorisation, confidentialité, intégrité, échecs et annulations |
+| `test_stabilization.py` | compatibilité, quotas, concurrence, persistance et pipeline complet |
+| `test_release.py` | versions, checksums, portabilité et fermeture des gates |

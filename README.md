@@ -1,58 +1,58 @@
-# ELMAN-OS Foundation Kit v0.3.1
-
-![Version](https://img.shields.io/badge/version-0.3.1-blue)
-![Statut](https://img.shields.io/badge/statut-fondation%20ex%C3%A9cutable-yellow)
-![Licence](https://img.shields.io/badge/licence-priv%C3%A9%2Fusage%20interne-lightgrey)
-![Python](https://img.shields.io/badge/python-3.11%2B-informational)
-
-> **Usage interne — ELMAN Technologies.** Ce dépôt est privé et n'est pas destiné à une distribution publique.
+# ELMAN-OS Foundation Kit v0.4.0-rc.1
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-Ce Foundation Kit actualise la fondation v0.2.1 avec toutes les capacités du
-Kernel MVP v0.3.0 et ses correctifs Windows v0.3.1. Il constitue le socle exécutable de référence, et non encore
-une plateforme autonome de production :
+Cette préversion part de la fondation v0.3.1 compatible Windows/Python 3.13 et
+ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
+configuration sécurisée par variables d'environnement, exécution bornée avec
+timeouts, retries et budgets, registre dynamique, adaptateurs OpenAI et
+OpenAI-compatible à transport injectable, puis authentification et audit signé
+des exécutions. La RC.1 stabilise cet ensemble avec prévalidation,
+quotas par identité et tenant, audit persistant vérifiable après redémarrage,
+réservations non rejouables et validation de release hors réseau.
+Elle constitue une candidate à la version finale, et non encore une
+plateforme autonome de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
 - 1 vérificateur final indépendant : ELMAN Proof ;
 - 4 agents métacognitifs internes ;
 - planification déterministe du pipeline ;
-- boucle d'amélioration bornée ;
+- boucle d’amélioration bornée ;
 - mémoire de workflow et persistance SQLite ;
 - approbations humaines indépendantes ;
 - sandbox de génération par chemin ;
 - premier starter Python SaaS/mobile ;
 - 4 plugins internes à permissions ;
+- contrat générique de fournisseur IA ;
+- fournisseur IA déterministe sans réseau pour les tests ;
+- configuration immuable et validée sans secret dans les diagnostics ;
+- délais réels, retries bornés et erreurs d'exécution portables ;
+- budgets partagés d'appels, de tokens et de durée ;
+- registre des fournisseurs, contrôle des capacités et sélection configurée ;
+- fallback déterministe désactivé par défaut et explicitement traçable ;
+- adaptateurs OpenAI et OpenAI-compatible sans dépendance SDK ;
+- transport HTTP injectable, erreurs normalisées et tests entièrement hors réseau ;
+- exécution réservée aux principaux authentifiés possédant le rôle `ai.execute` ;
+- audit minimal pseudonymisé, signé et chaîné sans journalisation de payload ;
+- prévalidation de compatibilité avant création d'un adaptateur ;
+- quotas atomiques de requêtes, tokens et concurrence par identité ;
+- audit JSONL append-only, durable et repris après vérification de chaîne ;
+- réservations de quota non rejouables, isolées par tenant et identité ;
+- inventaire SHA-256 et contrôle de release hors réseau ;
+- matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13 ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
 rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
-## Sommaire
-
-- [Statut fonctionnel](#statut-fonctionnel)
-- [Architecture agentique](#architecture-agentique)
-- [Conditions d'arrêt](#conditions-darrêt)
-- [Politique technologique](#politique-technologique)
-- [Prérequis](#prérequis)
-- [Installation rapide sous Windows](#installation-rapide-sous-windows)
-- [Planifier un SaaS](#planifier-un-saas)
-- [Générer le premier starter](#générer-le-premier-starter)
-- [Démontrer et persister la boucle](#démontrer-et-persister-la-boucle)
-- [API de contrôle optionnelle](#api-de-contrôle-optionnelle)
-- [Structure](#structure)
-- [Limites connues](#limites-connues)
-- [Contribution](#contribution)
-- [Mainteneur](#mainteneur)
-
 ## Statut fonctionnel
 
-| Capacité | Statut v0.3.1 |
+| Capacité | Statut v0.4.0-rc.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
-| Prompts et frontières d'autorité | Exécutables |
+| Prompts et frontières d’autorité | Exécutables |
 | Boucle métacognitive et arrêts | Exécutables |
 | Pipeline SaaS/mobile | Planifiable |
 | Générateur de starter | Exécutable, déterministe |
@@ -60,7 +60,15 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Approbations humaines | Exécutables |
 | Plugins internes | 4 plugins exécutables |
 | API de contrôle | Adaptateur FastAPI optionnel |
-| Fournisseur IA réel | Non connecté |
+| Contrat fournisseur IA | Exécutable et testé |
+| Configuration IA | Variables d'environnement validées, secrets masqués |
+| Exécution IA | Timeouts, retries et budgets bornés, sans réseau |
+| Registre IA | Sélection configurée et fallback déterministe contrôlé |
+| Adaptateurs distants | OpenAI/compatible livrés, connectivité réelle non validée |
+| Authentification d'exécution | Principal vérifié à la frontière et rôle obligatoire |
+| Stabilisation IA | Prévalidation et quotas atomiques par identité |
+| Audit IA | Événements minimaux HMAC, persistants et vérifiables après reprise |
+| Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
@@ -79,13 +87,13 @@ Les agents métacognitifs observent le pipeline sans produire le code du
 produit :
 
 - **ELMAN Supervisor** décide de continuer, corriger, arrêter ou escalader ;
-- **ELMAN Reflective** analyse l'écart entre intention, action et résultat ;
+- **ELMAN Reflective** analyse l’écart entre intention, action et résultat ;
 - **ELMAN Memory** conserve les éléments autorisés avec provenance ;
 - **ELMAN Learning** propose des améliorations sans les activer seul.
 
-## Conditions d'arrêt
+## Conditions d’arrêt
 
-La boucle s'arrête sur :
+La boucle s’arrête sur :
 
 - critères validés par Proof ;
 - itérations maximales ;
@@ -113,32 +121,31 @@ ELMAN-OS est **Python-first, pas Python-only** :
   dédiées ;
 - aucun langage spécialisé ne peut remplacer le kernel Python.
 
-L'installation du kernel nécessite uniquement Python et `pip`. Les outils
+L’installation du kernel nécessite uniquement Python et `pip`. Les outils
 Node, Flutter, Android, Xcode ou Rust restent optionnels et propres au produit
 qui les exige.
-
-## Prérequis
-
-- Windows 10/11 (support natif documenté ci-dessous ; macOS/Linux compatibles via le même kernel Python)
-- Python 3.11 ou supérieur
-- `pip` et `venv` disponibles
-- Git
 
 ## Installation rapide sous Windows
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.3.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-rc.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.3.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-rc.1"
 
-py -3.11 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
 .\.venv\Scripts\python.exe -m pip install -e .
 
-.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe -W error::ResourceWarning `
+  -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m elman_os doctor
+.\.venv\Scripts\python.exe -m elman_os ai-config
+.\.venv\Scripts\python.exe -m elman_os ai-providers
+.\.venv\Scripts\python.exe -m elman_os ai-audit
+.\.venv\Scripts\python.exe -m elman_os ai-readiness
+.\.venv\Scripts\python.exe -m elman_os release-check .
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os audit-stack .
@@ -209,9 +216,11 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.3.1/
+elman-os-foundation-kit-v0.4.0-rc.1/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
+├── MIGRATION-v0.3.1-to-v0.4.0-rc.1.md
+├── RELEASE-CHECKSUMS.sha256
 ├── RELEASE-MANIFEST.json
 ├── config/
 ├── docs/
@@ -219,14 +228,21 @@ elman-os-foundation-kit-v0.3.1/
 ├── src/elman_os/
 │   ├── api.py
 │   ├── approvals.py
+│   ├── audit.py
 │   ├── catalog.py
 │   ├── cli.py
+│   ├── configuration.py
+│   ├── execution.py
 │   ├── generator.py
+│   ├── governance.py
 │   ├── metacognition.py
+│   ├── openai_compatible.py
 │   ├── persistence.py
 │   ├── planning.py
 │   ├── plugins.py
 │   ├── provider.py
+│   ├── registry.py
+│   ├── release.py
 │   ├── service.py
 │   ├── technology_policy.py
 │   └── workflow.py
@@ -234,25 +250,35 @@ elman-os-foundation-kit-v0.3.1/
 └── pyproject.toml
 ```
 
+Le contrat du fournisseur IA est détaillé dans
+`docs/AI-PROVIDER-CONTRACT.md`. La configuration et les commandes PowerShell
+sont détaillées dans `docs/AI-CONFIGURATION.md`.
+Les garanties de timeout, retry et budget sont décrites dans
+`docs/AI-RUNTIME-RESILIENCE.md`.
+Le registre, la sélection et le fallback sont décrits dans
+`docs/AI-PROVIDER-REGISTRY.md`.
+L'adaptateur, son transport et sa configuration sont décrits dans
+`docs/AI-OPENAI-COMPATIBLE.md`.
+L'identité, l'autorisation et la trace signée sont décrites dans
+`docs/AI-EXECUTION-AUDIT.md`.
+La stabilisation, les quotas et la reprise persistante sont décrits dans
+`docs/AI-KERNEL-STABILIZATION.md`.
+Les critères de gel, d’intégrité et de revue finale sont décrits dans
+`docs/RELEASE-CANDIDATE.md`.
+
 ## Limites connues
 
-- le provider inclus reste déterministe et ne contacte aucun modèle ;
+- les adaptateurs distants sont livrés, mais aucun endpoint réel, modèle réel,
+  débit ou coût n'est validé par cette RC ;
+- le sink fichier est local et mono-machine ; la validation JWT/OIDC, la
+  rotation des clés et un backend multi-instance restent à intégrer ;
+- aucun catalogue monétaire de prix ni routage par coût ou qualité n'est livré ;
 - le générateur produit un starter, pas une application métier finalisée ;
-- SQLite couvre le MVP local ; PostgreSQL reste une cible d'adaptateur ;
-- la sandbox actuelle protège les chemins, pas encore l'exécution de code non
+- SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
+- la sandbox actuelle protège les chemins, pas encore l’exécution de code non
   fiable dans un conteneur isolé ;
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-La prochaine étape est la v0.4 : fournisseur IA configurable, exécution isolée,
-workspace Git par tâche, événements temps réel et premier ELMAN Studio.
-
-## Contribution
-
-Projet à usage interne — les contributions se font actuellement via branches
-de fonctionnalité (`feature/<nom>`) suivies d'une revue avant fusion sur
-`main`. Pas de processus de contribution externe à ce stade.
-
-## Mainteneur
-
-ELMAN Technologies — dépôt privé : [g4briel-x/ELMAN-OS](https://github.com/g4briel-x/ELMAN-OS)
+Le prochain jalon est la Pull Request vers `main`, suivie de la matrice CI
+multi-plateforme et de l’approbation humaine avant le tag final `v0.4.0`.
