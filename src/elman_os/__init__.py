@@ -41,6 +41,14 @@ from .service import ElmanKernelService
 from .workflow import ElmanWorkflow
 
 __all__ = [
+    "PersistenceBackend",
+    "PersistenceConflictError",
+    "PersistenceError",
+    "PersistenceIntegrityError",
+    "PersistenceTransaction",
+    "SQLitePersistence",
+    "StoredRecord",
+    "TransactionClosedError",
     "AGENT_CATALOG",
     "AIProvider",
     "AuthenticationErrorCode",
@@ -86,3 +94,15 @@ __all__ = [
 ]
 
 __version__ = "0.4.0"
+
+# Transactional persistence boundary (additive to SQLiteKernelStore).
+from .transactional_persistence import (
+    PersistenceBackend,
+    PersistenceConflictError,
+    PersistenceError,
+    PersistenceIntegrityError,
+    PersistenceTransaction,
+    SQLitePersistence,
+    StoredRecord,
+    TransactionClosedError,
+)
