@@ -94,6 +94,52 @@ class SecureConfigurationTests(unittest.TestCase):
                 {"ELMAN_AI_BASE_URL": "https://user:password@provider.example"}
             )
 
+    def test_runtime_policy_defaults_are_bounded(self) -> None:
+        settings = load_provider_settings({})
+
+        self.assertEqual(settings.retry_policy.max_attempts, 3)
+        self.assertEqual(settings.usage_budget.max_provider_calls, 10)
+        self.assertEqual(settings.usage_budget.max_total_tokens, 100_000)
+        self.assertEqual(settings.usage_budget.max_elapsed_seconds, 300)
+
+    def test_runtime_policy_is_loaded_from_environment(self) -> None:
+        settings = load_provider_settings(
+            {
+                "ELMAN_AI_MAX_ATTEMPTS": "4",
+                "ELMAN_AI_RETRY_INITIAL_SECONDS": "0.5",
+                "ELMAN_AI_RETRY_MAX_SECONDS": "8",
+                "ELMAN_AI_RETRY_MULTIPLIER": "3",
+                "ELMAN_AI_BUDGET_MAX_CALLS": "20",
+                "ELMAN_AI_BUDGET_MAX_TOKENS": "250000",
+                "ELMAN_AI_BUDGET_MAX_SECONDS": "900",
+            }
+        )
+
+        self.assertEqual(settings.retry_policy.max_attempts, 4)
+        self.assertEqual(settings.retry_policy.initial_delay_seconds, 0.5)
+        self.assertEqual(settings.retry_policy.max_delay_seconds, 8)
+        self.assertEqual(settings.retry_policy.backoff_multiplier, 3)
+        self.assertEqual(settings.usage_budget.max_provider_calls, 20)
+        self.assertEqual(settings.usage_budget.max_total_tokens, 250_000)
+        self.assertEqual(settings.usage_budget.max_elapsed_seconds, 900)
+
+    def test_invalid_runtime_limits_fail_without_echoing_value(self) -> None:
+        invalid_value = "secret-looking-retry-count"
+
+        with self.assertRaises(ConfigurationError) as raised:
+            load_provider_settings({"ELMAN_AI_MAX_ATTEMPTS": invalid_value})
+
+        self.assertNotIn(invalid_value, str(raised.exception))
+
+    def test_retry_delay_order_is_validated(self) -> None:
+        with self.assertRaises(ConfigurationError):
+            load_provider_settings(
+                {
+                    "ELMAN_AI_RETRY_INITIAL_SECONDS": "10",
+                    "ELMAN_AI_RETRY_MAX_SECONDS": "1",
+                }
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

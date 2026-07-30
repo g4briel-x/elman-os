@@ -8,6 +8,8 @@ from dataclasses import dataclass, field
 from typing import Mapping
 from urllib.parse import urlsplit
 
+from .execution import RetryPolicy, UsageBudget
+
 
 PROVIDER_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9._-]{0,127}$")
 MODEL_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$")
@@ -54,6 +56,8 @@ class ProviderSettings:
     base_url: str | None = None
     timeout_seconds: float = 60.0
     max_output_tokens: int = 2_048
+    retry_policy: RetryPolicy = field(default_factory=RetryPolicy)
+    usage_budget: UsageBudget = field(default_factory=UsageBudget)
 
     def __post_init__(self) -> None:
         if not PROVIDER_ID_PATTERN.fullmatch(self.provider_id):
@@ -95,6 +99,17 @@ class ProviderSettings:
             "base_url": self.base_url,
             "timeout_seconds": self.timeout_seconds,
             "max_output_tokens": self.max_output_tokens,
+            "retry_policy": {
+                "max_attempts": self.retry_policy.max_attempts,
+                "initial_delay_seconds": self.retry_policy.initial_delay_seconds,
+                "max_delay_seconds": self.retry_policy.max_delay_seconds,
+                "backoff_multiplier": self.retry_policy.backoff_multiplier,
+            },
+            "usage_budget": {
+                "max_provider_calls": self.usage_budget.max_provider_calls,
+                "max_total_tokens": self.usage_budget.max_total_tokens,
+                "max_elapsed_seconds": self.usage_budget.max_elapsed_seconds,
+            },
         }
 
 
@@ -151,6 +166,65 @@ def load_provider_settings(
     raw_base_url = source.get("ELMAN_AI_BASE_URL")
     base_url = raw_base_url.strip().rstrip("/") if raw_base_url else None
 
+    try:
+        retry_policy = RetryPolicy(
+            max_attempts=int(
+                _read_number(source, "ELMAN_AI_MAX_ATTEMPTS", "3", int)
+            ),
+            initial_delay_seconds=float(
+                _read_number(
+                    source,
+                    "ELMAN_AI_RETRY_INITIAL_SECONDS",
+                    "0.25",
+                    float,
+                )
+            ),
+            max_delay_seconds=float(
+                _read_number(
+                    source,
+                    "ELMAN_AI_RETRY_MAX_SECONDS",
+                    "5",
+                    float,
+                )
+            ),
+            backoff_multiplier=float(
+                _read_number(
+                    source,
+                    "ELMAN_AI_RETRY_MULTIPLIER",
+                    "2",
+                    float,
+                )
+            ),
+        )
+        usage_budget = UsageBudget(
+            max_provider_calls=int(
+                _read_number(
+                    source,
+                    "ELMAN_AI_BUDGET_MAX_CALLS",
+                    "10",
+                    int,
+                )
+            ),
+            max_total_tokens=int(
+                _read_number(
+                    source,
+                    "ELMAN_AI_BUDGET_MAX_TOKENS",
+                    "100000",
+                    int,
+                )
+            ),
+            max_elapsed_seconds=float(
+                _read_number(
+                    source,
+                    "ELMAN_AI_BUDGET_MAX_SECONDS",
+                    "300",
+                    float,
+                )
+            ),
+        )
+    except ValueError as exc:
+        raise ConfigurationError(str(exc)) from None
+
     return ProviderSettings(
         provider_id=provider_id,
         model=model,
@@ -173,4 +247,6 @@ def load_provider_settings(
                 int,
             )
         ),
+        retry_policy=retry_policy,
+        usage_budget=usage_budget,
     )

@@ -1,5 +1,33 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 3 — 2026-07-30
+
+### Ajouté
+
+- exécuteur `ResilientAIExecutor` indépendant des fournisseurs ;
+- délais globaux réels avec normalisation des timeouts ;
+- retries exponentiels appliqués uniquement aux erreurs temporaires ;
+- prise en charge bornée de `retry_after_seconds` ;
+- budgets partagés d'appels fournisseur, de tokens et de durée ;
+- validation de l'identité des réponses et de la limite de sortie ;
+- paramètres de résilience chargés depuis l'environnement ;
+- dix-huit nouveaux tests de runtime et de configuration.
+
+### Sécurité
+
+- une annulation n'est jamais convertie en retry ;
+- une erreur non temporaire échoue immédiatement ;
+- un budget de tokens insuffisant bloque l'appel avant le fournisseur ;
+- toutes les tentatives, attentes et durées sont plafonnées ;
+- aucune dépendance fournisseur, clé réelle ou journalisation de payload.
+
+### Vérification
+
+- 82 tests du Kernel réussis ;
+- compilation Python réussie ;
+- installation et CLI testées depuis une extraction neuve ;
+- aucun appel réseau ou payant.
+
 ## v0.4.0 alpha 2 — 2026-07-30
 
 ### Ajouté

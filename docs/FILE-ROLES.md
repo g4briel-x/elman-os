@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0 alpha 2
+# Rôle des fichiers ELMAN-OS v0.4.0 alpha 3
 
 ## Racine
 
@@ -25,6 +25,7 @@
 | `src/elman_os/service.py` | composition planification/génération |
 | `src/elman_os/provider.py` | contrat IA générique, erreurs portables et fournisseur simulé |
 | `src/elman_os/configuration.py` | chargement validé des variables et masquage des secrets |
+| `src/elman_os/execution.py` | timeouts, retries, vérification des réponses et budgets IA |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -40,12 +41,14 @@
 | `docs/PLUGIN-CONTRACT.md` | permissions et extension des plugins |
 | `docs/AI-PROVIDER-CONTRACT.md` | frontière stable des futurs fournisseurs IA |
 | `docs/AI-CONFIGURATION.md` | variables, sécurité et commandes PowerShell |
+| `docs/AI-RUNTIME-RESILIENCE.md` | garanties d'exécution, erreurs, retries et budgets |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.1.json` | contrôle du correctif Windows/Python 3.13 |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.1.json` | preuve bornée du contrat fournisseur IA |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.2.json` | preuve bornée de la configuration sécurisée |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.3.json` | preuve bornée du runtime IA résilient |
 
 ## Tests
 
@@ -62,3 +65,4 @@
 | `test_technology_policy.py` | frontières des langages |
 | `test_provider.py` | contrat IA, validations, erreurs et double sans réseau |
 | `test_configuration.py` | variables, limites, URL et absence de fuite des secrets |
+| `test_execution.py` | délais, retries, annulations, contrat de réponse et budgets |

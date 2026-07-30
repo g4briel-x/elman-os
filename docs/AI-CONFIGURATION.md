@@ -15,6 +15,13 @@ aucune clé sur disque et n'effectue aucun appel réseau pendant le chargement.
 | `ELMAN_AI_BASE_URL` | aucune | URL HTTPS optionnelle de l'API |
 | `ELMAN_AI_TIMEOUT_SECONDS` | `60` | Délai borné, supérieur à 0 et inférieur ou égal à 600 |
 | `ELMAN_AI_MAX_OUTPUT_TOKENS` | `2048` | Limite comprise entre 1 et 1 000 000 |
+| `ELMAN_AI_MAX_ATTEMPTS` | `3` | Nombre total de tentatives, de 1 à 10 |
+| `ELMAN_AI_RETRY_INITIAL_SECONDS` | `0.25` | Première attente exponentielle |
+| `ELMAN_AI_RETRY_MAX_SECONDS` | `5` | Plafond d'une attente de retry |
+| `ELMAN_AI_RETRY_MULTIPLIER` | `2` | Multiplicateur exponentiel, de 1 à 10 |
+| `ELMAN_AI_BUDGET_MAX_CALLS` | `10` | Nombre maximal d'appels fournisseur |
+| `ELMAN_AI_BUDGET_MAX_TOKENS` | `100000` | Plafond cumulé de tokens |
+| `ELMAN_AI_BUDGET_MAX_SECONDS` | `300` | Durée cumulée maximale du périmètre |
 
 Une URL HTTP est acceptée uniquement pour `localhost`, `127.0.0.1` ou `::1`,
 afin de permettre un modèle local. Une URL ne peut pas embarquer
@@ -61,3 +68,7 @@ l'en-tête d'authentification, devra appeler explicitement `reveal()`.
 Cette protection réduit les fuites accidentelles ; elle ne remplace pas un
 gestionnaire de secrets du système d'exploitation ou de la plateforme de
 déploiement.
+
+Les paramètres de résilience et leur comportement sont détaillés dans
+`AI-RUNTIME-RESILIENCE.md`. La commande `ai-config` affiche ces limites, mais
+aucune valeur secrète.

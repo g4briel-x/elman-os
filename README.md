@@ -1,11 +1,12 @@
-# ELMAN-OS Foundation Kit v0.4.0 alpha 2
+# ELMAN-OS Foundation Kit v0.4.0 alpha 3
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
 Cette préversion part de la fondation v0.3.1 compatible Windows/Python 3.13 et
-ajoute le premier lot du runtime IA v0.4 : un contrat générique testable sans
-appel payant, puis sa configuration sécurisée par variables d'environnement.
+ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
+configuration sécurisée par variables d'environnement, puis exécution bornée
+avec timeouts, retries et budgets.
 Elle constitue un jalon de développement, et non encore une
 plateforme autonome de production :
 
@@ -23,6 +24,8 @@ plateforme autonome de production :
 - contrat générique de fournisseur IA ;
 - fournisseur IA déterministe sans réseau pour les tests ;
 - configuration immuable et validée sans secret dans les diagnostics ;
+- délais réels, retries bornés et erreurs d'exécution portables ;
+- budgets partagés d'appels, de tokens et de durée ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
@@ -30,7 +33,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 alpha 2 |
+| Capacité | Statut v0.4.0 alpha 3 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -43,6 +46,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | API de contrôle | Adaptateur FastAPI optionnel |
 | Contrat fournisseur IA | Exécutable et testé |
 | Configuration IA | Variables d'environnement validées, secrets masqués |
+| Exécution IA | Timeouts, retries et budgets bornés, sans réseau |
 | Fournisseur IA réel | Non connecté ; adaptateurs à venir |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
@@ -104,10 +108,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.2.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.3.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.2"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.3"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -187,7 +191,7 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-alpha.2/
+elman-os-foundation-kit-v0.4.0-alpha.3/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
 ├── RELEASE-MANIFEST.json
@@ -200,6 +204,7 @@ elman-os-foundation-kit-v0.4.0-alpha.2/
 │   ├── catalog.py
 │   ├── cli.py
 │   ├── configuration.py
+│   ├── execution.py
 │   ├── generator.py
 │   ├── metacognition.py
 │   ├── persistence.py
@@ -216,12 +221,14 @@ elman-os-foundation-kit-v0.4.0-alpha.2/
 Le contrat du fournisseur IA est détaillé dans
 `docs/AI-PROVIDER-CONTRACT.md`. La configuration et les commandes PowerShell
 sont détaillées dans `docs/AI-CONFIGURATION.md`.
+Les garanties de timeout, retry et budget sont décrites dans
+`docs/AI-RUNTIME-RESILIENCE.md`.
 
 ## Limites connues
 
 - le provider inclus reste déterministe et ne contacte aucun modèle ;
-- cette alpha charge et masque les clés, mais n'inclut encore ni adaptateur
-  distant, ni retries, ni budgets, ni routage entre fournisseurs ;
+- cette alpha n'inclut encore ni adaptateur distant, ni catalogue monétaire de
+  prix, ni routage entre fournisseurs ;
 - le générateur produit un starter, pas une application métier finalisée ;
 - SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
 - la sandbox actuelle protège les chemins, pas encore l’exécution de code non
@@ -229,5 +236,5 @@ sont détaillées dans `docs/AI-CONFIGURATION.md`.
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-Les prochains lots v0.4 ajoutent les adaptateurs réels, les retries bornés, les
-budgets, l'exécution isolée et le workspace Git.
+Les prochains lots v0.4 ajoutent les adaptateurs réels, le routage, l'exécution
+isolée et le workspace Git.
