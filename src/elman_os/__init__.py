@@ -29,6 +29,10 @@ from .governance import (
 )
 from .metacognition import SupervisorPolicy
 from .openai_compatible import OpenAICompatibleProvider
+from .persistent_governance import (
+    PersistentAuditTrail,
+    PersistentIdentityQuotaManager,
+)
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
 from .provider import AIProvider, ModelRequest, ModelResponse
 from .registry import (
@@ -41,6 +45,8 @@ from .service import ElmanKernelService
 from .workflow import ElmanWorkflow
 
 __all__ = [
+    "PersistentIdentityQuotaManager",
+    "PersistentAuditTrail",
     "PersistenceBackend",
     "PersistenceConflictError",
     "PersistenceError",
