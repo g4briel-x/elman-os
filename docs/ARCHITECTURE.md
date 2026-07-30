@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.4.0 alpha 1
+# ELMAN-OS — Architecture v0.4.0 alpha 2
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.4.0 alpha 1, contrat fournisseur IA  
+**Livrable :** Foundation Kit v0.4.0 alpha 2, contrat et configuration IA  
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision

@@ -1,4 +1,4 @@
-# Contrat générique de fournisseur IA — ELMAN-OS v0.4 alpha 1
+# Contrat générique de fournisseur IA — ELMAN-OS v0.4
 
 ## Objectif
 

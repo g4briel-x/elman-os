@@ -1,0 +1,13 @@
+# Configuration locale sûre. Ne jamais inscrire une vraie clé dans ce fichier.
+ELMAN_AI_PROVIDER=deterministic-model
+ELMAN_AI_MODEL=deterministic-v1
+ELMAN_AI_AUTH_MODE=none
+ELMAN_AI_TIMEOUT_SECONDS=60
+ELMAN_AI_MAX_OUTPUT_TOKENS=2048
+
+# Fournisseur distant (exemple seulement) :
+# ELMAN_AI_PROVIDER=vendor
+# ELMAN_AI_MODEL=vendor-model
+# ELMAN_AI_AUTH_MODE=api_key
+# ELMAN_AI_API_KEY=
+# ELMAN_AI_BASE_URL=https://api.provider.example/v1

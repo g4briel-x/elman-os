@@ -1,0 +1,38 @@
+{
+  "product": "ELMAN-OS",
+  "milestone": "v0.4.0-alpha.2",
+  "scope": "secure_environment_configuration",
+  "date": "2026-07-30",
+  "frame": {
+    "objective": "Load provider settings without persisting or disclosing API credentials",
+    "excluded": [
+      "real provider adapters",
+      "network calls",
+      "retry orchestration",
+      "budget enforcement",
+      "provider routing"
+    ]
+  },
+  "verify": {
+    "kernel_tests": {
+      "executed": 64,
+      "passed": 64
+    },
+    "resource_warnings_as_errors": true,
+    "python_compilation": true,
+    "secret_redaction_checked": true,
+    "network_calls": 0,
+    "paid_api_calls": 0
+  },
+  "security_properties": [
+    "remote providers require credentials by default",
+    "secrets are absent from repr, str and safe diagnostics",
+    "remote base URLs require HTTPS",
+    "invalid values are not echoed in errors"
+  ],
+  "decision": {
+    "status": "pass_with_warnings",
+    "ready_for": "development_branch_review",
+    "not_ready_for": "production_or_real_api_calls"
+  }
+}

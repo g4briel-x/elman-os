@@ -1,11 +1,12 @@
-# ELMAN-OS Foundation Kit v0.4.0 alpha 1
+# ELMAN-OS Foundation Kit v0.4.0 alpha 2
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
 Cette préversion part de la fondation v0.3.1 compatible Windows/Python 3.13 et
 ajoute le premier lot du runtime IA v0.4 : un contrat générique testable sans
-appel payant. Elle constitue un jalon de développement, et non encore une
+appel payant, puis sa configuration sécurisée par variables d'environnement.
+Elle constitue un jalon de développement, et non encore une
 plateforme autonome de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
@@ -21,6 +22,7 @@ plateforme autonome de production :
 - 4 plugins internes à permissions ;
 - contrat générique de fournisseur IA ;
 - fournisseur IA déterministe sans réseau pour les tests ;
+- configuration immuable et validée sans secret dans les diagnostics ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
@@ -28,7 +30,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 alpha 1 |
+| Capacité | Statut v0.4.0 alpha 2 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -40,6 +42,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Plugins internes | 4 plugins exécutables |
 | API de contrôle | Adaptateur FastAPI optionnel |
 | Contrat fournisseur IA | Exécutable et testé |
+| Configuration IA | Variables d'environnement validées, secrets masqués |
 | Fournisseur IA réel | Non connecté ; adaptateurs à venir |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
@@ -101,10 +104,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.2.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.2"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -113,6 +116,7 @@ py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -W error::ResourceWarning `
   -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m elman_os doctor
+.\.venv\Scripts\python.exe -m elman_os ai-config
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os audit-stack .
@@ -183,7 +187,7 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-alpha.1/
+elman-os-foundation-kit-v0.4.0-alpha.2/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
 ├── RELEASE-MANIFEST.json
@@ -195,6 +199,7 @@ elman-os-foundation-kit-v0.4.0-alpha.1/
 │   ├── approvals.py
 │   ├── catalog.py
 │   ├── cli.py
+│   ├── configuration.py
 │   ├── generator.py
 │   ├── metacognition.py
 │   ├── persistence.py
@@ -209,13 +214,14 @@ elman-os-foundation-kit-v0.4.0-alpha.1/
 ```
 
 Le contrat du fournisseur IA est détaillé dans
-`docs/AI-PROVIDER-CONTRACT.md`.
+`docs/AI-PROVIDER-CONTRACT.md`. La configuration et les commandes PowerShell
+sont détaillées dans `docs/AI-CONFIGURATION.md`.
 
 ## Limites connues
 
 - le provider inclus reste déterministe et ne contacte aucun modèle ;
-- cette alpha ne gère pas encore les clés, retries, budgets ni le routage entre
-  fournisseurs ;
+- cette alpha charge et masque les clés, mais n'inclut encore ni adaptateur
+  distant, ni retries, ni budgets, ni routage entre fournisseurs ;
 - le générateur produit un starter, pas une application métier finalisée ;
 - SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
 - la sandbox actuelle protège les chemins, pas encore l’exécution de code non
@@ -223,5 +229,5 @@ Le contrat du fournisseur IA est détaillé dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-Les prochains lots v0.4 ajoutent la configuration sécurisée, les adaptateurs
-réels, les retries bornés, les budgets, l'exécution isolée et le workspace Git.
+Les prochains lots v0.4 ajoutent les adaptateurs réels, les retries bornés, les
+budgets, l'exécution isolée et le workspace Git.

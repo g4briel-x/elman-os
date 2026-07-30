@@ -6,6 +6,7 @@ src/elman_os/api.py
 src/elman_os/approvals.py
 src/elman_os/catalog.py
 src/elman_os/cli.py
+src/elman_os/configuration.py
 src/elman_os/domain.py
 src/elman_os/generator.py
 src/elman_os/metacognition.py
@@ -24,6 +25,7 @@ src/elman_os_kernel.egg-info/requires.txt
 src/elman_os_kernel.egg-info/top_level.txt
 tests/test_approvals.py
 tests/test_catalog.py
+tests/test_configuration.py
 tests/test_generator.py
 tests/test_metacognition.py
 tests/test_persistence.py

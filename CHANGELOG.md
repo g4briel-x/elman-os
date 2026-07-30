@@ -1,5 +1,31 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 2 — 2026-07-30
+
+### Ajouté
+
+- chargement du fournisseur, du modèle, de l'authentification, de l'URL et des
+  limites depuis les variables d'environnement ;
+- type `SecretValue` masquant les clés dans `str`, `repr` et les diagnostics ;
+- validation stricte des identifiants, limites, modes d'authentification et URL ;
+- commande `elman-os ai-config` sans divulgation de secret ;
+- exemple de configuration sans clé réelle et documentation PowerShell ;
+- onze tests de configuration sécurisée.
+
+### Sécurité
+
+- un fournisseur distant exige une clé par défaut ;
+- une clé est refusée lorsque l'authentification est désactivée ;
+- HTTPS est obligatoire, sauf pour une adresse locale explicite ;
+- aucune valeur invalide ou secrète n'est répétée dans un message d'erreur.
+
+### Vérification
+
+- 64 tests du Kernel réussis ;
+- compilation Python réussie ;
+- commande de diagnostic testée avec et sans clé fictive ;
+- aucun appel réseau ou payant.
+
 ## v0.4.0 alpha 1 — 2026-07-29
 
 ### Ajouté

@@ -1,6 +1,7 @@
 """ELMAN-OS multi-agent governance and generation kernel."""
 
 from .catalog import AGENT_CATALOG, get_agent
+from .configuration import ProviderSettings, load_provider_settings
 from .domain import StopReason, Verdict, WorkflowStatus
 from .metacognition import SupervisorPolicy
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
@@ -16,6 +17,7 @@ __all__ = [
     "ModelRequest",
     "ModelResponse",
     "PipelinePlanner",
+    "ProviderSettings",
     "ProjectIntent",
     "ProjectKind",
     "StopReason",
@@ -23,6 +25,7 @@ __all__ = [
     "Verdict",
     "WorkflowStatus",
     "get_agent",
+    "load_provider_settings",
 ]
 
-__version__ = "0.4.0a1"
+__version__ = "0.4.0a2"

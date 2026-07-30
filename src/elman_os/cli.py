@@ -10,6 +10,7 @@ from dataclasses import asdict
 from pathlib import Path
 
 from .catalog import AGENT_CATALOG
+from .configuration import ConfigurationError, load_provider_settings
 from .domain import CycleResult, Verdict
 from .metacognition import SupervisorPolicy
 from .persistence import SQLiteKernelStore
@@ -150,6 +151,16 @@ def _doctor_command(as_json: bool) -> int:
     return 0 if report["python_supported"] else 1
 
 
+def _ai_config_command() -> int:
+    try:
+        settings = load_provider_settings()
+    except ConfigurationError as exc:
+        print(f"AI configuration: INVALID - {exc}")
+        return 2
+    print(json.dumps(settings.safe_summary(), ensure_ascii=False, indent=2))
+    return 0
+
+
 def _serve_command(host: str, port: int, generated_root: str) -> int:
     try:
         import uvicorn
@@ -207,6 +218,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     agents = subparsers.add_parser("agents", help="Lister le registre des agents")
     agents.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    subparsers.add_parser(
+        "ai-config",
+        help="Valider et afficher la configuration IA sans révéler les secrets",
+    )
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -298,6 +314,8 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if args.command == "agents":
         return _agents_command(args.json)
+    if args.command == "ai-config":
+        return _ai_config_command()
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

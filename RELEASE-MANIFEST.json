@@ -1,8 +1,8 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.4.0-alpha.1",
-  "release_date": "2026-07-29",
+  "version": "0.4.0-alpha.2",
+  "release_date": "2026-07-30",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
   "agent_counts": {
@@ -23,10 +23,13 @@
     "optional_fastapi_control_api",
     "generic_ai_provider_contract",
     "normalized_ai_provider_errors",
-    "deterministic_no_network_ai_provider"
+    "deterministic_no_network_ai_provider",
+    "environment_based_ai_configuration",
+    "redacted_secret_wrapper",
+    "safe_ai_configuration_diagnostics"
   ],
   "verification_scope": {
-    "kernel_unittests": 53,
+    "kernel_unittests": 64,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
@@ -39,6 +42,7 @@
     "optional_fastapi_runtime": false,
     "optional_flet_runtime": false,
     "real_ai_provider_runtime": false,
+    "real_api_credentials_used": false,
     "paid_api_calls": false
   },
   "not_production_ready": true
