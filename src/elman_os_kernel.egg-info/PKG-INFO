@@ -1,7 +1,7 @@
 Metadata-Version: 2.4
 Name: elman-os-kernel
-Version: 0.4.0a7
-Summary: Foundation Kit ELMAN-OS avec Kernel IA stabilisé et auditable
+Version: 0.4.0rc1
+Summary: Release candidate du Foundation Kit ELMAN-OS et de son Kernel IA auditable
 Author: ELMAN Technologies
 License: Proprietary - ELMAN Technologies
 Requires-Python: >=3.11
@@ -14,7 +14,7 @@ Requires-Dist: flet<1,>=0.25; extra == "studio"
 Provides-Extra: dev
 Requires-Dist: pytest<10,>=8; extra == "dev"
 
-# ELMAN-OS Foundation Kit v0.4.0 alpha 7
+# ELMAN-OS Foundation Kit v0.4.0-rc.1
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
@@ -24,9 +24,10 @@ ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
 configuration sécurisée par variables d'environnement, exécution bornée avec
 timeouts, retries et budgets, registre dynamique, adaptateurs OpenAI et
 OpenAI-compatible à transport injectable, puis authentification et audit signé
-des exécutions. L'alpha.7 stabilise cet ensemble avec prévalidation,
-quotas par identité et audit persistant vérifiable après redémarrage.
-Elle constitue un jalon de développement, et non encore une
+des exécutions. La RC.1 stabilise cet ensemble avec prévalidation,
+quotas par identité et tenant, audit persistant vérifiable après redémarrage,
+réservations non rejouables et validation de release hors réseau.
+Elle constitue une candidate à la version finale, et non encore une
 plateforme autonome de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
@@ -54,6 +55,9 @@ plateforme autonome de production :
 - prévalidation de compatibilité avant création d'un adaptateur ;
 - quotas atomiques de requêtes, tokens et concurrence par identité ;
 - audit JSONL append-only, durable et repris après vérification de chaîne ;
+- réservations de quota non rejouables, isolées par tenant et identité ;
+- inventaire SHA-256 et contrôle de release hors réseau ;
+- matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13 ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
@@ -61,7 +65,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 alpha 7 |
+| Capacité | Statut v0.4.0-rc.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -80,6 +84,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Authentification d'exécution | Principal vérifié à la frontière et rôle obligatoire |
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
 | Audit IA | Événements minimaux HMAC, persistants et vérifiables après reprise |
+| Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
@@ -140,10 +145,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.7.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-rc.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.7"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-rc.1"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -156,6 +161,7 @@ py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m elman_os ai-providers
 .\.venv\Scripts\python.exe -m elman_os ai-audit
 .\.venv\Scripts\python.exe -m elman_os ai-readiness
+.\.venv\Scripts\python.exe -m elman_os release-check .
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os audit-stack .
@@ -226,10 +232,11 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-alpha.7/
+elman-os-foundation-kit-v0.4.0-rc.1/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
-├── MIGRATION-v0.3.1-to-v0.4.0-alpha.7.md
+├── MIGRATION-v0.3.1-to-v0.4.0-rc.1.md
+├── RELEASE-CHECKSUMS.sha256
 ├── RELEASE-MANIFEST.json
 ├── config/
 ├── docs/
@@ -251,6 +258,7 @@ elman-os-foundation-kit-v0.4.0-alpha.7/
 │   ├── plugins.py
 │   ├── provider.py
 │   ├── registry.py
+│   ├── release.py
 │   ├── service.py
 │   ├── technology_policy.py
 │   └── workflow.py
@@ -271,11 +279,13 @@ L'identité, l'autorisation et la trace signée sont décrites dans
 `docs/AI-EXECUTION-AUDIT.md`.
 La stabilisation, les quotas et la reprise persistante sont décrits dans
 `docs/AI-KERNEL-STABILIZATION.md`.
+Les critères de gel, d’intégrité et de revue finale sont décrits dans
+`docs/RELEASE-CANDIDATE.md`.
 
 ## Limites connues
 
 - les adaptateurs distants sont livrés, mais aucun endpoint réel, modèle réel,
-  débit ou coût n'est validé par cette alpha ;
+  débit ou coût n'est validé par cette RC ;
 - le sink fichier est local et mono-machine ; la validation JWT/OIDC, la
   rotation des clés et un backend multi-instance restent à intégrer ;
 - aucun catalogue monétaire de prix ni routage par coût ou qualité n'est livré ;
@@ -286,5 +296,5 @@ La stabilisation, les quotas et la reprise persistante sont décrits dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-Le prochain jalon est la release candidate v0.4.0, centrée sur le gel d'API,
-la reproductibilité du packaging et la validation Windows complète.
+Le prochain jalon est la Pull Request vers `main`, suivie de la matrice CI
+multi-plateforme et de l’approbation humaine avant le tag final `v0.4.0`.

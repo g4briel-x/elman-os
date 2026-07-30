@@ -1,5 +1,35 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0-rc.1 — 2026-07-30
+
+### Ajouté
+
+- commande `elman-os release-check` entièrement hors réseau ;
+- cohérence bloquante entre version Python, runtime et manifeste ;
+- inventaire SHA-256 de tous les fichiers livrés ;
+- validation des chemins pour Windows, macOS et Linux ;
+- détection des fichiers de secrets, credentials et clés privées ;
+- constructeur d’archive ZIP déterministe fondé sur la bibliothèque standard ;
+- matrice GitHub Actions pour trois systèmes et Python 3.11, 3.12 et 3.13 ;
+- documentation de validation et vingt tests de release.
+
+### Renforcé
+
+- réservations de quota identifiées et non rejouables ;
+- empreintes de quota isolées par tenant et par sujet ;
+- gates de production explicitement fermées dans le manifeste ;
+- tests de noms de chemins interdits indépendants des normalisations de l’hôte ;
+- validation pure des noms bruts avant leur création sur le système de fichiers ;
+- échec fermé sur inventaire absent, modifié, malformé ou non portable.
+
+### Vérification
+
+- 180 tests du Kernel réussis hors réseau ;
+- compilation Python et audit technologique réussis ;
+- installation editable et archive extraite validées ;
+- aucun credential réel, appel IA réseau ou appel payant ;
+- validation Windows/macOS déléguée à la matrice CI et à la validation manuelle.
+
 ## v0.4.0 alpha 7 — 2026-07-30
 
 ### Ajouté

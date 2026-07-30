@@ -1,7 +1,7 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.4.0-alpha.7",
+  "version": "0.4.0-rc.1",
   "release_date": "2026-07-30",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
@@ -26,8 +26,7 @@
     "deterministic_no_network_ai_provider",
     "environment_based_ai_configuration",
     "redacted_secret_wrapper",
-    "safe_ai_configuration_diagnostics"
-    ,
+    "safe_ai_configuration_diagnostics",
     "bounded_ai_execution",
     "normalized_timeout_and_retry_failures",
     "retry_after_support",
@@ -55,14 +54,36 @@
     "append_only_jsonl_audit_persistence",
     "durable_audit_flush_and_chain_recovery",
     "audit_tamper_detection_after_restart",
-    "stabilized_end_to_end_ai_runtime"
+    "stabilized_end_to_end_ai_runtime",
+    "tenant_scoped_non_replayable_quota_reservations",
+    "offline_release_candidate_validation",
+    "sha256_release_file_inventory",
+    "cross_platform_path_validation",
+    "reproducible_standard_library_zip",
+    "github_actions_os_python_matrix"
   ],
   "verification_scope": {
-    "kernel_unittests": 160,
+    "kernel_unittests": 180,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
+    "local_validation_host": "linux",
     "windows_execution": false,
+    "macos_execution": false,
+    "linux_execution": true,
+    "ci_matrix_configured": {
+      "operating_systems": [
+        "windows",
+        "macos",
+        "linux"
+      ],
+      "python_versions": [
+        "3.11",
+        "3.12",
+        "3.13"
+      ],
+      "executed_in_this_bundle_build": false
+    },
     "windows_python_3_13_regressions_fixed": [
       "sqlite_file_handles",
       "short_path_canonicalization",
@@ -70,10 +91,15 @@
     ],
     "optional_fastapi_runtime": false,
     "optional_flet_runtime": false,
+    "editable_installation": true,
+    "fresh_archive_installation": true,
+    "release_checksum_inventory": true,
+    "reproducible_archive_builder": true,
     "real_ai_provider_runtime": "adapter_present_not_network_validated",
     "real_api_credentials_used": false,
     "paid_api_calls": false
   },
   "release_candidate_ready": true,
+  "final_release_approved": false,
   "not_production_ready": true
 }

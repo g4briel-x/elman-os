@@ -41,7 +41,7 @@ signature couvre l'événement canonique et la signature précédente. Une
 modification, une réorganisation ou une suppression au milieu de la chaîne est
 donc détectable par `AuditTrail.verify_chain()`.
 
-`FileAuditSink` fournit en alpha.7 une persistance JSONL append-only avec
+`FileAuditSink` fournit depuis l’alpha.7 une persistance JSONL append-only avec
 synchronisation durable. `AuditTrail.resume()` recharge le fichier, vérifie la
 chaîne entière et reprend depuis la dernière signature valide. Une ligne
 illisible ou altérée provoque un échec fermé.

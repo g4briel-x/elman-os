@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import time
+import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from enum import StrEnum
@@ -137,6 +138,7 @@ class IdentityUsage:
 
 @dataclass(frozen=True, slots=True)
 class QuotaReservation:
+    reservation_id: str
     identity_fingerprint: str
     reserved_tokens: int
 
@@ -155,6 +157,9 @@ class IdentityQuotaManager:
 
     quota: IdentityQuota = field(default_factory=IdentityQuota)
     _usage: dict[str, _MutableIdentityUsage] = field(
+        default_factory=dict, init=False, repr=False
+    )
+    _reservations: dict[str, QuotaReservation] = field(
         default_factory=dict, init=False, repr=False
     )
     _lock: asyncio.Lock = field(default_factory=asyncio.Lock, init=False, repr=False)
@@ -184,7 +189,13 @@ class IdentityQuotaManager:
             usage.requests += 1
             usage.active += 1
             usage.reserved_tokens += estimated_tokens
-            return QuotaReservation(identity_fingerprint, estimated_tokens)
+            reservation = QuotaReservation(
+                str(uuid.uuid4()),
+                identity_fingerprint,
+                estimated_tokens,
+            )
+            self._reservations[reservation.reservation_id] = reservation
+            return reservation
 
     async def settle(
         self,
@@ -195,12 +206,16 @@ class IdentityQuotaManager:
         if actual_tokens < 0:
             raise ValueError("actual_tokens ne peut pas être négatif")
         async with self._lock:
+            active = self._reservations.get(reservation.reservation_id)
+            if active != reservation:
+                raise ValueError("La réservation de quota est inconnue ou déjà réglée")
             usage = self._usage[reservation.identity_fingerprint]
             usage.active = max(0, usage.active - 1)
             usage.reserved_tokens = max(
                 0, usage.reserved_tokens - reservation.reserved_tokens
             )
             usage.tokens += actual_tokens
+            del self._reservations[reservation.reservation_id]
 
     async def snapshot(self, identity_fingerprint: str) -> IdentityUsage:
         async with self._lock:
@@ -237,7 +252,8 @@ class StabilizedAIExecutor:
             return await self.audited.generate(routed, context)
 
         identity = self.audited.trail.signer.fingerprint(
-            "quota", context.principal.subject_id
+            "quota",
+            f"{context.principal.tenant_id}\0{context.principal.subject_id}",
         )
         estimate = routed.max_output_tokens + sum(
             len(message.content.encode("utf-8")) for message in routed.messages
@@ -270,7 +286,7 @@ class StabilizedAIExecutor:
 
 @dataclass(slots=True)
 class StabilizedAIRuntime:
-    """Fully composed alpha.7 runtime with an explicit close boundary."""
+    """Fully composed v0.4 release-candidate runtime."""
 
     configured: ConfiguredAIRuntime
     executor: StabilizedAIExecutor

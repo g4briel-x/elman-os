@@ -1,8 +1,8 @@
-# Stabilisation du Kernel IA — v0.4.0 alpha 7
+# Stabilisation du Kernel IA — v0.4.0-rc.1
 
 ## Objectif
 
-Ce lot ferme le périmètre fonctionnel du Kernel IA avant la release candidate.
+Ce socle ferme le périmètre fonctionnel du Kernel IA repris dans la RC.1.
 Il compose les contrôles déjà livrés — configuration, registre, résilience,
 adaptateurs et audit — avec trois garanties supplémentaires :
 
@@ -25,7 +25,9 @@ Le rapport est sérialisable et ne contient jamais de clé.
 
 ## Quotas par identité
 
-`IdentityQuotaManager` utilise exclusivement une empreinte HMAC de l’identité.
+`IdentityQuotaManager` utilise exclusivement une empreinte HMAC isolée par
+tenant et identité. Chaque réservation possède un identifiant unique ; un
+règlement rejoué, forgé ou déjà consommé est refusé.
 Les identifiants bruts ne sont jamais stockés dans les compteurs.
 
 Les limites portent sur :

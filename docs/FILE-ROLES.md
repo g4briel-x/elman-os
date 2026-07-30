@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0 alpha 7
+# Rôle des fichiers ELMAN-OS v0.4.0-rc.1
 
 ## Racine
 
@@ -8,8 +8,9 @@
 | `pyproject.toml` | packaging Python, CLI et extras optionnels |
 | `CHANGELOG.md` | historique des capacités ajoutées à la fondation |
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
-| `MIGRATION-v0.3.1-to-v0.4.0-alpha.7.md` | migration, validation et retour arrière depuis v0.3.1 |
+| `MIGRATION-v0.3.1-to-v0.4.0-rc.1.md` | migration, validation et retour arrière depuis v0.3.1 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
+| `RELEASE-CHECKSUMS.sha256` | empreintes de chaque fichier livré |
 
 ## Kernel
 
@@ -31,6 +32,7 @@
 | `src/elman_os/openai_compatible.py` | adaptateur OpenAI/compatible et transport HTTP injectable |
 | `src/elman_os/audit.py` | identité, autorisation, chaîne signée et persistance JSONL durable |
 | `src/elman_os/governance.py` | compatibilité, quotas par identité et runtime IA stabilisé |
+| `src/elman_os/release.py` | validation hors réseau, portabilité et intégrité SHA-256 |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -50,7 +52,8 @@
 | `docs/AI-PROVIDER-REGISTRY.md` | sélection, capacités et fallback contrôlé |
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
-| `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas, reprise d'audit et limites alpha.7 |
+| `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
+| `docs/RELEASE-CANDIDATE.md` | critères bloquants, limites et passage vers v0.4.0 |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
@@ -61,6 +64,7 @@
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.5.json` | preuve bornée des adaptateurs testés hors réseau |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.6.json` | preuve bornée de l'authentification et de l'audit IA |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.7.json` | preuve de stabilisation du Kernel IA |
+| `docs/metacognitive-checkpoint-v0.4.0-rc.1.json` | preuve de validation de la release candidate |
 
 ## Tests
 
@@ -82,3 +86,4 @@
 | `test_openai_compatible.py` | traduction HTTP, erreurs et transport simulé sans réseau |
 | `test_audit.py` | autorisation, confidentialité, intégrité, échecs et annulations |
 | `test_stabilization.py` | compatibilité, quotas, concurrence, persistance et pipeline complet |
+| `test_release.py` | versions, checksums, portabilité et fermeture des gates |

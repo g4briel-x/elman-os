@@ -179,6 +179,9 @@ class IdentityQuotaTests(unittest.IsolatedAsyncioTestCase):
         await manager.settle(first, actual_tokens=4)
         second = await manager.reserve("fingerprint", 10)
         self.assertIsNotNone(second)
+        await manager.settle(second, actual_tokens=3)
+        with self.assertRaises(ValueError):
+            await manager.settle(second, actual_tokens=3)
 
     async def test_identities_have_independent_quotas(self) -> None:
         manager = IdentityQuotaManager(IdentityQuota(1, 100, 1))
@@ -341,7 +344,7 @@ class StabilizedRuntimeTests(unittest.IsolatedAsyncioTestCase):
         task.cancel()
         with self.assertRaises(asyncio.CancelledError):
             await task
-        identity = AuditSigner(KEY).fingerprint("quota", "person-1")
+        identity = AuditSigner(KEY).fingerprint("quota", "tenant-1\0person-1")
         self.assertEqual((await quotas.snapshot(identity)).active, 0)
         self.assertEqual(sink.events[-1].event.event_type, AuditEventType.CANCELLED)
 

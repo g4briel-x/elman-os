@@ -1,0 +1,36 @@
+name: Release validation
+
+on:
+  push:
+    branches:
+      - "feature/v0.4-kernel-ai-runtime"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  kernel:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install kernel
+        run: python -m pip install --no-deps -e .
+      - name: Run offline tests
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -W error::ResourceWarning -m unittest discover -s tests -v
+      - name: Validate release candidate
+        run: python -m elman_os release-check .
+      - name: Audit technology policy
+        run: python -m elman_os audit-stack .

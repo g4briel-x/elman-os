@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.4.0 alpha 7
+# ELMAN-OS — Architecture v0.4.0-rc.1
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.4.0 alpha 7, runtime IA auditable  
+**Livrable :** Foundation Kit v0.4.0-rc.1, runtime IA auditable
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision

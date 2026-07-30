@@ -17,6 +17,7 @@ from .persistence import SQLiteKernelStore
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
 from .plugins import built_in_registry
 from .registry import built_in_provider_registry
+from .release import DISPLAY_VERSION, validate_release
 from .service import ElmanKernelService
 from .technology_policy import TECHNOLOGY_STACK, audit_technology_policy
 from .workflow import ElmanWorkflow
@@ -217,7 +218,7 @@ def _ai_audit_command(as_json: bool) -> int:
 
 def _ai_readiness_command(as_json: bool) -> int:
     report = {
-        "release": "0.4.0-alpha.7",
+        "release": DISPLAY_VERSION,
         "configuration_preflight": True,
         "identity_quotas": {
             "requests": True,
@@ -234,16 +235,30 @@ def _ai_readiness_command(as_json: bool) -> int:
         },
         "network_validation": "offline_only",
         "release_candidate_ready": True,
+        "production_ready": False,
     }
     if as_json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
-    print("ELMAN-OS AI kernel: alpha.7 stabilization ready")
+    print("ELMAN-OS AI kernel: v0.4.0-rc.1 ready for final review")
     print("configuration_preflight: enabled")
     print("identity_quotas: requests,tokens,concurrency")
     print("audit_persistence: append-only, durable, chain-verified")
     print("network_validation: offline-only")
     return 0
+
+
+def _release_check_command(path: str, as_json: bool) -> int:
+    report = validate_release(path)
+    if as_json:
+        print(json.dumps(report.to_dict(), ensure_ascii=False, indent=2))
+    else:
+        state = "PASS" if report.ready else "FAIL"
+        print(f"ELMAN-OS release check {report.release}: {state}")
+        for check in report.checks:
+            marker = "PASS" if check.passed else "FAIL"
+            print(f"{marker:<4} {check.name:<24} {check.detail}")
+    return 0 if report.ready else 1
 
 
 def _serve_command(host: str, port: int, generated_root: str) -> int:
@@ -326,6 +341,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Afficher l'état de stabilisation du Kernel IA",
     )
     ai_readiness.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    release_check = subparsers.add_parser(
+        "release-check",
+        help="Valider hors réseau la release candidate et son intégrité",
+    )
+    release_check.add_argument("path", nargs="?", default=".")
+    release_check.add_argument("--json", action="store_true", help="Sortie JSON")
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -425,6 +447,8 @@ def main(argv: list[str] | None = None) -> int:
         return _ai_audit_command(args.json)
     if args.command == "ai-readiness":
         return _ai_readiness_command(args.json)
+    if args.command == "release-check":
+        return _release_check_command(args.path, args.json)
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

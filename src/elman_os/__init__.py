@@ -28,6 +28,7 @@ from .registry import (
     ProviderRegistry,
     built_in_provider_registry,
 )
+from .release import ReleaseReport, validate_release
 from .service import ElmanKernelService
 from .workflow import ElmanWorkflow
 
@@ -53,6 +54,7 @@ __all__ = [
     "ProviderRegistry",
     "ProjectIntent",
     "ProjectKind",
+    "ReleaseReport",
     "ResilientAIExecutor",
     "RetryPolicy",
     "StopReason",
@@ -66,6 +68,7 @@ __all__ = [
     "built_in_provider_registry",
     "check_configuration_compatibility",
     "load_provider_settings",
+    "validate_release",
 ]
 
-__version__ = "0.4.0a7"
+__version__ = "0.4.0rc1"
