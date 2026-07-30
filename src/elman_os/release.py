@@ -1,4 +1,4 @@
-"""Offline release-candidate validation and integrity checks."""
+"""Offline stable-release validation and integrity checks."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.4.0-rc.1"
-PACKAGE_VERSION = "0.4.0rc1"
+DISPLAY_VERSION = "0.4.0"
+PACKAGE_VERSION = "0.4.0"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -52,11 +52,11 @@ _SENSITIVE_CONTENT_PATTERNS = (
 )
 _REQUIRED_FILES = (
     "CHANGELOG.md",
-    "MIGRATION-v0.3.1-to-v0.4.0-rc.1.md",
+    "MIGRATION-v0.3.1-to-v0.4.0.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
-    "docs/RELEASE-CANDIDATE.md",
+    "docs/RELEASE.md",
     ".github/workflows/release-validation.yml",
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
@@ -279,7 +279,7 @@ def validate_release(
     *,
     python_version: tuple[int, int] | None = None,
 ) -> ReleaseReport:
-    """Run deterministic, offline RC checks and return a safe report."""
+    """Run deterministic, offline release checks and return a safe report."""
 
     base = Path(root).resolve()
     version = python_version or (sys.version_info.major, sys.version_info.minor)
@@ -334,7 +334,9 @@ def validate_release(
             and scope["kernel_unittests"] == 180
         )
         gates_ok = (
-            manifest["not_production_ready"] is True
+            manifest["release_candidate_validated"] is True
+            and manifest["final_release_approved"] is True
+            and manifest["not_production_ready"] is True
             and scope["real_api_credentials_used"] is False
             and scope["paid_api_calls"] is False
             and scope["real_ai_provider_runtime"]

@@ -27,7 +27,7 @@ jobs:
         env:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -W error::ResourceWarning -m unittest discover -s tests -v
-      - name: Validate release candidate
+      - name: Validate stable release
         run: python -m elman_os release-check .
       - name: Audit technology policy
         run: python -m elman_os audit-stack .

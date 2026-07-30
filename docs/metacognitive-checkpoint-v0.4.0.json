@@ -1,7 +1,7 @@
 {
-  "checkpoint": "v0.4.0-rc.1",
+  "checkpoint": "v0.4.0",
   "date": "2026-07-30",
-  "objective": "Geler et vérifier le Kernel IA v0.4 avant revue finale",
+  "objective": "Valider la promotion stable du Kernel IA v0.4",
   "proof": {
     "kernel_tests": 180,
     "tests_passed": 180,
@@ -10,13 +10,17 @@
     "portable_paths_verified": true,
     "sensitive_files_absent": true,
     "technology_policy_passed": true,
+    "cross_platform_ci_passed": true,
+    "python_311_passed": true,
+    "python_312_passed": true,
+    "python_313_passed": true,
+    "fresh_wheel_installation": true,
     "tenant_scoped_quota_reservations": true,
     "quota_replay_rejected": true,
-    "fresh_archive_installation": true,
     "real_credentials_used": false,
     "network_ai_calls": false,
     "paid_calls": false
   },
   "verdict": "PASS",
-  "next_gate": "pull-request-to-main-and-cross-platform-ci"
+  "next_gate": "pull-request-to-main-then-stable-tag"
 }

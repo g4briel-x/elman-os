@@ -240,7 +240,7 @@ def _ai_readiness_command(as_json: bool) -> int:
     if as_json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
-    print("ELMAN-OS AI kernel: v0.4.0-rc.1 ready for final review")
+    print("ELMAN-OS AI kernel: v0.4.0 stable")
     print("configuration_preflight: enabled")
     print("identity_quotas: requests,tokens,concurrency")
     print("audit_persistence: append-only, durable, chain-verified")
@@ -344,7 +344,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     release_check = subparsers.add_parser(
         "release-check",
-        help="Valider hors réseau la release candidate et son intégrité",
+        help="Valider hors réseau la version stable et son intégrité",
     )
     release_check.add_argument("path", nargs="?", default=".")
     release_check.add_argument("--json", action="store_true", help="Sortie JSON")

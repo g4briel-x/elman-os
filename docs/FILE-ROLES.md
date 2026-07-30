@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0-rc.1
+# Rôle des fichiers ELMAN-OS v0.4.0
 
 ## Racine
 
@@ -8,7 +8,7 @@
 | `pyproject.toml` | packaging Python, CLI et extras optionnels |
 | `CHANGELOG.md` | historique des capacités ajoutées à la fondation |
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
-| `MIGRATION-v0.3.1-to-v0.4.0-rc.1.md` | migration, validation et retour arrière depuis v0.3.1 |
+| `MIGRATION-v0.3.1-to-v0.4.0.md` | migration, validation et retour arrière depuis v0.3.1 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
 | `RELEASE-CHECKSUMS.sha256` | empreintes de chaque fichier livré |
 
@@ -53,7 +53,7 @@
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
-| `docs/RELEASE-CANDIDATE.md` | critères bloquants, limites et passage vers v0.4.0 |
+| `docs/RELEASE.md` | décision stable, preuves de validation et limites opérationnelles |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
@@ -64,7 +64,7 @@
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.5.json` | preuve bornée des adaptateurs testés hors réseau |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.6.json` | preuve bornée de l'authentification et de l'audit IA |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.7.json` | preuve de stabilisation du Kernel IA |
-| `docs/metacognitive-checkpoint-v0.4.0-rc.1.json` | preuve de validation de la release candidate |
+| `docs/metacognitive-checkpoint-v0.4.0.json` | preuve de validation de la version stable |
 
 ## Tests
 

@@ -1,5 +1,15 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 — 2026-07-30
+
+### Publication stable
+
+- promotion de la release candidate validée vers la version stable ;
+- installation réelle de la roue Python validée en environnement neuf ;
+- matrice CI réussie sur neuf combinaisons OS/Python ;
+- métadonnées, manifeste et documentation promus vers v0.4.0 ;
+- frontières de sécurité et approbation de production maintenues.
+
 ## v0.4.0-rc.1 — 2026-07-30
 
 ### Ajouté

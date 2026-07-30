@@ -1,4 +1,4 @@
-# Migration v0.3.1 → v0.4.0-rc.1
+# Migration v0.3.1 → v0.4.0
 
 ## Portée
 
