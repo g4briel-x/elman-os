@@ -1,12 +1,12 @@
-# ELMAN-OS Foundation Kit v0.4.0 alpha 3
+# ELMAN-OS Foundation Kit v0.4.0 alpha 4
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
 Cette préversion part de la fondation v0.3.1 compatible Windows/Python 3.13 et
 ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
-configuration sécurisée par variables d'environnement, puis exécution bornée
-avec timeouts, retries et budgets.
+configuration sécurisée par variables d'environnement, exécution bornée avec
+timeouts, retries et budgets, puis registre dynamique avec sélection contrôlée.
 Elle constitue un jalon de développement, et non encore une
 plateforme autonome de production :
 
@@ -26,6 +26,8 @@ plateforme autonome de production :
 - configuration immuable et validée sans secret dans les diagnostics ;
 - délais réels, retries bornés et erreurs d'exécution portables ;
 - budgets partagés d'appels, de tokens et de durée ;
+- registre des fournisseurs, contrôle des capacités et sélection configurée ;
+- fallback déterministe désactivé par défaut et explicitement traçable ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
@@ -33,7 +35,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 alpha 3 |
+| Capacité | Statut v0.4.0 alpha 4 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -47,6 +49,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Contrat fournisseur IA | Exécutable et testé |
 | Configuration IA | Variables d'environnement validées, secrets masqués |
 | Exécution IA | Timeouts, retries et budgets bornés, sans réseau |
+| Registre IA | Sélection configurée et fallback déterministe contrôlé |
 | Fournisseur IA réel | Non connecté ; adaptateurs à venir |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
@@ -108,10 +111,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.3.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.4.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.3"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.4"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -121,6 +124,7 @@ py -3.13 -m venv .venv
   -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m elman_os doctor
 .\.venv\Scripts\python.exe -m elman_os ai-config
+.\.venv\Scripts\python.exe -m elman_os ai-providers
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os audit-stack .
@@ -191,7 +195,7 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-alpha.3/
+elman-os-foundation-kit-v0.4.0-alpha.4/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
 ├── RELEASE-MANIFEST.json
@@ -211,6 +215,7 @@ elman-os-foundation-kit-v0.4.0-alpha.3/
 │   ├── planning.py
 │   ├── plugins.py
 │   ├── provider.py
+│   ├── registry.py
 │   ├── service.py
 │   ├── technology_policy.py
 │   └── workflow.py
@@ -223,12 +228,15 @@ Le contrat du fournisseur IA est détaillé dans
 sont détaillées dans `docs/AI-CONFIGURATION.md`.
 Les garanties de timeout, retry et budget sont décrites dans
 `docs/AI-RUNTIME-RESILIENCE.md`.
+Le registre, la sélection et le fallback sont décrits dans
+`docs/AI-PROVIDER-REGISTRY.md`.
 
 ## Limites connues
 
 - le provider inclus reste déterministe et ne contacte aucun modèle ;
 - cette alpha n'inclut encore ni adaptateur distant, ni catalogue monétaire de
-  prix, ni routage entre fournisseurs ;
+  prix ; elle fournit la sélection, mais pas encore le routage par coût ou
+  qualité entre plusieurs fournisseurs réels ;
 - le générateur produit un starter, pas une application métier finalisée ;
 - SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
 - la sandbox actuelle protège les chemins, pas encore l’exécution de code non

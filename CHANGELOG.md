@@ -1,5 +1,34 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 4 — 2026-07-30
+
+### Ajouté
+
+- registre `ProviderRegistry` indépendant des SDK fournisseurs ;
+- enregistrements immuables associant descriptor et factory ;
+- sélection du fournisseur et du modèle depuis `ProviderSettings` ;
+- contrôle préalable des modèles et capacités obligatoires ;
+- fallback déterministe explicitement activable et entièrement traçable ;
+- runtime configuré reliant registre, sélection et exécuteur résilient ;
+- commande `elman-os ai-providers` sans contact réseau ;
+- documentation dédiée et dix-huit tests de registre et de pipeline.
+
+### Sécurité
+
+- un fournisseur inconnu ou indisponible échoue par défaut ;
+- le fallback ne masque jamais une incompatibilité de modèle ou de capacité ;
+- l'instance créée doit respecter le protocole et son descriptor enregistré ;
+- les résumés de sélection n'exposent aucune clé ;
+- le fallback supprime la clé, l'URL et l'authentification distantes.
+
+### Vérification
+
+- 100 tests du Kernel réussis ;
+- pipeline configuration → sélection → exécution testé de bout en bout ;
+- compilation Python et audit technologique réussis ;
+- installation et CLI testées depuis une extraction neuve ;
+- aucun adaptateur distant, appel réseau ou appel payant.
+
 ## v0.4.0 alpha 3 — 2026-07-30
 
 ### Ajouté

@@ -80,6 +80,7 @@ Un adaptateur OpenAI, Anthropic, Google ou local devra :
 - fermer ses clients réseau dans `close()` ;
 - ne jamais choisir seul un retry, un budget ou un modèle de remplacement.
 
-Les retries bornés, les budgets, la configuration par environnement, la
-sélection multi-fournisseurs et le routage agentique appartiennent aux lots
-v0.4 suivants.
+Les retries bornés, les budgets et la configuration par environnement sont
+implémentés. Le registre et la sélection sont détaillés dans
+`AI-PROVIDER-REGISTRY.md`. Les adaptateurs réels et le routage par coût ou
+qualité appartiennent aux lots suivants.

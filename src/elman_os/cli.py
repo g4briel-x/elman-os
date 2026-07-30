@@ -16,6 +16,7 @@ from .metacognition import SupervisorPolicy
 from .persistence import SQLiteKernelStore
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
 from .plugins import built_in_registry
+from .registry import built_in_provider_registry
 from .service import ElmanKernelService
 from .technology_policy import TECHNOLOGY_STACK, audit_technology_policy
 from .workflow import ElmanWorkflow
@@ -161,6 +162,29 @@ def _ai_config_command() -> int:
     return 0
 
 
+def _ai_providers_command(as_json: bool) -> int:
+    descriptors = built_in_provider_registry().descriptors()
+    report = [
+        {
+            "provider_id": item.provider_id,
+            "display_name": item.display_name,
+            "models": list(item.models),
+            "capabilities": sorted(capability.value for capability in item.capabilities),
+        }
+        for item in descriptors
+    ]
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    for item in report:
+        print(
+            f"{item['provider_id']:<24} "
+            f"models={','.join(item['models']) or '-'} "
+            f"capabilities={','.join(item['capabilities']) or '-'}"
+        )
+    return 0
+
+
 def _serve_command(host: str, port: int, generated_root: str) -> int:
     try:
         import uvicorn
@@ -223,6 +247,12 @@ def build_parser() -> argparse.ArgumentParser:
         "ai-config",
         help="Valider et afficher la configuration IA sans révéler les secrets",
     )
+
+    ai_providers = subparsers.add_parser(
+        "ai-providers",
+        help="Lister les fournisseurs IA enregistrés sans les contacter",
+    )
+    ai_providers.add_argument("--json", action="store_true", help="Sortie JSON")
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -316,6 +346,8 @@ def main(argv: list[str] | None = None) -> int:
         return _agents_command(args.json)
     if args.command == "ai-config":
         return _ai_config_command()
+    if args.command == "ai-providers":
+        return _ai_providers_command(args.json)
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

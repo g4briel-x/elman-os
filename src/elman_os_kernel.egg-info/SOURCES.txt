@@ -15,6 +15,7 @@ src/elman_os/persistence.py
 src/elman_os/planning.py
 src/elman_os/plugins.py
 src/elman_os/provider.py
+src/elman_os/registry.py
 src/elman_os/service.py
 src/elman_os/technology_policy.py
 src/elman_os/workflow.py
@@ -34,5 +35,6 @@ tests/test_persistence.py
 tests/test_planning.py
 tests/test_plugins.py
 tests/test_provider.py
+tests/test_registry.py
 tests/test_technology_policy.py
 tests/test_workflow.py
