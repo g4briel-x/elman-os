@@ -1,2 +1,0 @@
-[console_scripts]
-elman-os = elman_os.cli:main
