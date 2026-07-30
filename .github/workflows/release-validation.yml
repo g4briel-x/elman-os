@@ -1,9 +1,6 @@
 name: Release validation
 
 on:
-  push:
-    branches:
-      - "feature/v0.4-kernel-ai-runtime"
   pull_request:
     branches:
       - main
