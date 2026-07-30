@@ -9,6 +9,14 @@ from .audit import (
     ExecutionPrincipal,
     FileAuditSink,
 )
+from .authentication import (
+    AuthenticationErrorCode,
+    HmacSha256Verifier,
+    JwtOidcAuthenticator,
+    SignatureVerifier,
+    TokenAuthenticationError,
+    TokenValidationPolicy,
+)
 from .configuration import ProviderSettings, load_provider_settings
 from .domain import StopReason, Verdict, WorkflowStatus
 from .execution import ResilientAIExecutor, RetryPolicy, UsageBudget
@@ -35,6 +43,12 @@ from .workflow import ElmanWorkflow
 __all__ = [
     "AGENT_CATALOG",
     "AIProvider",
+    "AuthenticationErrorCode",
+    "HmacSha256Verifier",
+    "JwtOidcAuthenticator",
+    "SignatureVerifier",
+    "TokenAuthenticationError",
+    "TokenValidationPolicy",
     "AuditedAIExecutor",
     "AuditSigner",
     "AuditTrail",
