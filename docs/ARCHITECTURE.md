@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.4.0 alpha 2
+# ELMAN-OS — Architecture v0.4.0 alpha 6
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.4.0 alpha 2, contrat et configuration IA  
+**Livrable :** Foundation Kit v0.4.0 alpha 6, runtime IA auditable  
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision
@@ -256,6 +256,20 @@ FastAPI n’est pas une dépendance obligatoire du kernel. L’extra `[api]` doi
 `openai_compatible.py` implémente l'adaptateur OpenAI/compatible avec un
 transport injecté. Le registre peut construire le transport standard ou un
 double hors réseau. Cette alpha valide le protocole, pas un service distant.
+
+## 12.2 Authentification et audit IA
+
+`audit.py` enveloppe l'exécuteur résilient :
+
+- un principal déjà vérifié par la frontière applicative est obligatoire ;
+- le rôle `ai.execute` et un motif contrôlé sont exigés avant l'appel ;
+- principal, tenant et requête sont remplacés par des empreintes HMAC ;
+- chaque événement signe son contenu et la signature précédente ;
+- prompts, réponses, secrets et métadonnées libres sont absents du schéma ;
+- l'échec de l'événement initial bloque l'appel fournisseur.
+
+Le sink livré reste en mémoire. Une persistance durable, la validation JWT/OIDC
+et la rotation des clés sont des portes de production ultérieures.
 
 ## 13. Sécurité
 

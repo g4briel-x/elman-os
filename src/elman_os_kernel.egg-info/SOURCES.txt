@@ -4,6 +4,7 @@ src/elman_os/__init__.py
 src/elman_os/__main__.py
 src/elman_os/api.py
 src/elman_os/approvals.py
+src/elman_os/audit.py
 src/elman_os/catalog.py
 src/elman_os/cli.py
 src/elman_os/configuration.py
@@ -27,6 +28,7 @@ src/elman_os_kernel.egg-info/entry_points.txt
 src/elman_os_kernel.egg-info/requires.txt
 src/elman_os_kernel.egg-info/top_level.txt
 tests/test_approvals.py
+tests/test_audit.py
 tests/test_catalog.py
 tests/test_configuration.py
 tests/test_execution.py

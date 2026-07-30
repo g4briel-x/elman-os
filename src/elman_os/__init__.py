@@ -1,6 +1,13 @@
 """ELMAN-OS multi-agent governance and generation kernel."""
 
 from .catalog import AGENT_CATALOG, get_agent
+from .audit import (
+    AuditedAIExecutor,
+    AuditSigner,
+    AuditTrail,
+    ExecutionAuditContext,
+    ExecutionPrincipal,
+)
 from .configuration import ProviderSettings, load_provider_settings
 from .domain import StopReason, Verdict, WorkflowStatus
 from .execution import ResilientAIExecutor, RetryPolicy, UsageBudget
@@ -19,9 +26,14 @@ from .workflow import ElmanWorkflow
 __all__ = [
     "AGENT_CATALOG",
     "AIProvider",
+    "AuditedAIExecutor",
+    "AuditSigner",
+    "AuditTrail",
     "ConfiguredAIRuntime",
     "ElmanKernelService",
     "ElmanWorkflow",
+    "ExecutionAuditContext",
+    "ExecutionPrincipal",
     "ModelRequest",
     "ModelResponse",
     "OpenAICompatibleProvider",
@@ -42,4 +54,4 @@ __all__ = [
     "load_provider_settings",
 ]
 
-__version__ = "0.4.0a5"
+__version__ = "0.4.0a6"

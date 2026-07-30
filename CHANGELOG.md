@@ -1,5 +1,33 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 6 — 2026-07-30
+
+### Ajouté
+
+- principal d'exécution typé et méthodes d'authentification explicites ;
+- autorisation obligatoire par rôle `ai.execute` et motif contrôlé ;
+- enveloppe `AuditedAIExecutor` autour du runtime résilient ;
+- événements `started`, `succeeded`, `failed`, `denied` et `cancelled` ;
+- empreintes HMAC séparées pour principal, tenant et requête ;
+- signatures HMAC-SHA-256 chaînées et vérification d'intégrité ;
+- commande de diagnostic `elman-os ai-audit` ;
+- dix-huit nouveaux tests d'identité, confidentialité et intégrité.
+
+### Sécurité
+
+- aucune trace de prompt, réponse, secret, metadata libre ou request ID distant ;
+- appel fournisseur bloqué avant authentification ou si l'audit initial échoue ;
+- annulations propagées après production d'un événement minimal ;
+- clé de signature masquée dans `str` et `repr` ;
+- identifiants fournisseur ou modèle non sûrs remplacés par une empreinte.
+
+### Vérification
+
+- 136 tests du Kernel réussis ;
+- altération et suppression d'événements détectées ;
+- compilation Python, CLI et audit technologique réussis ;
+- aucune clé réelle, aucun appel réseau et aucun appel payant.
+
 ## v0.4.0 alpha 5 — 2026-07-30
 
 ### Ajouté

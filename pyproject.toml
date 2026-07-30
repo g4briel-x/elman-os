@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elman-os-kernel"
-version = "0.4.0a5"
-description = "Foundation Kit ELMAN-OS avec adaptateurs IA compatibles et testables"
+version = "0.4.0a6"
+description = "Foundation Kit ELMAN-OS avec exécution IA authentifiée et audit sécurisé"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Proprietary - ELMAN Technologies" }

@@ -185,6 +185,31 @@ def _ai_providers_command(as_json: bool) -> int:
     return 0
 
 
+def _ai_audit_command(as_json: bool) -> int:
+    report = {
+        "authentication_required": True,
+        "required_role": "ai.execute",
+        "identity_storage": "hmac_sha256_fingerprint",
+        "event_integrity": "hmac_sha256_chained",
+        "fail_closed": True,
+        "excluded_fields": [
+            "prompts",
+            "responses",
+            "secrets",
+            "free_form_metadata",
+            "provider_request_id",
+        ],
+    }
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    print("ELMAN-OS AI audit: authenticated, minimal, signed, fail-closed")
+    print("required_role: ai.execute")
+    print("identity_storage: pseudonymized")
+    print("payload_logging: disabled")
+    return 0
+
+
 def _serve_command(host: str, port: int, generated_root: str) -> int:
     try:
         import uvicorn
@@ -253,6 +278,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Lister les fournisseurs IA enregistrés sans les contacter",
     )
     ai_providers.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    ai_audit = subparsers.add_parser(
+        "ai-audit",
+        help="Afficher les garanties d'authentification et d'audit IA",
+    )
+    ai_audit.add_argument("--json", action="store_true", help="Sortie JSON")
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -348,6 +379,8 @@ def main(argv: list[str] | None = None) -> int:
         return _ai_config_command()
     if args.command == "ai-providers":
         return _ai_providers_command(args.json)
+    if args.command == "ai-audit":
+        return _ai_audit_command(args.json)
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0 alpha 5
+# Rôle des fichiers ELMAN-OS v0.4.0 alpha 6
 
 ## Racine
 
@@ -28,6 +28,7 @@
 | `src/elman_os/execution.py` | timeouts, retries, vérification des réponses et budgets IA |
 | `src/elman_os/registry.py` | registre, sélection, fallback et composition du runtime IA |
 | `src/elman_os/openai_compatible.py` | adaptateur OpenAI/compatible et transport HTTP injectable |
+| `src/elman_os/audit.py` | identité, autorisation, pseudonymisation et chaîne d'audit signée |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -46,6 +47,7 @@
 | `docs/AI-RUNTIME-RESILIENCE.md` | garanties d'exécution, erreurs, retries et budgets |
 | `docs/AI-PROVIDER-REGISTRY.md` | sélection, capacités et fallback contrôlé |
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
+| `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
@@ -54,6 +56,7 @@
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.2.json` | preuve bornée de la configuration sécurisée |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.3.json` | preuve bornée du runtime IA résilient |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.5.json` | preuve bornée des adaptateurs testés hors réseau |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.6.json` | preuve bornée de l'authentification et de l'audit IA |
 
 ## Tests
 
@@ -73,3 +76,4 @@
 | `test_execution.py` | délais, retries, annulations, contrat de réponse et budgets |
 | `test_registry.py` | enregistrement, sélection, fallback et pipeline configuré |
 | `test_openai_compatible.py` | traduction HTTP, erreurs et transport simulé sans réseau |
+| `test_audit.py` | autorisation, confidentialité, intégrité, échecs et annulations |
