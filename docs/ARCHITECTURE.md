@@ -1,8 +1,8 @@
-# ELMAN-OS — Architecture v0.4.0 alpha 6
+# ELMAN-OS — Architecture v0.4.0 alpha 7
 
 **Organisation :** ELMAN Technologies  
 **Produit :** ELMAN-OS  
-**Livrable :** Foundation Kit v0.4.0 alpha 6, runtime IA auditable  
+**Livrable :** Foundation Kit v0.4.0 alpha 7, runtime IA auditable  
 **Statut :** socle local exécutable, non prêt pour la production
 
 ## 1. Vision
@@ -268,8 +268,9 @@ double hors réseau. Cette alpha valide le protocole, pas un service distant.
 - prompts, réponses, secrets et métadonnées libres sont absents du schéma ;
 - l'échec de l'événement initial bloque l'appel fournisseur.
 
-Le sink livré reste en mémoire. Une persistance durable, la validation JWT/OIDC
-et la rotation des clés sont des portes de production ultérieures.
+Le Kernel livre un sink mémoire et un sink JSONL local durable. La validation
+JWT/OIDC, la rotation des clés, l'ancrage externe et un backend multi-instance
+sont des portes de production ultérieures.
 
 ## 13. Sécurité
 

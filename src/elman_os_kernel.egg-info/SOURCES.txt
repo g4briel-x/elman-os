@@ -11,6 +11,7 @@ src/elman_os/configuration.py
 src/elman_os/domain.py
 src/elman_os/execution.py
 src/elman_os/generator.py
+src/elman_os/governance.py
 src/elman_os/metacognition.py
 src/elman_os/openai_compatible.py
 src/elman_os/persistence.py
@@ -40,5 +41,6 @@ tests/test_planning.py
 tests/test_plugins.py
 tests/test_provider.py
 tests/test_registry.py
+tests/test_stabilization.py
 tests/test_technology_policy.py
 tests/test_workflow.py

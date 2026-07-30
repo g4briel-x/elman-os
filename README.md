@@ -1,4 +1,4 @@
-# ELMAN-OS Foundation Kit v0.4.0 alpha 6
+# ELMAN-OS Foundation Kit v0.4.0 alpha 7
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
@@ -8,7 +8,8 @@ ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
 configuration sécurisée par variables d'environnement, exécution bornée avec
 timeouts, retries et budgets, registre dynamique, adaptateurs OpenAI et
 OpenAI-compatible à transport injectable, puis authentification et audit signé
-des exécutions.
+des exécutions. L'alpha.7 stabilise cet ensemble avec prévalidation,
+quotas par identité et audit persistant vérifiable après redémarrage.
 Elle constitue un jalon de développement, et non encore une
 plateforme autonome de production :
 
@@ -34,6 +35,9 @@ plateforme autonome de production :
 - transport HTTP injectable, erreurs normalisées et tests entièrement hors réseau ;
 - exécution réservée aux principaux authentifiés possédant le rôle `ai.execute` ;
 - audit minimal pseudonymisé, signé et chaîné sans journalisation de payload ;
+- prévalidation de compatibilité avant création d'un adaptateur ;
+- quotas atomiques de requêtes, tokens et concurrence par identité ;
+- audit JSONL append-only, durable et repris après vérification de chaîne ;
 - politique Python-first contrôlée par couche.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
@@ -41,7 +45,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 alpha 6 |
+| Capacité | Statut v0.4.0 alpha 7 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -58,7 +62,8 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Registre IA | Sélection configurée et fallback déterministe contrôlé |
 | Adaptateurs distants | OpenAI/compatible livrés, connectivité réelle non validée |
 | Authentification d'exécution | Principal vérifié à la frontière et rôle obligatoire |
-| Audit IA | Événements minimaux HMAC, chaînés et vérifiables en mémoire |
+| Stabilisation IA | Prévalidation et quotas atomiques par identité |
+| Audit IA | Événements minimaux HMAC, persistants et vérifiables après reprise |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
@@ -119,10 +124,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.6.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.7.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.6"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.7"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -134,6 +139,7 @@ py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m elman_os ai-config
 .\.venv\Scripts\python.exe -m elman_os ai-providers
 .\.venv\Scripts\python.exe -m elman_os ai-audit
+.\.venv\Scripts\python.exe -m elman_os ai-readiness
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os audit-stack .
@@ -204,9 +210,10 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-alpha.6/
+elman-os-foundation-kit-v0.4.0-alpha.7/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
+├── MIGRATION-v0.3.1-to-v0.4.0-alpha.7.md
 ├── RELEASE-MANIFEST.json
 ├── config/
 ├── docs/
@@ -220,6 +227,7 @@ elman-os-foundation-kit-v0.4.0-alpha.6/
 │   ├── configuration.py
 │   ├── execution.py
 │   ├── generator.py
+│   ├── governance.py
 │   ├── metacognition.py
 │   ├── openai_compatible.py
 │   ├── persistence.py
@@ -245,13 +253,15 @@ L'adaptateur, son transport et sa configuration sont décrits dans
 `docs/AI-OPENAI-COMPATIBLE.md`.
 L'identité, l'autorisation et la trace signée sont décrites dans
 `docs/AI-EXECUTION-AUDIT.md`.
+La stabilisation, les quotas et la reprise persistante sont décrits dans
+`docs/AI-KERNEL-STABILIZATION.md`.
 
 ## Limites connues
 
 - les adaptateurs distants sont livrés, mais aucun endpoint réel, modèle réel,
   débit ou coût n'est validé par cette alpha ;
-- le sink d'audit livré est en mémoire ; la validation JWT/OIDC et la rotation
-  des clés restent à intégrer à la frontière de production ;
+- le sink fichier est local et mono-machine ; la validation JWT/OIDC, la
+  rotation des clés et un backend multi-instance restent à intégrer ;
 - aucun catalogue monétaire de prix ni routage par coût ou qualité n'est livré ;
 - le générateur produit un starter, pas une application métier finalisée ;
 - SQLite couvre le MVP local ; PostgreSQL reste une cible d’adaptateur ;
@@ -260,5 +270,5 @@ L'identité, l'autorisation et la trace signée sont décrites dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-Les prochains lots v0.4 ajoutent la persistance d'audit, l'exécution isolée et
-le workspace Git.
+Le prochain jalon est la release candidate v0.4.0, centrée sur le gel d'API,
+la reproductibilité du packaging et la validation Windows complète.

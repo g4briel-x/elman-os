@@ -7,10 +7,18 @@ from .audit import (
     AuditTrail,
     ExecutionAuditContext,
     ExecutionPrincipal,
+    FileAuditSink,
 )
 from .configuration import ProviderSettings, load_provider_settings
 from .domain import StopReason, Verdict, WorkflowStatus
 from .execution import ResilientAIExecutor, RetryPolicy, UsageBudget
+from .governance import (
+    IdentityQuota,
+    IdentityQuotaManager,
+    StabilizedAIExecutor,
+    StabilizedAIRuntime,
+    check_configuration_compatibility,
+)
 from .metacognition import SupervisorPolicy
 from .openai_compatible import OpenAICompatibleProvider
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
@@ -34,6 +42,9 @@ __all__ = [
     "ElmanWorkflow",
     "ExecutionAuditContext",
     "ExecutionPrincipal",
+    "FileAuditSink",
+    "IdentityQuota",
+    "IdentityQuotaManager",
     "ModelRequest",
     "ModelResponse",
     "OpenAICompatibleProvider",
@@ -45,13 +56,16 @@ __all__ = [
     "ResilientAIExecutor",
     "RetryPolicy",
     "StopReason",
+    "StabilizedAIExecutor",
+    "StabilizedAIRuntime",
     "SupervisorPolicy",
     "UsageBudget",
     "Verdict",
     "WorkflowStatus",
     "get_agent",
     "built_in_provider_registry",
+    "check_configuration_compatibility",
     "load_provider_settings",
 ]
 
-__version__ = "0.4.0a6"
+__version__ = "0.4.0a7"

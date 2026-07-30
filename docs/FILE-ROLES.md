@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0 alpha 6
+# Rôle des fichiers ELMAN-OS v0.4.0 alpha 7
 
 ## Racine
 
@@ -8,6 +8,7 @@
 | `pyproject.toml` | packaging Python, CLI et extras optionnels |
 | `CHANGELOG.md` | historique des capacités ajoutées à la fondation |
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
+| `MIGRATION-v0.3.1-to-v0.4.0-alpha.7.md` | migration, validation et retour arrière depuis v0.3.1 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
 
 ## Kernel
@@ -28,7 +29,8 @@
 | `src/elman_os/execution.py` | timeouts, retries, vérification des réponses et budgets IA |
 | `src/elman_os/registry.py` | registre, sélection, fallback et composition du runtime IA |
 | `src/elman_os/openai_compatible.py` | adaptateur OpenAI/compatible et transport HTTP injectable |
-| `src/elman_os/audit.py` | identité, autorisation, pseudonymisation et chaîne d'audit signée |
+| `src/elman_os/audit.py` | identité, autorisation, chaîne signée et persistance JSONL durable |
+| `src/elman_os/governance.py` | compatibilité, quotas par identité et runtime IA stabilisé |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -48,6 +50,7 @@
 | `docs/AI-PROVIDER-REGISTRY.md` | sélection, capacités et fallback contrôlé |
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
+| `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas, reprise d'audit et limites alpha.7 |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
@@ -57,6 +60,7 @@
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.3.json` | preuve bornée du runtime IA résilient |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.5.json` | preuve bornée des adaptateurs testés hors réseau |
 | `docs/metacognitive-checkpoint-v0.4.0-alpha.6.json` | preuve bornée de l'authentification et de l'audit IA |
+| `docs/metacognitive-checkpoint-v0.4.0-alpha.7.json` | preuve de stabilisation du Kernel IA |
 
 ## Tests
 
@@ -77,3 +81,4 @@
 | `test_registry.py` | enregistrement, sélection, fallback et pipeline configuré |
 | `test_openai_compatible.py` | traduction HTTP, erreurs et transport simulé sans réseau |
 | `test_audit.py` | autorisation, confidentialité, intégrité, échecs et annulations |
+| `test_stabilization.py` | compatibilité, quotas, concurrence, persistance et pipeline complet |

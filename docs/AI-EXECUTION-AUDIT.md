@@ -41,15 +41,22 @@ signature couvre l'événement canonique et la signature précédente. Une
 modification, une réorganisation ou une suppression au milieu de la chaîne est
 donc détectable par `AuditTrail.verify_chain()`.
 
+`FileAuditSink` fournit en alpha.7 une persistance JSONL append-only avec
+synchronisation durable. `AuditTrail.resume()` recharge le fichier, vérifie la
+chaîne entière et reprend depuis la dernière signature valide. Une ligne
+illisible ou altérée provoque un échec fermé.
+
 La clé doit provenir d'un gestionnaire de secrets en production. Elle ne doit
 jamais être stockée dans Git, dans un fichier d'exemple ou dans la trace.
 
 ## Limites de l'alpha
 
-- seul `InMemoryAuditSink` est fourni ;
+- `InMemoryAuditSink` et `FileAuditSink` sont fournis ; le second reste local
+  et mono-machine ;
 - la validation cryptographique d'un JWT/OIDC reste à la frontière applicative ;
 - la rotation des clés et l'ancrage externe des signatures ne sont pas livrés ;
-- aucun journal distant ni SIEM n'est contacté.
+- aucun journal distant ni SIEM n'est contacté ;
+- la rotation du fichier n'est pas livrée.
 
 Commande de diagnostic, sans clé et sans appel réseau :
 

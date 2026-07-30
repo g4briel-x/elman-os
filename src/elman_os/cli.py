@@ -191,6 +191,9 @@ def _ai_audit_command(as_json: bool) -> int:
         "required_role": "ai.execute",
         "identity_storage": "hmac_sha256_fingerprint",
         "event_integrity": "hmac_sha256_chained",
+        "persistent_format": "append_only_jsonl",
+        "durable_flush": True,
+        "chain_recovery": True,
         "fail_closed": True,
         "excluded_fields": [
             "prompts",
@@ -203,10 +206,43 @@ def _ai_audit_command(as_json: bool) -> int:
     if as_json:
         print(json.dumps(report, ensure_ascii=False, indent=2))
         return 0
-    print("ELMAN-OS AI audit: authenticated, minimal, signed, fail-closed")
+    print(
+        "ELMAN-OS AI audit: authenticated, minimal, signed, persistent, fail-closed"
+    )
     print("required_role: ai.execute")
     print("identity_storage: pseudonymized")
     print("payload_logging: disabled")
+    return 0
+
+
+def _ai_readiness_command(as_json: bool) -> int:
+    report = {
+        "release": "0.4.0-alpha.7",
+        "configuration_preflight": True,
+        "identity_quotas": {
+            "requests": True,
+            "tokens": True,
+            "concurrency": True,
+            "atomic_reservations": True,
+        },
+        "audit_persistence": {
+            "format": "append_only_jsonl",
+            "durable_flush": True,
+            "chain_recovery": True,
+            "tamper_detection": True,
+            "payload_logging": False,
+        },
+        "network_validation": "offline_only",
+        "release_candidate_ready": True,
+    }
+    if as_json:
+        print(json.dumps(report, ensure_ascii=False, indent=2))
+        return 0
+    print("ELMAN-OS AI kernel: alpha.7 stabilization ready")
+    print("configuration_preflight: enabled")
+    print("identity_quotas: requests,tokens,concurrency")
+    print("audit_persistence: append-only, durable, chain-verified")
+    print("network_validation: offline-only")
     return 0
 
 
@@ -284,6 +320,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Afficher les garanties d'authentification et d'audit IA",
     )
     ai_audit.add_argument("--json", action="store_true", help="Sortie JSON")
+
+    ai_readiness = subparsers.add_parser(
+        "ai-readiness",
+        help="Afficher l'état de stabilisation du Kernel IA",
+    )
+    ai_readiness.add_argument("--json", action="store_true", help="Sortie JSON")
 
     demo = subparsers.add_parser("demo", help="Exécuter une boucle métacognitive déterministe")
     demo.add_argument("--pass-on", type=int, default=3, help="Itération de réussite")
@@ -381,6 +423,8 @@ def main(argv: list[str] | None = None) -> int:
         return _ai_providers_command(args.json)
     if args.command == "ai-audit":
         return _ai_audit_command(args.json)
+    if args.command == "ai-readiness":
+        return _ai_readiness_command(args.json)
     if args.command == "demo":
         return _demo_command(args.pass_on, args.max_iterations, args.database)
     if args.command == "plan":

@@ -1,5 +1,35 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 7 — 2026-07-30
+
+### Ajouté
+
+- prévalidation de compatibilité entre configuration et registre ;
+- quotas atomiques de requêtes, tokens et concurrence par identité HMAC ;
+- refus des dépassements avant tout appel fournisseur ;
+- journal d'audit JSONL append-only avec synchronisation durable ;
+- reprise d'une chaîne d'audit persistante après redémarrage ;
+- runtime `StabilizedAIRuntime` composant toutes les frontières v0.4 ;
+- commande de diagnostic `elman-os ai-readiness` ;
+- guide de migration depuis v0.3.1 et documentation de stabilisation ;
+- vingt-quatre nouveaux tests.
+
+### Sécurité
+
+- aucun identifiant brut dans les compteurs de quota ;
+- annulations et échecs libèrent toujours la concurrence réservée ;
+- dépassements de quota audités avec un code portable minimal ;
+- journal borné, liens symboliques refusés et altérations détectées à la reprise ;
+- prévalidation sans factory, réseau, clé réelle ni payload utilisateur.
+
+### Vérification
+
+- 160 tests du Kernel réussis ;
+- pipeline configuration → registre → quota → audit → exécution validé ;
+- concurrence, annulation, reprise et altération testées hors réseau ;
+- compilation Python, CLI, manifestes JSON et audit technologique réussis ;
+- aucune clé réelle, aucun appel réseau et aucun appel payant.
+
 ## v0.4.0 alpha 6 — 2026-07-30
 
 ### Ajouté

@@ -1,4 +1,4 @@
-# Installation du Foundation Kit ELMAN-OS v0.4.0 alpha 6 sous Windows PowerShell
+# Installation du Foundation Kit ELMAN-OS v0.4.0 alpha 7 sous Windows PowerShell
 
 PowerShell sert de terminal. Le kernel, les agents, l’orchestration, la
 métacognition, les plugins, la persistance et les tests sont exécutés par
@@ -19,10 +19,10 @@ projet n’ont pas été validées avec cette version.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.6.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-alpha.7.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.6"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-alpha.7"
 ```
 
 ## 3. Créer l’environnement
@@ -49,6 +49,7 @@ Il n’est pas nécessaire d’exécuter `Activate.ps1`.
 .\.venv\Scripts\python.exe -m elman_os ai-config
 .\.venv\Scripts\python.exe -m elman_os ai-providers
 .\.venv\Scripts\python.exe -m elman_os ai-audit
+.\.venv\Scripts\python.exe -m elman_os ai-readiness
 .\.venv\Scripts\python.exe -m elman_os agents
 .\.venv\Scripts\python.exe -m elman_os plugins
 .\.venv\Scripts\python.exe -m elman_os technology
