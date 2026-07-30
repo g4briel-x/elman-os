@@ -1,18 +1,14 @@
-# ELMAN-OS Foundation Kit v0.4.0
+# ELMAN-OS Foundation Kit v0.5.0
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-Cette version stable part de la fondation v0.3.1 compatible Windows/Python 3.13 et
-ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
-configuration sécurisée par variables d'environnement, exécution bornée avec
-timeouts, retries et budgets, registre dynamique, adaptateurs OpenAI et
-OpenAI-compatible à transport injectable, puis authentification et audit signé
-des exécutions. La version v0.4.0 stabilise cet ensemble avec prévalidation,
-quotas par identité et tenant, audit persistant vérifiable après redémarrage,
-réservations non rejouables et validation de release hors réseau.
-Elle constitue la version stable du Foundation Kit, sans être encore une
-plateforme autonome de production :
+La version v0.5.0 conserve le Kernel IA stable v0.4.0 et ajoute une frontière
+d’authentification JWT/OIDC hors réseau, une persistance transactionnelle isolée
+par tenant, des quotas et audits partagés entre instances, puis un runtime
+d’exécution authentifié intégré à l’API. Les contrats restent testables sans
+credential réel, réseau ni appel payant. Cette version finalise le backend de
+production, sans déclarer la plateforme autonome prête au déploiement :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -49,14 +45,14 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0 |
+| Capacité | Statut v0.5.0 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
 | Boucle métacognitive et arrêts | Exécutables |
 | Pipeline SaaS/mobile | Planifiable |
 | Générateur de starter | Exécutable, déterministe |
-| Persistance locale | SQLite, exécutable |
+| Persistance locale | SQLite historique et transactions multi-tenant |
 | Approbations humaines | Exécutables |
 | Plugins internes | 4 plugins exécutables |
 | API de contrôle | Adaptateur FastAPI optionnel |
@@ -65,9 +61,9 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Exécution IA | Timeouts, retries et budgets bornés, sans réseau |
 | Registre IA | Sélection configurée et fallback déterministe contrôlé |
 | Adaptateurs distants | OpenAI/compatible livrés, connectivité réelle non validée |
-| Authentification d'exécution | Principal vérifié à la frontière et rôle obligatoire |
+| Authentification d'exécution | JWT/OIDC vérifié, principal et rôle obligatoires |
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
-| Audit IA | Événements minimaux HMAC, persistants et vérifiables après reprise |
+| Audit IA | HMAC persistant, isolé par tenant et partagé entre instances |
 | Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
 | ELMAN Studio | Non livré |
 | Sandbox de processus/conteneurs | Non livrée |
@@ -129,10 +125,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.5.0.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.5.0"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
