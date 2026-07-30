@@ -15,6 +15,7 @@ def create_app(
     service: ElmanKernelService | None = None,
     *,
     generated_root: str | Path = "generated",
+    execution_service: Any | None = None,
 ) -> Any:
     """Create the optional FastAPI app without making FastAPI a core dependency."""
 
@@ -70,5 +71,10 @@ def create_app(
             "files": list(result.files),
             "plan": result.plan.to_dict(),
         }
+
+    if execution_service is not None:
+        from .production_runtime import attach_execution_routes
+
+        attach_execution_routes(app, execution_service)
 
     return app

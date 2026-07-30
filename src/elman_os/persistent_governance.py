@@ -7,6 +7,7 @@ import time
 import uuid
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any
 
 from .audit import (
@@ -327,6 +328,8 @@ class PersistentAuditTrail:
     backend: PersistenceBackend
     tenant_id: str
     namespace: str = _AUDIT_NAMESPACE
+    event_id_factory: Callable[[], str] = lambda: str(uuid.uuid4())
+    wall_clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc)
 
     def __post_init__(self) -> None:
         if not self.tenant_id:

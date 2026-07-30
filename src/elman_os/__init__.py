@@ -34,6 +34,12 @@ from .persistent_governance import (
     PersistentIdentityQuotaManager,
 )
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
+from .production_runtime import (
+    AuthenticatedExecutionService,
+    PersistentGovernedAIExecutor,
+    ProductionAIRuntime,
+    attach_execution_routes,
+)
 from .provider import AIProvider, ModelRequest, ModelResponse
 from .registry import (
     ConfiguredAIRuntime,
@@ -45,6 +51,10 @@ from .service import ElmanKernelService
 from .workflow import ElmanWorkflow
 
 __all__ = [
+    "AuthenticatedExecutionService",
+    "PersistentGovernedAIExecutor",
+    "ProductionAIRuntime",
+    "attach_execution_routes",
     "PersistentIdentityQuotaManager",
     "PersistentAuditTrail",
     "PersistenceBackend",
