@@ -1,5 +1,34 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.4.0 alpha 5 — 2026-07-30
+
+### Ajouté
+
+- adaptateur `OpenAICompatibleProvider` sans dépendance SDK ;
+- profils intégrés `openai` et `openai-compatible` ;
+- transport HTTP asynchrone injectable et implémentation standard `urllib` ;
+- traduction du contrat ELMAN vers l'endpoint `chat/completions` ;
+- conversion typée des réponses, usages et raisons de terminaison ;
+- injection de transports simulés dans le registre ;
+- dix-huit nouveaux tests d'adaptateur et de pipeline hors réseau.
+
+### Sécurité
+
+- clé API masquée dans les représentations et transmise seulement à la frontière HTTP ;
+- corps d'erreur fournisseur ignoré dans les messages portables ;
+- erreurs 401, 403, 404, 408, 429, 5xx et réseau classifiées explicitement ;
+- `Retry-After` numérique accepté uniquement entre 0 et 300 secondes ;
+- URL compatible personnalisée soumise à la validation HTTPS existante ;
+- JSON, usages et structures de réponse invalides rejetés sans fuite de payload.
+
+### Vérification
+
+- 118 tests du Kernel réussis ;
+- pipeline registre → adaptateur → exécuteur testé avec transport injecté ;
+- compilation Python, CLI et audit technologique réussis ;
+- archive validée depuis une extraction neuve ;
+- aucune clé réelle, aucun appel réseau et aucun appel payant.
+
 ## v0.4.0 alpha 4 — 2026-07-30
 
 ### Ajouté

@@ -58,11 +58,11 @@ class InvalidProvider:
 
 
 class RegistryTests(unittest.TestCase):
-    def test_builtin_registry_contains_only_deterministic_provider(self) -> None:
+    def test_builtin_registry_contains_supported_providers(self) -> None:
         descriptors = built_in_provider_registry().descriptors()
         self.assertEqual(
             [item.provider_id for item in descriptors],
-            ["deterministic-model"],
+            ["deterministic-model", "openai", "openai-compatible"],
         )
 
     def test_registration_is_visible_through_read_only_mapping(self) -> None:
@@ -95,7 +95,12 @@ class RegistryTests(unittest.TestCase):
         )
         self.assertEqual(
             [item.provider_id for item in registry.descriptors()],
-            ["deterministic-model", "remote-test"],
+            [
+                "deterministic-model",
+                "openai",
+                "openai-compatible",
+                "remote-test",
+            ],
         )
 
     def test_factory_must_be_callable(self) -> None:

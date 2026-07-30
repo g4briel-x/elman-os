@@ -12,9 +12,15 @@ ELMAN_AI_BUDGET_MAX_CALLS=10
 ELMAN_AI_BUDGET_MAX_TOKENS=100000
 ELMAN_AI_BUDGET_MAX_SECONDS=300
 
-# Fournisseur distant (exemple seulement) :
-# ELMAN_AI_PROVIDER=vendor
-# ELMAN_AI_MODEL=vendor-model
+# OpenAI (exemple seulement, ne jamais enregistrer la clé ici) :
+# ELMAN_AI_PROVIDER=openai
+# ELMAN_AI_MODEL=gpt-model-id
+# ELMAN_AI_AUTH_MODE=api_key
+# ELMAN_AI_API_KEY=
+
+# API OpenAI-compatible (exemple seulement) :
+# ELMAN_AI_PROVIDER=openai-compatible
+# ELMAN_AI_MODEL=compatible-model-id
 # ELMAN_AI_AUTH_MODE=api_key
 # ELMAN_AI_API_KEY=
 # ELMAN_AI_BASE_URL=https://api.provider.example/v1

@@ -16,6 +16,13 @@ from .provider import (
     ModelRequest,
     ProviderDescriptor,
 )
+from .openai_compatible import (
+    AsyncHTTPTransport,
+    OPENAI_COMPATIBLE_PROVIDER_ID,
+    OPENAI_PROVIDER_ID,
+    openai_compatible_descriptor,
+    provider_from_settings,
+)
 
 
 DETERMINISTIC_PROVIDER_ID = "deterministic-model"
@@ -246,8 +253,15 @@ class ProviderRegistry:
             )
 
 
-def built_in_provider_registry() -> ProviderRegistry:
-    """Return the safe built-in registry; no network adapter is installed."""
+def built_in_provider_registry(
+    *,
+    transport_factories: Mapping[str, Callable[[], AsyncHTTPTransport]] | None = None,
+) -> ProviderRegistry:
+    """Return built-ins without contacting any provider.
+
+    ``transport_factories`` is primarily an offline-test seam. A default
+    standard-library transport is constructed lazily by each real adapter.
+    """
 
     registry = ProviderRegistry()
     descriptor = DeterministicModelProvider().descriptor
@@ -257,6 +271,32 @@ def built_in_provider_registry() -> ProviderRegistry:
             factory=lambda settings: DeterministicModelProvider(),
         )
     )
+    injected = transport_factories or {}
+    for provider_id in (OPENAI_PROVIDER_ID, OPENAI_COMPATIBLE_PROVIDER_ID):
+        descriptor = openai_compatible_descriptor(provider_id)
+
+        def factory(
+            settings: ProviderSettings,
+            *,
+            current_provider_id: str = provider_id,
+        ) -> AIProvider:
+            transport_factory = injected.get(current_provider_id)
+            transport = (
+                transport_factory()
+                if transport_factory is not None
+                else None
+            )
+            try:
+                return provider_from_settings(settings, transport=transport)
+            except ValueError as exc:
+                raise ProviderUnavailableError(str(exc)) from exc
+
+        registry.register(
+            ProviderRegistration(
+                descriptor=descriptor,
+                factory=factory,
+            )
+        )
     return registry
 
 

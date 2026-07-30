@@ -253,7 +253,9 @@ FastAPI n’est pas une dépendance obligatoire du kernel. L’extra `[api]` doi
 - `ProviderError` normalise les défaillances et leur caractère retentable ;
 - `DeterministicModelProvider` vérifie le contrat sans réseau ni coût.
 
-Les adaptateurs réels ne sont pas encore inclus dans cette alpha.
+`openai_compatible.py` implémente l'adaptateur OpenAI/compatible avec un
+transport injecté. Le registre peut construire le transport standard ou un
+double hors réseau. Cette alpha valide le protocole, pas un service distant.
 
 ## 13. Sécurité
 

@@ -14,9 +14,9 @@ n'effectue aucun appel réseau.
 | `ConfiguredAIRuntime` | conserver le fournisseur choisi et son budget partagé |
 | `ProviderRegistryError` | exposer une erreur de sélection portable |
 
-Le registre intégré contient uniquement `deterministic-model`. Les futurs
-adaptateurs distants devront être enregistrés explicitement par la couche
-d'intégration qui possède leur SDK.
+Le registre intégré déclare `deterministic-model`, `openai` et
+`openai-compatible`. La déclaration n'effectue aucun appel réseau. Le transport
+réel ou simulé n'est utilisé qu'au moment de `generate()`.
 
 ## Règles de sélection
 
@@ -74,8 +74,15 @@ runtime = ConfiguredAIRuntime.from_settings(
 Une application de production doit laisser le fallback désactivé, sauf décision
 explicite et observable de sa politique d'exécution.
 
+## Adaptateurs intégrés
+
+`openai` utilise `https://api.openai.com/v1` par défaut.
+`openai-compatible` exige une valeur explicite et validée dans
+`ELMAN_AI_BASE_URL`. Les deux utilisent le même contrat
+`OpenAICompatibleProvider`, décrit dans `AI-OPENAI-COMPATIBLE.md`.
+
 ## Limite de cette alpha
 
-Le registre fournit la frontière d'extension et le pipeline de bout en bout,
-mais aucun adaptateur OpenAI, Anthropic, Google ou local externe n'est livré.
-Le seul fournisseur exécutable reste déterministe, sans réseau et sans coût.
+Le registre et les adaptateurs sont exécutables, mais la validation publiée est
+entièrement hors réseau. Elle ne certifie aucun endpoint, modèle, quota,
+tarification ou comportement futur d'un service distant.

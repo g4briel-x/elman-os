@@ -1,0 +1,36 @@
+{
+  "version": "0.4.0-alpha.5",
+  "date": "2026-07-30",
+  "objective": "Ajouter des adaptateurs OpenAI et OpenAI-compatible testables sans réseau.",
+  "decision": {
+    "status": "accepted_for_alpha",
+    "scope": [
+      "chat_completions_text",
+      "injectable_async_http_transport",
+      "portable_http_error_mapping",
+      "registry_integration"
+    ],
+    "excluded": [
+      "real_credentials",
+      "real_network_calls",
+      "streaming",
+      "tool_calls",
+      "pricing_validation"
+    ]
+  },
+  "evidence": {
+    "kernel_tests": 118,
+    "tests_passed": 118,
+    "python_compilation": true,
+    "technology_audit": "PASS",
+    "real_api_credentials_used": false,
+    "network_calls": 0,
+    "paid_calls": 0
+  },
+  "risks": [
+    "La compatibilité effective dépend du service et du modèle distants.",
+    "Le format chat/completions peut varier chez certains fournisseurs compatibles.",
+    "Le streaming et les appels d'outils restent hors périmètre."
+  ],
+  "next_gate": "Valider le routage multi-fournisseurs avant une release v0.4 finale."
+}

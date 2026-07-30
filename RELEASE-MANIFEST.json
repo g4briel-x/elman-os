@@ -1,7 +1,7 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.4.0-alpha.4",
+  "version": "0.4.0-alpha.5",
   "release_date": "2026-07-30",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
@@ -38,10 +38,15 @@
     "configuration_driven_provider_selection",
     "model_and_capability_preflight",
     "explicit_deterministic_fallback",
-    "end_to_end_configured_ai_runtime"
+    "end_to_end_configured_ai_runtime",
+    "openai_and_openai_compatible_adapters",
+    "injectable_async_http_transport",
+    "chat_completions_protocol_translation",
+    "portable_http_error_classification",
+    "offline_adapter_pipeline_tests"
   ],
   "verification_scope": {
-    "kernel_unittests": 100,
+    "kernel_unittests": 118,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
@@ -53,7 +58,7 @@
     ],
     "optional_fastapi_runtime": false,
     "optional_flet_runtime": false,
-    "real_ai_provider_runtime": false,
+    "real_ai_provider_runtime": "adapter_present_not_network_validated",
     "real_api_credentials_used": false,
     "paid_api_calls": false
   },
