@@ -286,7 +286,7 @@ class StabilizedAIExecutor:
 
 @dataclass(slots=True)
 class StabilizedAIRuntime:
-    """Fully composed v0.4 release-candidate runtime."""
+    """Fully composed v0.4 stable runtime."""
 
     configured: ConfiguredAIRuntime
     executor: StabilizedAIExecutor

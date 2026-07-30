@@ -138,7 +138,7 @@ class PortabilityTests(unittest.TestCase):
         )
 
 
-class ReleaseCandidateTests(unittest.TestCase):
+class StableReleaseTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.release_root = Path(__file__).resolve().parents[1]
@@ -153,7 +153,7 @@ class ReleaseCandidateTests(unittest.TestCase):
         )
         return temporary, destination
 
-    def test_current_candidate_passes_all_checks(self) -> None:
+    def test_current_release_passes_all_checks(self) -> None:
         report = validate_release(self.release_root)
         self.assertTrue(report.ready, report.to_dict())
 
@@ -164,7 +164,7 @@ class ReleaseCandidateTests(unittest.TestCase):
     def test_missing_required_file_fails_closed(self) -> None:
         temporary, release = self.copied_release()
         try:
-            (release / "docs/RELEASE-CANDIDATE.md").unlink()
+            (release / "docs/RELEASE.md").unlink()
             report = validate_release(release)
         finally:
             temporary.cleanup()
@@ -176,7 +176,7 @@ class ReleaseCandidateTests(unittest.TestCase):
         try:
             path = release / "pyproject.toml"
             path.write_text(
-                path.read_text(encoding="utf-8").replace("0.4.0rc1", "0.4.0rc2"),
+                path.read_text(encoding="utf-8").replace("0.4.0", "0.4.1"),
                 encoding="utf-8",
             )
             report = validate_release(release)

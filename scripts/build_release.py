@@ -13,12 +13,13 @@ sys.path.insert(0, str(ROOT / "src"))
 from elman_os.release import iter_release_files, write_release_checksums  # noqa: E402
 
 FIXED_TIMESTAMP = (2026, 7, 30, 0, 0, 0)
+ARCHIVE_PREFIX = "elman-os-foundation-kit-v0.4.0"
 
 
 def build_archive(root: Path, output: Path) -> None:
     write_release_checksums(root)
     files = list(iter_release_files(root)) + [root / "RELEASE-CHECKSUMS.sha256"]
-    prefix = root.name
+    prefix = ARCHIVE_PREFIX
     with zipfile.ZipFile(output, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         for path in sorted(files, key=lambda item: item.relative_to(root).as_posix()):
             relative = path.relative_to(root).as_posix()
@@ -33,7 +34,7 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT.parent / "ELMAN-OS-Foundation-Kit-v0.4.0-rc.1.zip",
+        default=ROOT.parent / "ELMAN-OS-Foundation-Kit-v0.4.0.zip",
     )
     args = parser.parse_args()
     build_archive(ROOT, args.output.resolve())

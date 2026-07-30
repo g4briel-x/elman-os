@@ -1,8 +1,8 @@
-# Stabilisation du Kernel IA — v0.4.0-rc.1
+# Stabilisation du Kernel IA — v0.4.0
 
 ## Objectif
 
-Ce socle ferme le périmètre fonctionnel du Kernel IA repris dans la RC.1.
+Ce socle ferme le périmètre fonctionnel du Kernel IA livré dans v0.4.0.
 Il compose les contrôles déjà livrés — configuration, registre, résilience,
 adaptateurs et audit — avec trois garanties supplémentaires :
 
@@ -74,12 +74,11 @@ clé, réseau ou coût.
 ```
 
 La sortie confirme la prévalidation, les quotas, la persistance d’audit et le
-statut de préparation à la release candidate. Elle n’effectue aucun appel IA.
+statut de la version stable. Elle n’effectue aucun appel IA.
 
 ## Limites
 
 - les quotas sont process-local dans cette alpha ;
 - le partage multi-instance nécessitera un backend transactionnel externe ;
-- la rotation et l’archivage du journal seront traités après validation de la
-  release candidate ;
+- la rotation et l’archivage du journal seront traités après publication de la version stable ;
 - les adaptateurs réels restent validés uniquement avec transports simulés.

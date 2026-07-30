@@ -1,17 +1,17 @@
-# ELMAN-OS Foundation Kit v0.4.0-rc.1
+# ELMAN-OS Foundation Kit v0.4.0
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-Cette préversion part de la fondation v0.3.1 compatible Windows/Python 3.13 et
+Cette version stable part de la fondation v0.3.1 compatible Windows/Python 3.13 et
 ajoute le runtime IA v0.4 : contrat générique testable sans appel payant,
 configuration sécurisée par variables d'environnement, exécution bornée avec
 timeouts, retries et budgets, registre dynamique, adaptateurs OpenAI et
 OpenAI-compatible à transport injectable, puis authentification et audit signé
-des exécutions. La RC.1 stabilise cet ensemble avec prévalidation,
+des exécutions. La version v0.4.0 stabilise cet ensemble avec prévalidation,
 quotas par identité et tenant, audit persistant vérifiable après redémarrage,
 réservations non rejouables et validation de release hors réseau.
-Elle constitue une candidate à la version finale, et non encore une
+Elle constitue la version stable du Foundation Kit, sans être encore une
 plateforme autonome de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
@@ -49,7 +49,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.4.0-rc.1 |
+| Capacité | Statut v0.4.0 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -129,10 +129,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0-rc.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0-rc.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -216,10 +216,10 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0-rc.1/
+elman-os-foundation-kit-v0.4.0/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
-├── MIGRATION-v0.3.1-to-v0.4.0-rc.1.md
+├── MIGRATION-v0.3.1-to-v0.4.0.md
 ├── RELEASE-CHECKSUMS.sha256
 ├── RELEASE-MANIFEST.json
 ├── config/
@@ -264,12 +264,12 @@ L'identité, l'autorisation et la trace signée sont décrites dans
 La stabilisation, les quotas et la reprise persistante sont décrits dans
 `docs/AI-KERNEL-STABILIZATION.md`.
 Les critères de gel, d’intégrité et de revue finale sont décrits dans
-`docs/RELEASE-CANDIDATE.md`.
+`docs/RELEASE.md`.
 
 ## Limites connues
 
 - les adaptateurs distants sont livrés, mais aucun endpoint réel, modèle réel,
-  débit ou coût n'est validé par cette RC ;
+  débit ou coût n'est validé par cette version stable ;
 - le sink fichier est local et mono-machine ; la validation JWT/OIDC, la
   rotation des clés et un backend multi-instance restent à intégrer ;
 - aucun catalogue monétaire de prix ni routage par coût ou qualité n'est livré ;
@@ -280,5 +280,5 @@ Les critères de gel, d’intégrité et de revue finale sont décrits dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-Le prochain jalon est la Pull Request vers `main`, suivie de la matrice CI
-multi-plateforme et de l’approbation humaine avant le tag final `v0.4.0`.
+La publication stable requiert la fusion de cette promotion dans `main`, la
+validation de la matrice CI multi-plateforme et la création contrôlée du tag `v0.4.0`.
