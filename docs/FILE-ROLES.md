@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.4.0
+# Rôle des fichiers ELMAN-OS v0.5.0
 
 ## Racine
 
@@ -9,6 +9,7 @@
 | `CHANGELOG.md` | historique des capacités ajoutées à la fondation |
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
 | `MIGRATION-v0.3.1-to-v0.4.0.md` | migration, validation et retour arrière depuis v0.3.1 |
+| `MIGRATION-v0.4.0-to-v0.5.0.md` | migration sûre, compatibilité et retour arrière depuis v0.4.0 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
 | `RELEASE-CHECKSUMS.sha256` | empreintes de chaque fichier livré |
 
@@ -22,7 +23,11 @@
 | `src/elman_os/workflow.py` | exécution de la boucle bornée |
 | `src/elman_os/metacognition.py` | Supervisor, Reflective, Memory et Learning |
 | `src/elman_os/approvals.py` | approbations humaines indépendantes |
-| `src/elman_os/persistence.py` | rapports et approbations SQLite |
+| `src/elman_os/persistence.py` | rapports et approbations SQLite historiques |
+| `src/elman_os/authentication.py` | validation JWT/OIDC et politique de jetons |
+| `src/elman_os/transactional_persistence.py` | transactions multi-tenant et concurrence optimiste |
+| `src/elman_os/persistent_governance.py` | quotas et audit persistants multi-instance |
+| `src/elman_os/production_runtime.py` | composition authentifiée du runtime de production |
 | `src/elman_os/generator.py` | génération sécurisée du starter |
 | `src/elman_os/service.py` | composition planification/génération |
 | `src/elman_os/provider.py` | contrat IA générique, erreurs portables et fournisseur simulé |
@@ -53,7 +58,11 @@
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
-| `docs/RELEASE.md` | décision stable, preuves de validation et limites opérationnelles |
+| `docs/RELEASE.md` | décision v0.5.0, preuves de validation et limites opérationnelles |
+| `docs/JWT-OIDC-AUTHENTICATION.md` | frontière et politique d’authentification |
+| `docs/TRANSACTIONAL-PERSISTENCE.md` | stockage transactionnel isolé par tenant |
+| `docs/PERSISTENT-QUOTAS-AUDIT.md` | gouvernance persistante partagée entre instances |
+| `docs/PRODUCTION-EXECUTION-RUNTIME.md` | pipeline authentifié et route d’exécution |
 | `docs/INSTALL-WINDOWS.md` | installation et usage sous PowerShell |
 | `docs/metacognitive-checkpoint-v0.3.json` | preuve structurée du jalon |
 | `docs/metacognitive-checkpoint-foundation-kit-v0.3.0.json` | contrôle de consolidation du Foundation Kit |
@@ -87,3 +96,15 @@
 | `test_audit.py` | autorisation, confidentialité, intégrité, échecs et annulations |
 | `test_stabilization.py` | compatibilité, quotas, concurrence, persistance et pipeline complet |
 | `test_release.py` | versions, checksums, portabilité et fermeture des gates |
+| `test_authentication.py` | jetons, signatures, claims et refus fermés |
+| `test_transactional_persistence.py` | transactions, tenants et concurrence multi-instance |
+| `test_persistent_governance.py` | quotas et chaînes d’audit persistants |
+| `test_production_runtime.py` | composition complète et API authentifiée |
+| `test_release_v050.py` | cohérence de la finalisation v0.5.0 |
+
+## Scripts de release
+
+| Fichier | Rôle |
+|---|---|
+| `scripts/build_release.py` | construction ZIP déterministe v0.5.0 |
+| `scripts/verify_release_installation.py` | roue, installation isolée et archive hors réseau |

@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.4.0"
-PACKAGE_VERSION = "0.4.0"
+DISPLAY_VERSION = "0.5.0"
+PACKAGE_VERSION = "0.5.0"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -53,6 +53,7 @@ _SENSITIVE_CONTENT_PATTERNS = (
 _REQUIRED_FILES = (
     "CHANGELOG.md",
     "MIGRATION-v0.3.1-to-v0.4.0.md",
+    "MIGRATION-v0.4.0-to-v0.5.0.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
@@ -61,6 +62,8 @@ _REQUIRED_FILES = (
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
     "tests/test_release.py",
+    "tests/test_release_v050.py",
+    "scripts/verify_release_installation.py",
 )
 
 
@@ -331,7 +334,7 @@ def validate_release(
         manifest_ok = (
             manifest["version"] == DISPLAY_VERSION
             and manifest["package_name"] == "elman-os-kernel"
-            and scope["kernel_unittests"] == 180
+            and scope["kernel_unittests"] == 259
         )
         gates_ok = (
             manifest["release_candidate_validated"] is True

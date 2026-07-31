@@ -1,5 +1,25 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+
+## v0.5.0 — 2026-07-30
+
+### Ajouté
+
+- validation JWT/OIDC hors réseau avec politique stricte et vérification HMAC ;
+- persistance transactionnelle SQLite isolée par tenant et contrôle optimiste ;
+- quotas atomiques et audit HMAC persistants partagés entre instances ;
+- runtime de production composant authentification, autorisation, quotas et audit ;
+- route FastAPI authentifiée `POST /v1/ai/generate` ;
+- migration documentée depuis `v0.4.0`.
+
+### Vérification
+
+- 259 tests unitaires réussis hors réseau ;
+- roue Python construite puis installée dans un environnement neuf sans index ;
+- version importée, manifeste, archive déterministe et inventaire SHA-256 validés ;
+- aucun credential réel, appel réseau ou appel payant ;
+- gates de déploiement autonome maintenues fermées.
+
 ## v0.4.0 — 2026-07-30
 
 ### Publication stable

@@ -9,6 +9,14 @@ from .audit import (
     ExecutionPrincipal,
     FileAuditSink,
 )
+from .authentication import (
+    AuthenticationErrorCode,
+    HmacSha256Verifier,
+    JwtOidcAuthenticator,
+    SignatureVerifier,
+    TokenAuthenticationError,
+    TokenValidationPolicy,
+)
 from .configuration import ProviderSettings, load_provider_settings
 from .domain import StopReason, Verdict, WorkflowStatus
 from .execution import ResilientAIExecutor, RetryPolicy, UsageBudget
@@ -21,7 +29,17 @@ from .governance import (
 )
 from .metacognition import SupervisorPolicy
 from .openai_compatible import OpenAICompatibleProvider
+from .persistent_governance import (
+    PersistentAuditTrail,
+    PersistentIdentityQuotaManager,
+)
 from .planning import PipelinePlanner, ProjectIntent, ProjectKind
+from .production_runtime import (
+    AuthenticatedExecutionService,
+    PersistentGovernedAIExecutor,
+    ProductionAIRuntime,
+    attach_execution_routes,
+)
 from .provider import AIProvider, ModelRequest, ModelResponse
 from .registry import (
     ConfiguredAIRuntime,
@@ -33,8 +51,28 @@ from .service import ElmanKernelService
 from .workflow import ElmanWorkflow
 
 __all__ = [
+    "AuthenticatedExecutionService",
+    "PersistentGovernedAIExecutor",
+    "ProductionAIRuntime",
+    "attach_execution_routes",
+    "PersistentIdentityQuotaManager",
+    "PersistentAuditTrail",
+    "PersistenceBackend",
+    "PersistenceConflictError",
+    "PersistenceError",
+    "PersistenceIntegrityError",
+    "PersistenceTransaction",
+    "SQLitePersistence",
+    "StoredRecord",
+    "TransactionClosedError",
     "AGENT_CATALOG",
     "AIProvider",
+    "AuthenticationErrorCode",
+    "HmacSha256Verifier",
+    "JwtOidcAuthenticator",
+    "SignatureVerifier",
+    "TokenAuthenticationError",
+    "TokenValidationPolicy",
     "AuditedAIExecutor",
     "AuditSigner",
     "AuditTrail",
@@ -71,4 +109,16 @@ __all__ = [
     "validate_release",
 ]
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"
+
+# Transactional persistence boundary (additive to SQLiteKernelStore).
+from .transactional_persistence import (
+    PersistenceBackend,
+    PersistenceConflictError,
+    PersistenceError,
+    PersistenceIntegrityError,
+    PersistenceTransaction,
+    SQLitePersistence,
+    StoredRecord,
+    TransactionClosedError,
+)
