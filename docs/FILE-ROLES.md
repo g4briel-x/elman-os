@@ -109,3 +109,11 @@
 |---|---|
 | `scripts/build_release.py` | construction ZIP déterministe v0.5.1 |
 | `scripts/verify_release_installation.py` | roue, installation isolée et archive hors réseau |
+
+## ELMAN Studio MVP — phase 1
+
+| Fichier | Rôle |
+|---|---|
+| `src/elman_os/studio.py` | Modèle de formulaire, session avec gate humaine et interface Flet optionnelle. |
+| `tests/test_studio.py` | Tests hors réseau du formulaire, du slug, du plan et de l'approbation. |
+| `docs/STUDIO-MVP.md` | Architecture, règles d'autorité, lancement et limites de Studio. |

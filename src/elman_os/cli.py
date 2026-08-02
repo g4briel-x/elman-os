@@ -278,6 +278,13 @@ def _serve_command(host: str, port: int, generated_root: str) -> int:
     return 0
 
 
+def _studio_command(generated_root: str) -> int:
+    from .studio import launch_studio
+
+    launch_studio(generated_root)
+    return 0
+
+
 def _technology_command(as_json: bool) -> int:
     policy = {
         "policy": "python-core-with-layer-bounded-specialized-languages",
@@ -415,6 +422,16 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--port", type=int, default=8000)
     serve.add_argument("--generated-root", default="generated")
 
+    studio = subparsers.add_parser(
+        "studio",
+        help="Lancer ELMAN Studio avec une gate d'approbation humaine",
+    )
+    studio.add_argument(
+        "--generated-root",
+        default="generated",
+        help="Dossier parent des projets générés",
+    )
+
     technology = subparsers.add_parser(
         "technology",
         help="Afficher la stack Python et les exceptions frontend bornées",
@@ -463,6 +480,8 @@ def main(argv: list[str] | None = None) -> int:
         return _doctor_command(args.json)
     if args.command == "serve":
         return _serve_command(args.host, args.port, args.generated_root)
+    if args.command == "studio":
+        return _studio_command(args.generated_root)
     if args.command == "technology":
         return _technology_command(args.json)
     if args.command in {"audit-stack", "audit-python"}:
