@@ -28,6 +28,20 @@ class ChecksumTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
+    def test_generated_workspace_is_excluded_from_release_inventory(self) -> None:
+        generated = self.root / "generated" / "demo"
+        generated.mkdir(parents=True)
+        (generated / "artifact.txt").write_text(
+            "generated artifact\n",
+            encoding="utf-8",
+        )
+
+        inventory = write_release_checksums(self.root)
+        content = inventory.read_text(encoding="utf-8")
+
+        self.assertIn("src/example.py", content)
+        self.assertNotIn("generated/demo/artifact.txt", content)
+
     def test_checksum_inventory_is_sorted_and_verifiable(self) -> None:
         (self.root / "README.md").write_text("readme\n", encoding="utf-8")
         inventory = write_release_checksums(self.root)
