@@ -67,7 +67,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
 | Audit IA | HMAC persistant, isolé par tenant et partagé entre instances |
 | Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
-| ELMAN Studio | Non livré |
+| ELMAN Studio | Phase 1 : planification et génération locale sous approbation humaine |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
 
@@ -196,6 +196,21 @@ La commande écrit uniquement dans `generated\elman-tasks` et crée :
 .\.venv\Scripts\python.exe -m elman_os runs `
   --database ".elman\elman.db"
 ```
+
+## ELMAN Studio MVP
+
+La phase 1 fournit une interface locale Python/Flet pour construire une
+intention produit, prévisualiser le pipeline, approuver explicitement le plan,
+puis générer un starter avec le service du kernel.
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[studio]"
+.\.venv\Scripts\python.exe -m elman_os studio --generated-root generated
+```
+
+Toute nouvelle prévisualisation révoque l'approbation précédente. Studio
+n'effectue aucun déploiement automatique et n'appelle aucun fournisseur IA
+distant.
 
 ## API de contrôle optionnelle
 

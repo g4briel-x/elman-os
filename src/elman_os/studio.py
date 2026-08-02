@@ -1,0 +1,365 @@
+"""Local ELMAN Studio MVP with an explicit human approval gate."""
+
+from __future__ import annotations
+
+import re
+import unicodedata
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+from .planning import ExecutionPlan, ProjectIntent, ProjectKind
+from .service import ElmanKernelService
+
+
+_ENTRY_SEPARATOR = re.compile(r"[\n,;]+")
+_SLUG_SEPARATOR = re.compile(r"[^a-z0-9]+")
+
+
+def split_entries(value: str) -> tuple[str, ...]:
+    """Split comma/newline-separated entries, trim them and preserve order."""
+
+    seen: set[str] = set()
+    entries: list[str] = []
+    for raw in _ENTRY_SEPARATOR.split(value):
+        item = raw.strip()
+        if item and item not in seen:
+            seen.add(item)
+            entries.append(item)
+    return tuple(entries)
+
+
+def slugify(value: str) -> str:
+    """Create a portable lowercase slug suitable for ProjectIntent."""
+
+    normalized = unicodedata.normalize("NFKD", value)
+    ascii_value = normalized.encode("ascii", "ignore").decode("ascii").lower()
+    slug = _SLUG_SEPARATOR.sub("-", ascii_value).strip("-")
+    if not slug:
+        return "elman-project"
+    if not slug[0].isalpha():
+        slug = f"project-{slug}"
+    return slug
+
+
+@dataclass(frozen=True, slots=True)
+class StudioForm:
+    """Validated Studio form data before it reaches the kernel service."""
+
+    name: str
+    slug: str
+    kind: str
+    platforms: tuple[str, ...]
+    features: tuple[str, ...] = ()
+    acceptance_criteria: tuple[str, ...] = ()
+
+    @classmethod
+    def from_text(
+        cls,
+        *,
+        name: str,
+        slug: str,
+        kind: str,
+        platforms: tuple[str, ...],
+        features: str = "",
+        acceptance_criteria: str = "",
+    ) -> "StudioForm":
+        return cls(
+            name=name.strip(),
+            slug=slug.strip(),
+            kind=kind.strip(),
+            platforms=tuple(platforms),
+            features=split_entries(features),
+            acceptance_criteria=split_entries(acceptance_criteria),
+        )
+
+    def to_intent(self) -> ProjectIntent:
+        return ProjectIntent(
+            name=self.name,
+            slug=self.slug,
+            kind=ProjectKind(self.kind),
+            platforms=self.platforms,
+            features=self.features,
+            acceptance_criteria=self.acceptance_criteria,
+        )
+
+
+@dataclass(slots=True)
+class StudioSession:
+    """Stateful Studio application service with a mandatory human gate."""
+
+    service: Any = field(repr=False)
+    generated_root: Path = field(default_factory=lambda: Path("generated"))
+    intent: ProjectIntent | None = field(init=False, default=None)
+    plan: ExecutionPlan | None = field(init=False, default=None)
+    approved: bool = field(init=False, default=False)
+
+    @classmethod
+    def default(cls, generated_root: str | Path = "generated") -> "StudioSession":
+        return cls(
+            service=ElmanKernelService.default(),
+            generated_root=Path(generated_root),
+        )
+
+    def preview(self, form: StudioForm) -> ExecutionPlan:
+        """Build a plan without writing files and revoke prior approval."""
+
+        intent = form.to_intent()
+        plan = self.service.plan(intent)
+        self.intent = intent
+        self.plan = plan
+        self.approved = False
+        return plan
+
+    def approve(self) -> None:
+        if self.plan is None or self.intent is None:
+            raise RuntimeError("Prévisualiser un plan avant de l'approuver")
+        self.approved = True
+
+    def revoke(self) -> None:
+        self.approved = False
+
+    def generate(self) -> Any:
+        """Generate only after the currently previewed plan is approved."""
+
+        if self.intent is None or self.plan is None:
+            raise RuntimeError("Aucun plan n'a été prévisualisé")
+        if not self.approved:
+            raise PermissionError(
+                "Une approbation humaine explicite est requise avant génération"
+            )
+        return self.service.generate(self.intent, self.generated_root)
+
+
+def launch_studio(generated_root: str | Path = "generated") -> None:
+    """Launch the optional Flet desktop/web UI."""
+
+    try:
+        import flet as ft
+    except ImportError as exc:  # pragma: no cover - optional integration
+        raise RuntimeError(
+            'Installer Studio avec: python -m pip install -e ".[studio]"'
+        ) from exc
+
+    session = StudioSession.default(generated_root)
+
+    def main(page: Any) -> None:
+        page.title = "ELMAN Studio"
+        page.padding = 24
+        page.scroll = ft.ScrollMode.AUTO
+        page.window_width = 1180
+        page.window_height = 820
+
+        title = ft.Text("ELMAN Studio", size=30, weight=ft.FontWeight.BOLD)
+        subtitle = ft.Text(
+            "Planifier puis générer un projet sous approbation humaine explicite."
+        )
+
+        name_field = ft.TextField(
+            label="Nom du projet",
+            hint_text="Ex. ELMAN Tasks",
+            autofocus=True,
+        )
+        slug_field = ft.TextField(
+            label="Slug",
+            hint_text="elman-tasks",
+        )
+        kind_field = ft.Dropdown(
+            label="Type de projet",
+            value=ProjectKind.SAAS.value,
+            options=[
+                ft.dropdown.Option(ProjectKind.SAAS.value, "SaaS web"),
+                ft.dropdown.Option(ProjectKind.MOBILE.value, "Application mobile"),
+                ft.dropdown.Option(ProjectKind.FULLSTACK.value, "Full-stack"),
+            ],
+        )
+
+        platform_boxes = {
+            platform: ft.Checkbox(label=platform, value=(platform == "web"))
+            for platform in ("web", "android", "ios", "windows", "macos", "linux")
+        }
+
+        features_field = ft.TextField(
+            label="Fonctionnalités",
+            hint_text="Une fonctionnalité par ligne",
+            multiline=True,
+            min_lines=4,
+            max_lines=7,
+        )
+        acceptance_field = ft.TextField(
+            label="Critères d'acceptation",
+            hint_text="Un critère par ligne",
+            multiline=True,
+            min_lines=4,
+            max_lines=7,
+        )
+
+        status_text = ft.Text("Statut : en attente d'un plan")
+        approval_box = ft.Checkbox(
+            label="J'approuve explicitement ce plan pour la génération locale",
+            value=False,
+            disabled=True,
+        )
+        generate_button = ft.ElevatedButton(
+            "Générer le starter",
+            disabled=True,
+        )
+        plan_view = ft.Column(spacing=10)
+
+        def notify(message: str, *, error: bool = False) -> None:
+            prefix = "Erreur : " if error else ""
+            page.snack_bar = ft.SnackBar(ft.Text(f"{prefix}{message}"))
+            page.snack_bar.open = True
+            page.update()
+
+        def current_form() -> StudioForm:
+            selected = tuple(
+                platform
+                for platform, checkbox in platform_boxes.items()
+                if checkbox.value
+            )
+            return StudioForm.from_text(
+                name=name_field.value or "",
+                slug=slug_field.value or "",
+                kind=kind_field.value or ProjectKind.SAAS.value,
+                platforms=selected,
+                features=features_field.value or "",
+                acceptance_criteria=acceptance_field.value or "",
+            )
+
+        def render_plan(plan: ExecutionPlan) -> None:
+            plan_view.controls.clear()
+            for index, stage in enumerate(plan.stages, start=1):
+                gate = " • approbation humaine" if stage.human_gate_after else ""
+                plan_view.controls.append(
+                    ft.Card(
+                        content=ft.Container(
+                            content=ft.Column(
+                                [
+                                    ft.Text(
+                                        f"{index}. {stage.name}{gate}",
+                                        weight=ft.FontWeight.BOLD,
+                                    ),
+                                    ft.Text(
+                                        "Agents : " + ", ".join(stage.agent_ids)
+                                    ),
+                                    ft.Text(
+                                        "Sorties : "
+                                        + ", ".join(stage.required_outputs)
+                                    ),
+                                ],
+                                spacing=6,
+                            ),
+                            padding=14,
+                        )
+                    )
+                )
+
+        def generate_slug(_: Any) -> None:
+            slug_field.value = slugify(name_field.value or "")
+            page.update()
+
+        def preview_plan(_: Any) -> None:
+            try:
+                plan = session.preview(current_form())
+            except (ValueError, RuntimeError) as exc:
+                status_text.value = "Statut : plan invalide"
+                approval_box.value = False
+                approval_box.disabled = True
+                generate_button.disabled = True
+                notify(str(exc), error=True)
+                return
+
+            render_plan(plan)
+            approval_box.value = False
+            approval_box.disabled = False
+            generate_button.disabled = True
+            status_text.value = (
+                f"Statut : plan prêt — {len(plan.stages)} étapes, "
+                f"vérificateur final {plan.final_verifier}"
+            )
+            page.update()
+
+        def approval_changed(_: Any) -> None:
+            try:
+                if approval_box.value:
+                    session.approve()
+                    generate_button.disabled = False
+                    status_text.value = "Statut : plan approuvé pour génération"
+                else:
+                    session.revoke()
+                    generate_button.disabled = True
+                    status_text.value = "Statut : approbation retirée"
+            except RuntimeError as exc:
+                approval_box.value = False
+                generate_button.disabled = True
+                notify(str(exc), error=True)
+            page.update()
+
+        def generate_project(_: Any) -> None:
+            try:
+                result = session.generate()
+            except (PermissionError, RuntimeError, ValueError, OSError) as exc:
+                notify(str(exc), error=True)
+                return
+
+            status_text.value = (
+                f"Statut : projet généré dans {result.project_root} "
+                f"({len(result.files)} fichiers)"
+            )
+            generate_button.disabled = True
+            approval_box.value = False
+            session.revoke()
+            notify(f"Projet généré dans {result.project_root}")
+            page.update()
+
+        approval_box.on_change = approval_changed
+        generate_button.on_click = generate_project
+
+        page.add(
+            title,
+            subtitle,
+            ft.Divider(),
+            ft.ResponsiveRow(
+                [
+                    ft.Container(name_field, col={"sm": 12, "md": 6}),
+                    ft.Container(
+                        ft.Row(
+                            [
+                                ft.Container(slug_field, expand=True),
+                                ft.OutlinedButton(
+                                    "Créer le slug",
+                                    on_click=generate_slug,
+                                ),
+                            ]
+                        ),
+                        col={"sm": 12, "md": 6},
+                    ),
+                    ft.Container(kind_field, col={"sm": 12, "md": 6}),
+                ]
+            ),
+            ft.Text("Plateformes", weight=ft.FontWeight.BOLD),
+            ft.Row(list(platform_boxes.values()), wrap=True),
+            ft.ResponsiveRow(
+                [
+                    ft.Container(features_field, col={"sm": 12, "md": 6}),
+                    ft.Container(acceptance_field, col={"sm": 12, "md": 6}),
+                ]
+            ),
+            ft.Row(
+                [
+                    ft.ElevatedButton(
+                        "Prévisualiser le plan",
+                        on_click=preview_plan,
+                    ),
+                    generate_button,
+                ]
+            ),
+            status_text,
+            approval_box,
+            ft.Divider(),
+            ft.Text("Pipeline proposé", size=22, weight=ft.FontWeight.BOLD),
+            plan_view,
+        )
+
+    ft.app(target=main)
