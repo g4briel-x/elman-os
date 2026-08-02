@@ -1,13 +1,14 @@
-# Validation de la version stable v0.5.0
+# Validation de la version stable v0.5.1
 
 ## Décision
 
-ELMAN-OS Foundation Kit `v0.5.0` est approuvé comme version stable du backend
-IA authentifié et persistant.
+ELMAN-OS Foundation Kit `v0.5.1` est approuvé comme version corrective stable
+du backend IA authentifié et persistant.
 
-Cette décision valide les contrats, le paquet, le runtime composé, la
-persistance locale multi-instance et l’intégrité de l’artefact. Elle ne déclare
-pas encore ELMAN-OS autonome ni prêt à un déploiement sans approbation.
+Cette version reprend les capacités de `v0.5.0` et corrige l’inventaire
+SHA-256 de `.gitignore`. Elle ne modifie ni les API publiques, ni les schémas
+SQLite, ni les contrats des agents. Elle ne déclare pas encore ELMAN-OS
+autonome ni prêt à un déploiement sans approbation.
 
 ## Preuves de validation
 
@@ -17,9 +18,10 @@ pas encore ELMAN-OS autonome ni prêt à un déploiement sans approbation.
 - quotas partagés et reprise de la chaîne d’audit testés ;
 - pipeline authentifié et route d’exécution testés ;
 - roue Python construite et installée hors réseau dans un environnement neuf ;
-- version importée `0.5.0` vérifiée ;
-- archive ZIP déterministe `v0.5.0` inspectée ;
-- inventaire SHA-256, chemins et politique technologique contrôlés ;
+- version importée `0.5.1` vérifiée ;
+- archive ZIP déterministe `v0.5.1` inspectée ;
+- empreinte de `.gitignore` et inventaire SHA-256 corrigés ;
+- chemins et politique technologique contrôlés ;
 - aucun secret réel, credential fournisseur, appel réseau ou appel payant.
 
 ## Frontières maintenues
@@ -43,5 +45,5 @@ pas encore ELMAN-OS autonome ni prêt à un déploiement sans approbation.
 
 ## Tag
 
-Le tag annoté `v0.5.0` doit pointer sur le commit de `main` obtenu après fusion
-de la branche validée. Il ne doit pas être créé sur la branche de fonctionnalité.
+Le tag annoté `v0.5.1` doit pointer sur le commit de `main` obtenu après fusion
+de la branche validée. Il ne doit pas être créé sur la branche de release.

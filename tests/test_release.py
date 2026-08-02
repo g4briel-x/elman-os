@@ -176,7 +176,7 @@ class StableReleaseTests(unittest.TestCase):
         try:
             path = release / "pyproject.toml"
             path.write_text(
-                path.read_text(encoding="utf-8").replace("0.5.0", "0.5.1"),
+                path.read_text(encoding="utf-8").replace("0.5.1", "0.5.2"),
                 encoding="utf-8",
             )
             report = validate_release(release)

@@ -1,14 +1,16 @@
-# ELMAN-OS Foundation Kit v0.5.0
+# ELMAN-OS Foundation Kit v0.5.1
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-La version v0.5.0 conserve le Kernel IA stable v0.4.0 et ajoute une frontière
-d’authentification JWT/OIDC hors réseau, une persistance transactionnelle isolée
-par tenant, des quotas et audits partagés entre instances, puis un runtime
-d’exécution authentifié intégré à l’API. Les contrats restent testables sans
-credential réel, réseau ni appel payant. Cette version finalise le backend de
-production, sans déclarer la plateforme autonome prête au déploiement :
+La version v0.5.1 reprend toutes les capacités du backend v0.5.0 et corrige
+l’inventaire SHA-256 de `.gitignore` afin que la validation d’intégrité soit
+reproductible sur Windows, macOS et Linux. Elle conserve l’authentification
+JWT/OIDC hors réseau, la persistance transactionnelle isolée par tenant, les
+quotas et audits partagés entre instances, ainsi que le runtime d’exécution
+authentifié intégré à l’API. Les contrats restent testables sans credential
+réel, réseau ni appel payant. Cette version corrective ne déclare pas la
+plateforme autonome prête au déploiement :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -45,7 +47,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.5.0 |
+| Capacité | Statut v0.5.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -125,10 +127,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.5.0.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.5.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.5.0"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.5.1"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel

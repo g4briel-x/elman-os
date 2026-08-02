@@ -1,4 +1,4 @@
-"""Verify the v0.5.0 wheel and deterministic archive without network access."""
+"""Verify the v0.5.1 wheel and deterministic archive without network access."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import zipfile
 from pathlib import Path
 
 
-VERSION = "0.5.0"
+VERSION = "0.5.1"
 ARCHIVE_PREFIX = f"elman-os-foundation-kit-v{VERSION}/"
 
 
@@ -31,7 +31,7 @@ def environment_python(environment: Path) -> Path:
 
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
-    with tempfile.TemporaryDirectory(prefix="elman-os-v050-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="elman-os-v051-") as temporary:
         work = Path(temporary)
         wheels = work / "wheels"
         wheels.mkdir()
@@ -50,9 +50,9 @@ def main() -> int:
             str(root),
             cwd=root,
         )
-        wheel_files = tuple(wheels.glob("elman_os_kernel-0.5.0-*.whl"))
+        wheel_files = tuple(wheels.glob("elman_os_kernel-0.5.1-*.whl"))
         if len(wheel_files) != 1:
-            raise RuntimeError("La roue ELMAN-OS v0.5.0 est introuvable ou ambiguë")
+            raise RuntimeError("La roue ELMAN-OS v0.5.1 est introuvable ou ambiguë")
 
         environment = work / "venv"
         venv.EnvBuilder(with_pip=True, clear=True).create(environment)
@@ -74,12 +74,12 @@ def main() -> int:
             "-c",
             (
                 "import elman_os; "
-                "assert elman_os.__version__ == '0.5.0', elman_os.__version__"
+                "assert elman_os.__version__ == '0.5.1', elman_os.__version__"
             ),
             cwd=work,
         )
 
-        archive = work / "ELMAN-OS-Foundation-Kit-v0.5.0.zip"
+        archive = work / "ELMAN-OS-Foundation-Kit-v0.5.1.zip"
         run(
             sys.executable,
             str(root / "scripts" / "build_release.py"),
@@ -90,18 +90,18 @@ def main() -> int:
         with zipfile.ZipFile(archive) as package:
             names = package.namelist()
             if not names or any(not name.startswith(ARCHIVE_PREFIX) for name in names):
-                raise RuntimeError("Préfixe d’archive v0.5.0 invalide")
+                raise RuntimeError("Préfixe d’archive v0.5.1 invalide")
             required = {
                 ARCHIVE_PREFIX + "pyproject.toml",
                 ARCHIVE_PREFIX + "RELEASE-MANIFEST.json",
                 ARCHIVE_PREFIX + "RELEASE-CHECKSUMS.sha256",
-                ARCHIVE_PREFIX + "MIGRATION-v0.4.0-to-v0.5.0.md",
+                ARCHIVE_PREFIX + "MIGRATION-v0.5.0-to-v0.5.1.md",
             }
             if not required.issubset(names):
-                raise RuntimeError("L’archive v0.5.0 est incomplète")
+                raise RuntimeError("L’archive v0.5.1 est incomplète")
 
-    print("WHEEL 0.5.0 INSTALLEE HORS RESEAU : PASS")
-    print("ARCHIVE DETERMINISTE 0.5.0 : PASS")
+    print("WHEEL 0.5.1 INSTALLEE HORS RESEAU : PASS")
+    print("ARCHIVE DETERMINISTE 0.5.1 : PASS")
     return 0
 
 

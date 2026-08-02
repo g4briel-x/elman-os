@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.5.0"
-PACKAGE_VERSION = "0.5.0"
+DISPLAY_VERSION = "0.5.1"
+PACKAGE_VERSION = "0.5.1"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -54,6 +54,7 @@ _REQUIRED_FILES = (
     "CHANGELOG.md",
     "MIGRATION-v0.3.1-to-v0.4.0.md",
     "MIGRATION-v0.4.0-to-v0.5.0.md",
+    "MIGRATION-v0.5.0-to-v0.5.1.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
@@ -62,7 +63,7 @@ _REQUIRED_FILES = (
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
     "tests/test_release.py",
-    "tests/test_release_v050.py",
+    "tests/test_release_v051.py",
     "scripts/verify_release_installation.py",
 )
 

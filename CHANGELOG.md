@@ -1,6 +1,22 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
 
+## v0.5.1 — 2026-08-01
+
+### Corrigé
+
+- actualisation de l’empreinte SHA-256 de `.gitignore` ;
+- alignement de l’inventaire de release avec le contenu réellement livré ;
+- validation d’intégrité reproductible sur Windows, macOS et Linux ;
+- conservation complète des API, contrats et données de `v0.5.0`.
+
+### Vérification
+
+- 259 tests unitaires réussis hors réseau ;
+- contrôle `release-check` réussi ;
+- roue Python et archive ZIP déterministe validées sans accès réseau ;
+- aucun credential réel, appel réseau ou appel payant.
+
 ## v0.5.0 — 2026-07-30
 
 ### Ajouté
