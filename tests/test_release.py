@@ -42,6 +42,17 @@ class ChecksumTests(unittest.TestCase):
         self.assertIn("src/example.py", content)
         self.assertNotIn("generated/demo/artifact.txt", content)
 
+    def test_elman_runtime_state_is_excluded_from_release_inventory(self) -> None:
+        runtime = self.root / ".elman"
+        runtime.mkdir()
+        (runtime / "elman.db").write_bytes(b"local runtime database")
+
+        inventory = write_release_checksums(self.root)
+        content = inventory.read_text(encoding="utf-8")
+
+        self.assertIn("src/example.py", content)
+        self.assertNotIn(".elman/elman.db", content)
+
     def test_checksum_inventory_is_sorted_and_verifiable(self) -> None:
         (self.root / "README.md").write_text("readme\n", encoding="utf-8")
         inventory = write_release_checksums(self.root)
