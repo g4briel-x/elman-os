@@ -10,6 +10,11 @@ from typing import Any
 
 from .planning import ExecutionPlan, ProjectIntent, ProjectKind
 from .service import ElmanKernelService
+from .studio_history import (
+    HistoryReadError,
+    WorkflowDetails,
+    WorkflowHistoryReader,
+)
 
 
 _ENTRY_SEPARATOR = re.compile(r"[\n,;]+")
@@ -131,7 +136,10 @@ class StudioSession:
         return self.service.generate(self.intent, self.generated_root)
 
 
-def launch_studio(generated_root: str | Path = "generated") -> None:
+def launch_studio(
+    generated_root: str | Path = "generated",
+    database_path: str | Path = ".elman/elman.db",
+) -> None:
     """Launch the optional Flet desktop/web UI."""
 
     try:
@@ -142,6 +150,7 @@ def launch_studio(generated_root: str | Path = "generated") -> None:
         ) from exc
 
     session = StudioSession.default(generated_root)
+    history_reader = WorkflowHistoryReader(database_path)
 
     def main(page: Any) -> None:
         page.title = "ELMAN Studio"
@@ -205,6 +214,9 @@ def launch_studio(generated_root: str | Path = "generated") -> None:
             disabled=True,
         )
         plan_view = ft.Column(spacing=10)
+        history_status = ft.Text("Historique : non chargé")
+        history_view = ft.Column(spacing=8)
+        history_details = ft.Column(spacing=6)
 
         def notify(message: str, *, error: bool = False) -> None:
             prefix = "Erreur : " if error else ""
@@ -313,6 +325,141 @@ def launch_studio(generated_root: str | Path = "generated") -> None:
             notify(f"Projet généré dans {result.project_root}")
             page.update()
 
+        def render_detail_group(
+            heading: str,
+            values: tuple[str, ...],
+        ) -> list[Any]:
+            controls: list[Any] = [
+                ft.Text(heading, weight=ft.FontWeight.BOLD)
+            ]
+            if values:
+                controls.extend(
+                    ft.Text(f"• {value}", selectable=True)
+                    for value in values
+                )
+            else:
+                controls.append(ft.Text("Aucune donnée enregistrée."))
+            return controls
+
+        def render_history_details(details: WorkflowDetails) -> None:
+            summary = details.summary
+            history_details.controls.clear()
+            history_details.controls.extend(
+                [
+                    ft.Text(
+                        summary.workflow_id,
+                        size=18,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    ft.Text(
+                        "État : "
+                        f"{summary.status} • arrêt : {summary.stop_reason} • "
+                        f"itérations : {summary.iteration_count} • "
+                        f"verdict : {summary.final_verdict or '-'}"
+                    ),
+                    *render_detail_group("Preuves", details.evidence),
+                    *render_detail_group(
+                        "Décisions métacognitives",
+                        details.decisions,
+                    ),
+                    *render_detail_group(
+                        "Propositions d'apprentissage",
+                        details.learning_proposals,
+                    ),
+                    *render_detail_group(
+                        "Clés de mémoire",
+                        details.memory_keys,
+                    ),
+                ]
+            )
+
+        def select_history_run(event: Any) -> None:
+            workflow_id = str(event.control.data or "")
+            try:
+                details = history_reader.get_run(workflow_id)
+            except (HistoryReadError, ValueError) as exc:
+                notify(str(exc), error=True)
+                return
+            if details is None:
+                notify("Le workflow sélectionné n'existe plus.", error=True)
+                return
+            render_history_details(details)
+            page.update()
+
+        def refresh_history(_: Any) -> None:
+            history_view.controls.clear()
+            history_details.controls.clear()
+
+            if not history_reader.available:
+                history_status.value = (
+                    "Historique : base absente — aucune base n'a été créée"
+                )
+                history_view.controls.append(
+                    ft.Text(str(history_reader.database_path), selectable=True)
+                )
+                page.update()
+                return
+
+            try:
+                snapshots = history_reader.list_runs(50)
+            except HistoryReadError as exc:
+                history_status.value = "Historique : lecture impossible"
+                notify(str(exc), error=True)
+                return
+
+            if not snapshots:
+                history_status.value = "Historique : base vide"
+                history_view.controls.append(
+                    ft.Text("Aucun workflow persistant n'est disponible.")
+                )
+                page.update()
+                return
+
+            history_status.value = (
+                f"Historique : {len(snapshots)} workflow(s) en lecture seule"
+            )
+            for snapshot in snapshots:
+                verdict = snapshot.final_verdict or "-"
+                history_view.controls.append(
+                    ft.Card(
+                        content=ft.Container(
+                            content=ft.Row(
+                                [
+                                    ft.Container(
+                                        content=ft.Column(
+                                            [
+                                                ft.Text(
+                                                    snapshot.workflow_id,
+                                                    weight=ft.FontWeight.BOLD,
+                                                ),
+                                                ft.Text(
+                                                    f"{snapshot.status} • "
+                                                    f"{snapshot.stop_reason}"
+                                                ),
+                                                ft.Text(
+                                                    f"{snapshot.iteration_count} "
+                                                    f"itération(s) • "
+                                                    f"verdict {verdict} • "
+                                                    f"{snapshot.updated_at}"
+                                                ),
+                                            ],
+                                            spacing=4,
+                                        ),
+                                        expand=True,
+                                    ),
+                                    ft.OutlinedButton(
+                                        "Consulter",
+                                        data=snapshot.workflow_id,
+                                        on_click=select_history_run,
+                                    ),
+                                ]
+                            ),
+                            padding=12,
+                        )
+                    )
+                )
+            page.update()
+
         approval_box.on_change = approval_changed
         generate_button.on_click = generate_project
 
@@ -360,6 +507,33 @@ def launch_studio(generated_root: str | Path = "generated") -> None:
             ft.Divider(),
             ft.Text("Pipeline proposé", size=22, weight=ft.FontWeight.BOLD),
             plan_view,
+            ft.Divider(),
+            ft.Row(
+                [
+                    ft.Text(
+                        "Historique des workflows",
+                        size=22,
+                        weight=ft.FontWeight.BOLD,
+                    ),
+                    ft.OutlinedButton(
+                        "Actualiser l'historique",
+                        on_click=refresh_history,
+                    ),
+                ]
+            ),
+            ft.Text(
+                f"Base SQLite : {history_reader.database_path}",
+                selectable=True,
+            ),
+            history_status,
+            history_view,
+            ft.Text(
+                "Détails du workflow",
+                size=18,
+                weight=ft.FontWeight.BOLD,
+            ),
+            history_details,
         )
+        refresh_history(None)
 
     ft.app(target=main)

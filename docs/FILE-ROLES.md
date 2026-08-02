@@ -117,3 +117,11 @@
 | `src/elman_os/studio.py` | Modèle de formulaire, session avec gate humaine et interface Flet optionnelle. |
 | `tests/test_studio.py` | Tests hors réseau du formulaire, du slug, du plan et de l'approbation. |
 | `docs/STUDIO-MVP.md` | Architecture, règles d'autorité, lancement et limites de Studio. |
+
+## ELMAN Studio MVP — phase 2
+
+| Fichier | Rôle |
+|---|---|
+| `src/elman_os/studio_history.py` | Lecture SQLite strictement read-only, résumés et détails des workflows. |
+| `tests/test_studio_history.py` | Non-régression : base absente, base vide, preuves, décisions et absence d'écriture. |
+| `docs/STUDIO-RUN-HISTORY.md` | Architecture, lancement, frontières d'autorité et limites de la phase 2. |
