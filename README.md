@@ -304,3 +304,18 @@ Les critères de gel, d’intégrité et de revue finale sont décrits dans
 
 La publication stable requiert la fusion de cette promotion dans `main`, la
 validation de la matrice CI multi-plateforme et la création contrôlée du tag `v0.4.0`.
+
+## ELMAN Studio — workflows locaux en direct
+
+Studio peut lancer un workflow déterministe local après une approbation
+humaine explicite. L'exécution reste bornée, ne contacte aucun fournisseur IA,
+persiste son rapport dans `.elman/elman.db`, puis actualise l'historique.
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os studio `
+  --generated-root generated `
+  --database .elman\elman.db
+```
+
+La section **Exécution locale d'un workflow** affiche la progression, le
+verdict et la raison d'arrêt sans bloquer l'interface.

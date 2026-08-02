@@ -15,6 +15,11 @@ from .studio_history import (
     WorkflowDetails,
     WorkflowHistoryReader,
 )
+from .studio_runtime import (
+    LocalWorkflowEvent,
+    LocalWorkflowRequest,
+    LocalWorkflowRunner,
+)
 
 
 _ENTRY_SEPARATOR = re.compile(r"[\n,;]+")
@@ -151,6 +156,10 @@ def launch_studio(
 
     session = StudioSession.default(generated_root)
     history_reader = WorkflowHistoryReader(database_path)
+    workflow_runner = LocalWorkflowRunner(
+        database_path,
+        iteration_delay_seconds=0.25,
+    )
 
     def main(page: Any) -> None:
         page.title = "ELMAN Studio"
@@ -217,6 +226,35 @@ def launch_studio(
         history_status = ft.Text("Historique : non chargé")
         history_view = ft.Column(spacing=8)
         history_details = ft.Column(spacing=6)
+
+        workflow_id_field = ft.TextField(
+            label="Identifiant du workflow",
+            value="studio-local-demo",
+        )
+        workflow_pass_on_field = ft.TextField(
+            label="Réussite à l'itération",
+            value="2",
+            keyboard_type=ft.KeyboardType.NUMBER,
+        )
+        workflow_limit_field = ft.TextField(
+            label="Nombre maximal d'itérations",
+            value="5",
+            keyboard_type=ft.KeyboardType.NUMBER,
+        )
+        workflow_approval_box = ft.Checkbox(
+            label=(
+                "J'approuve explicitement cette exécution locale "
+                "déterministe"
+            ),
+            value=False,
+        )
+        workflow_run_button = ft.ElevatedButton(
+            "Lancer le workflow local",
+            disabled=True,
+        )
+        workflow_status = ft.Text("Exécution : prête")
+        workflow_progress = ft.ProgressBar(value=0.0)
+        workflow_log = ft.Column(spacing=4)
 
         def notify(message: str, *, error: bool = False) -> None:
             prefix = "Erreur : " if error else ""
@@ -460,6 +498,79 @@ def launch_studio(
                 )
             page.update()
 
+        def workflow_approval_changed(_: Any) -> None:
+            workflow_run_button.disabled = not bool(
+                workflow_approval_box.value
+            )
+            page.update()
+
+        def apply_workflow_event(event: LocalWorkflowEvent) -> None:
+            workflow_progress.value = max(0.0, min(1.0, event.progress))
+            workflow_status.value = f"Exécution : {event.message}"
+            workflow_log.controls.append(
+                ft.Text(
+                    (
+                        f"{event.kind} • {event.message}"
+                        + (
+                            f" • verdict {event.verdict}"
+                            if event.verdict
+                            else ""
+                        )
+                    ),
+                    selectable=True,
+                )
+            )
+            page.update()
+
+        def execute_local_workflow(request: LocalWorkflowRequest) -> None:
+            try:
+                report = workflow_runner.run(
+                    request,
+                    approved=True,
+                    on_event=apply_workflow_event,
+                )
+            except Exception as exc:
+                workflow_status.value = f"Exécution : échec — {exc}"
+                notify(str(exc), error=True)
+            else:
+                workflow_status.value = (
+                    f"Exécution : terminée — {report.status.value} / "
+                    f"{report.stop_reason.value}"
+                )
+                refresh_history(None)
+            finally:
+                workflow_run_button.disabled = False
+                workflow_approval_box.value = False
+                workflow_progress.value = 1.0
+                page.update()
+
+        def start_local_workflow(_: Any) -> None:
+            if not workflow_approval_box.value:
+                notify(
+                    "L'approbation humaine est obligatoire avant exécution.",
+                    error=True,
+                )
+                return
+            try:
+                request = LocalWorkflowRequest(
+                    workflow_id=workflow_id_field.value or "",
+                    pass_on=int(workflow_pass_on_field.value or ""),
+                    max_iterations=int(workflow_limit_field.value or ""),
+                )
+            except (TypeError, ValueError) as exc:
+                notify(str(exc), error=True)
+                return
+
+            workflow_run_button.disabled = True
+            workflow_approval_box.value = False
+            workflow_progress.value = 0.0
+            workflow_log.controls.clear()
+            workflow_status.value = "Exécution : démarrage..."
+            page.update()
+            page.run_thread(execute_local_workflow, request)
+
+        workflow_approval_box.on_change = workflow_approval_changed
+        workflow_run_button.on_click = start_local_workflow
         approval_box.on_change = approval_changed
         generate_button.on_click = generate_project
 
@@ -507,6 +618,36 @@ def launch_studio(
             ft.Divider(),
             ft.Text("Pipeline proposé", size=22, weight=ft.FontWeight.BOLD),
             plan_view,
+            ft.Divider(),
+            ft.Text(
+                "Exécution locale d'un workflow",
+                size=22,
+                weight=ft.FontWeight.BOLD,
+            ),
+            ft.Text(
+                "Exécution déterministe, bornée, sans fournisseur distant."
+            ),
+            ft.ResponsiveRow(
+                [
+                    ft.Container(
+                        workflow_id_field,
+                        col={"sm": 12, "md": 6},
+                    ),
+                    ft.Container(
+                        workflow_pass_on_field,
+                        col={"sm": 6, "md": 3},
+                    ),
+                    ft.Container(
+                        workflow_limit_field,
+                        col={"sm": 6, "md": 3},
+                    ),
+                ]
+            ),
+            workflow_approval_box,
+            ft.Row([workflow_run_button]),
+            workflow_progress,
+            workflow_status,
+            workflow_log,
             ft.Divider(),
             ft.Row(
                 [
