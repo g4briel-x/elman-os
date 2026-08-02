@@ -125,3 +125,11 @@
 | `src/elman_os/studio_history.py` | Lecture SQLite strictement read-only, résumés et détails des workflows. |
 | `tests/test_studio_history.py` | Non-régression : base absente, base vide, preuves, décisions et absence d'écriture. |
 | `docs/STUDIO-RUN-HISTORY.md` | Architecture, lancement, frontières d'autorité et limites de la phase 2. |
+
+## ELMAN Studio — phase 3
+
+| Fichier | Rôle |
+|---|---|
+| `src/elman_os/studio_runtime.py` | Exécution locale déterministe, gate humaine, événements minimaux et persistance SQLite. |
+| `tests/test_studio_runtime.py` | Validation de la gate, des limites, des événements et de la persistance. |
+| `docs/STUDIO-LIVE-WORKFLOWS.md` | Architecture, autorité, lancement et limites de la phase 3. |
