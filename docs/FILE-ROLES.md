@@ -1,4 +1,4 @@
-# Rôle des fichiers ELMAN-OS v0.5.0
+# Rôle des fichiers ELMAN-OS v0.5.1
 
 ## Racine
 
@@ -10,6 +10,7 @@
 | `MIGRATION-v0.2.1-to-v0.3.0.md` | procédure de migration sûre depuis v0.2.1 |
 | `MIGRATION-v0.3.1-to-v0.4.0.md` | migration, validation et retour arrière depuis v0.3.1 |
 | `MIGRATION-v0.4.0-to-v0.5.0.md` | migration sûre, compatibilité et retour arrière depuis v0.4.0 |
+| `MIGRATION-v0.5.0-to-v0.5.1.md` | correctif d’intégrité et retour arrière depuis v0.5.0 |
 | `RELEASE-MANIFEST.json` | identité, contenu et limites vérifiées du bundle |
 | `RELEASE-CHECKSUMS.sha256` | empreintes de chaque fichier livré |
 
@@ -58,7 +59,7 @@
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
-| `docs/RELEASE.md` | décision v0.5.0, preuves de validation et limites opérationnelles |
+| `docs/RELEASE.md` | décision v0.5.1, preuves de validation et limites opérationnelles |
 | `docs/JWT-OIDC-AUTHENTICATION.md` | frontière et politique d’authentification |
 | `docs/TRANSACTIONAL-PERSISTENCE.md` | stockage transactionnel isolé par tenant |
 | `docs/PERSISTENT-QUOTAS-AUDIT.md` | gouvernance persistante partagée entre instances |
@@ -100,11 +101,11 @@
 | `test_transactional_persistence.py` | transactions, tenants et concurrence multi-instance |
 | `test_persistent_governance.py` | quotas et chaînes d’audit persistants |
 | `test_production_runtime.py` | composition complète et API authentifiée |
-| `test_release_v050.py` | cohérence de la finalisation v0.5.0 |
+| `test_release_v051.py` | cohérence de la finalisation v0.5.1 |
 
 ## Scripts de release
 
 | Fichier | Rôle |
 |---|---|
-| `scripts/build_release.py` | construction ZIP déterministe v0.5.0 |
+| `scripts/build_release.py` | construction ZIP déterministe v0.5.1 |
 | `scripts/verify_release_installation.py` | roue, installation isolée et archive hors réseau |

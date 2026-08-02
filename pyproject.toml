@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elman-os-kernel"
-version = "0.5.0"
-description = "ELMAN-OS v0.5.0 : runtime IA authentifié, persistant et auditable"
+version = "0.5.1"
+description = "ELMAN-OS v0.5.1 : correctif d’intégrité de la release stable"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Proprietary - ELMAN Technologies" }
