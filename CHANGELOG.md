@@ -1,5 +1,30 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.6.0-rc.1 — 2026-08-02
+
+### Ajouté
+
+- ELMAN Studio pour planifier et générer un starter sous gate humaine ;
+- historique SQLite strictement en lecture seule ;
+- workflows déterministes locaux avec progression et persistance ;
+- consultation des verdicts, preuves et décisions métacognitives ;
+- protection de `.elman/` et `generated/`.
+
+### Renforcé
+
+- approbation d’exécution à usage unique et réinitialisation fail-closed ;
+- exécution Studio hors du thread de l’interface ;
+- validation des limites et identifiants avant création de la base ;
+- aucune activation de fournisseur distant ou de déploiement.
+
+### Vérification
+
+- 278 tests unitaires réussis hors réseau ;
+- validation visuelle Studio sur Windows ;
+- matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13 ;
+- roue `0.6.0rc1` et archive ZIP déterministe validées hors réseau ;
+- gates de production maintenues fermées.
+
 
 ## v0.5.1 — 2026-08-01
 

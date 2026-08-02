@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.5.1"
-PACKAGE_VERSION = "0.5.1"
+DISPLAY_VERSION = "0.6.0-rc.1"
+PACKAGE_VERSION = "0.6.0rc1"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -55,6 +55,7 @@ _REQUIRED_FILES = (
     "MIGRATION-v0.3.1-to-v0.4.0.md",
     "MIGRATION-v0.4.0-to-v0.5.0.md",
     "MIGRATION-v0.5.0-to-v0.5.1.md",
+    "MIGRATION-v0.5.1-to-v0.6.0-rc.1.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
@@ -63,7 +64,7 @@ _REQUIRED_FILES = (
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
     "tests/test_release.py",
-    "tests/test_release_v051.py",
+    "tests/test_release_v060rc1.py",
     "scripts/verify_release_installation.py",
 )
 
@@ -335,11 +336,11 @@ def validate_release(
         manifest_ok = (
             manifest["version"] == DISPLAY_VERSION
             and manifest["package_name"] == "elman-os-kernel"
-            and scope["kernel_unittests"] == 259
+            and scope["kernel_unittests"] == 278
         )
         gates_ok = (
             manifest["release_candidate_validated"] is True
-            and manifest["final_release_approved"] is True
+            and manifest["final_release_approved"] is False
             and manifest["not_production_ready"] is True
             and scope["real_api_credentials_used"] is False
             and scope["paid_api_calls"] is False
