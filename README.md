@@ -1,16 +1,15 @@
-# ELMAN-OS Foundation Kit v0.5.1
+# ELMAN-OS Foundation Kit v0.6.0-rc.1
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-La version v0.5.1 reprend toutes les capacités du backend v0.5.0 et corrige
-l’inventaire SHA-256 de `.gitignore` afin que la validation d’intégrité soit
-reproductible sur Windows, macOS et Linux. Elle conserve l’authentification
-JWT/OIDC hors réseau, la persistance transactionnelle isolée par tenant, les
-quotas et audits partagés entre instances, ainsi que le runtime d’exécution
-authentifié intégré à l’API. Les contrats restent testables sans credential
-réel, réseau ni appel payant. Cette version corrective ne déclare pas la
-plateforme autonome prête au déploiement :
+La release candidate v0.6.0-rc.1 ajoute ELMAN Studio au kernel v0.5.1.
+Studio planifie et génère des starters sous approbation humaine, consulte
+l’historique SQLite en lecture seule et exécute des workflows déterministes
+locaux avec progression visible. Les états `.elman/` et `generated/` restent
+locaux et exclus des archives. Aucun fournisseur IA distant, credential réel,
+appel payant ou déploiement automatique n’est activé. Cette release candidate
+ne constitue pas une approbation finale de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -47,7 +46,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.5.1 |
+| Capacité | Statut v0.6.0-rc.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -67,7 +66,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
 | Audit IA | HMAC persistant, isolé par tenant et partagé entre instances |
 | Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
-| ELMAN Studio | Phase 2 : génération humaine-gated et historique SQLite en lecture seule |
+| ELMAN Studio | Phase 3 : génération, historique read-only et workflows locaux en direct |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
 

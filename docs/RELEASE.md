@@ -1,37 +1,47 @@
-# Validation de la version stable v0.5.1
+# Validation de la release candidate v0.6.0-rc.1
 
 ## Décision
 
-ELMAN-OS Foundation Kit `v0.5.1` est approuvé comme version corrective stable
-du backend IA authentifié et persistant.
+ELMAN-OS Foundation Kit `v0.6.0-rc.1` est une release candidate destinée à
+valider ELMAN Studio et son intégration au kernel avant promotion vers
+`v0.6.0`.
 
-Cette version reprend les capacités de `v0.5.0` et corrige l’inventaire
-SHA-256 de `.gitignore`. Elle ne modifie ni les API publiques, ni les schémas
-SQLite, ni les contrats des agents. Elle ne déclare pas encore ELMAN-OS
-autonome ni prêt à un déploiement sans approbation.
+La version de distribution Python est `0.6.0rc1`. Cette release candidate
+n’est ni une approbation finale ni une autorisation de déploiement en
+production.
 
-## Preuves de validation
+## Périmètre livré
 
-- 259 tests unitaires réussis hors réseau ;
-- validation JWT/OIDC, refus fermés et autorisation testés ;
-- transactions, rollback, tenants et concurrence multi-instance testés ;
-- quotas partagés et reprise de la chaîne d’audit testés ;
-- pipeline authentifié et route d’exécution testés ;
-- roue Python construite et installée hors réseau dans un environnement neuf ;
-- version importée `0.5.1` vérifiée ;
-- archive ZIP déterministe `v0.5.1` inspectée ;
-- empreinte de `.gitignore` et inventaire SHA-256 corrigés ;
-- chemins et politique technologique contrôlés ;
-- aucun secret réel, credential fournisseur, appel réseau ou appel payant.
+- ELMAN Studio phase 1 : intention, plan, approbation et génération locale ;
+- phase 2 : historique SQLite strictement en lecture seule ;
+- phase 3 : workflows déterministes locaux avec suivi de progression ;
+- exécution hors du thread de l’interface ;
+- verdict, raison d’arrêt, preuves et décisions consultables ;
+- gate d’exécution réinitialisée après chaque workflow ;
+- protection des états locaux `.elman/` et `generated/` ;
+- kernel, authentification, persistance et gouvernance de `v0.5.1` conservés.
 
-## Frontières maintenues
+## Preuves de validation attendues
 
-- SQLite reste l’implémentation locale ; l’adaptateur PostgreSQL n’est pas livré ;
-- la connectivité réelle des fournisseurs distants n’est pas certifiée ;
-- la rotation opérationnelle des clés n’est pas automatisée ;
-- aucune sandbox de processus ou de conteneur n’est livrée ;
-- l’API FastAPI reste un extra optionnel ;
-- le déploiement reste soumis à une approbation humaine et aux contrôles CI.
+- 278 tests unitaires réussis hors réseau ;
+- compilation Python réussie ;
+- `release-check` réussi ;
+- audit technologique réussi ;
+- roue `0.6.0rc1` construite et installée sans index ;
+- version importée vérifiée dans un environnement neuf ;
+- deux archives ZIP produites avec le même SHA-256 ;
+- matrice CI Windows, macOS et Linux sur Python 3.11 à 3.13 ;
+- aucun credential réel, appel payant ou fournisseur distant utilisé.
+
+## Gates de production
+
+Les gates restent fermées :
+
+- `release_candidate_validated = true` ;
+- `final_release_approved = false` ;
+- `not_production_ready = true` ;
+- aucun déploiement automatique ;
+- aucune connectivité réelle de fournisseur IA certifiée.
 
 ## Commandes de contrôle
 
@@ -40,10 +50,14 @@ autonome ni prêt à un déploiement sans approbation.
   -m unittest discover -s tests -v
 
 .\.venv\Scripts\python.exe -m elman_os release-check .
+
 .\.venv\Scripts\python.exe scripts\verify_release_installation.py .
 ```
 
 ## Tag
 
-Le tag annoté `v0.5.1` doit pointer sur le commit de `main` obtenu après fusion
-de la branche validée. Il ne doit pas être créé sur la branche de release.
+Le tag annoté `v0.6.0-rc.1` doit être créé uniquement sur le commit de `main`
+obtenu après fusion de la Pull Request et réussite de la matrice CI.
+
+Il ne doit pas être créé directement sur la branche
+`release/v0.6.0-rc.1`.

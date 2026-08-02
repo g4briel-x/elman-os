@@ -133,3 +133,12 @@
 | `src/elman_os/studio_runtime.py` | Exécution locale déterministe, gate humaine, événements minimaux et persistance SQLite. |
 | `tests/test_studio_runtime.py` | Validation de la gate, des limites, des événements et de la persistance. |
 | `docs/STUDIO-LIVE-WORKFLOWS.md` | Architecture, autorité, lancement et limites de la phase 3. |
+
+## Release candidate v0.6.0-rc.1
+
+| Fichier | Rôle |
+|---|---|
+| `MIGRATION-v0.5.1-to-v0.6.0-rc.1.md` | Compatibilité, installation Studio, données locales et retour arrière. |
+| `tests/test_release_v060rc1.py` | Cohérence PEP 440, manifeste, gates, documentation et archive RC. |
+| `docs/RELEASE.md` | Décision, preuves, frontières et procédure de tag de la release candidate. |
+| `scripts/verify_release_installation.py` | Construction et installation hors réseau de la roue `0.6.0rc1`. |

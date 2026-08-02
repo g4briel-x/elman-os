@@ -7,7 +7,7 @@ import elman_os
 from elman_os.release import DISPLAY_VERSION, PACKAGE_VERSION, validate_release
 
 
-class ReleaseV051Tests(unittest.TestCase):
+class ReleaseV060RC1Tests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.root = Path(__file__).resolve().parents[1]
@@ -16,64 +16,73 @@ class ReleaseV051Tests(unittest.TestCase):
         )
 
     def test_runtime_and_release_versions_align(self) -> None:
-        self.assertEqual(elman_os.__version__, "0.5.1")
-        self.assertEqual(DISPLAY_VERSION, "0.5.1")
-        self.assertEqual(PACKAGE_VERSION, "0.5.1")
+        self.assertEqual(elman_os.__version__, "0.6.0rc1")
+        self.assertEqual(DISPLAY_VERSION, "0.6.0-rc.1")
+        self.assertEqual(PACKAGE_VERSION, "0.6.0rc1")
 
-    def test_package_metadata_declares_v051(self) -> None:
+    def test_package_metadata_declares_v060rc1(self) -> None:
         pyproject = (self.root / "pyproject.toml").read_text(encoding="utf-8")
-        self.assertRegex(pyproject, r'(?m)^version = "0\.5\.1"$')
+        self.assertRegex(pyproject, r'(?m)^version = "0\.6\.0rc1"$')
 
-    def test_manifest_declares_259_tests(self) -> None:
-        self.assertEqual(self.manifest["version"], "0.5.1")
+    def test_manifest_declares_278_tests(self) -> None:
+        self.assertEqual(self.manifest["version"], "0.6.0-rc.1")
         self.assertEqual(
             self.manifest["verification_scope"]["kernel_unittests"],
-            259,
+            278,
         )
 
-    def test_manifest_declares_new_security_boundaries(self) -> None:
+    def test_manifest_declares_studio_boundaries(self) -> None:
         capabilities = set(self.manifest["included_capabilities"])
         self.assertTrue(
             {
-                "offline_jwt_oidc_validation",
-                "tenant_transactional_persistence",
-                "persistent_multi_instance_quotas",
-                "persistent_tenant_hmac_audit",
-                "authenticated_production_execution_runtime",
+                "local_flet_studio_mvp",
+                "human_gated_starter_generation",
+                "read_only_sqlite_workflow_history",
+                "live_local_deterministic_workflows",
+                "one_shot_workflow_approval",
+                "protected_generated_workspaces",
+                "protected_elman_runtime_state",
             }.issubset(capabilities)
         )
 
-    def test_production_gates_remain_closed(self) -> None:
+    def test_release_candidate_gates_remain_closed(self) -> None:
         scope = self.manifest["verification_scope"]
+        self.assertTrue(self.manifest["release_candidate_validated"])
+        self.assertFalse(self.manifest["final_release_approved"])
         self.assertTrue(self.manifest["not_production_ready"])
         self.assertFalse(scope["real_api_credentials_used"])
         self.assertFalse(scope["paid_api_calls"])
 
     def test_migration_guide_is_present(self) -> None:
-        migration = self.root / "MIGRATION-v0.5.0-to-v0.5.1.md"
+        migration = self.root / "MIGRATION-v0.5.1-to-v0.6.0-rc.1.md"
         self.assertTrue(migration.is_file())
-        self.assertIn("Retour arrière", migration.read_text(encoding="utf-8"))
+        text = migration.read_text(encoding="utf-8")
+        self.assertIn("Retour arrière", text)
+        self.assertIn("0.6.0rc1", text)
 
-    def test_changelog_starts_with_v051(self) -> None:
+    def test_changelog_starts_with_v060rc1(self) -> None:
         changelog = (self.root / "CHANGELOG.md").read_text(encoding="utf-8")
         releases = re.findall(r"(?m)^## (v[^\n ]+)", changelog)
         self.assertTrue(releases)
-        self.assertEqual(releases[0], "v0.5.1")
+        self.assertEqual(releases[0], "v0.6.0-rc.1")
 
-    def test_readme_identifies_v051(self) -> None:
+    def test_readme_identifies_v060rc1(self) -> None:
         first_line = (
             (self.root / "README.md")
             .read_text(encoding="utf-8")
             .splitlines()[0]
         )
-        self.assertEqual(first_line, "# ELMAN-OS Foundation Kit v0.5.1")
+        self.assertEqual(
+            first_line,
+            "# ELMAN-OS Foundation Kit v0.6.0-rc.1",
+        )
 
-    def test_archive_builder_targets_v051(self) -> None:
+    def test_archive_builder_targets_v060rc1(self) -> None:
         builder = (self.root / "scripts/build_release.py").read_text(
             encoding="utf-8"
         )
         self.assertIn(
-            'ARCHIVE_PREFIX = "elman-os-foundation-kit-v0.5.1"',
+            'ARCHIVE_PREFIX = "elman-os-foundation-kit-v0.6.0-rc.1"',
             builder,
         )
 

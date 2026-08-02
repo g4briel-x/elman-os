@@ -1,8 +1,8 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.5.1",
-  "release_date": "2026-08-01",
+  "version": "0.6.0-rc.1",
+  "release_date": "2026-08-02",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
   "agent_counts": {
@@ -70,10 +70,19 @@
     "fastapi_authenticated_generation_route",
     "v040_to_v050_migration_validation",
     "offline_wheel_installation_validation",
-    "v050_to_v051_checksum_inventory_correction"
+    "v050_to_v051_checksum_inventory_correction",
+    "local_flet_studio_mvp",
+    "human_gated_starter_generation",
+    "read_only_sqlite_workflow_history",
+    "live_local_deterministic_workflows",
+    "one_shot_workflow_approval",
+    "protected_generated_workspaces",
+    "protected_elman_runtime_state",
+    "v051_to_v060rc1_migration_validation",
+    "deterministic_v060rc1_archive"
   ],
   "verification_scope": {
-    "kernel_unittests": 259,
+    "kernel_unittests": 278,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
@@ -100,7 +109,7 @@
       "portable_path_separators"
     ],
     "optional_fastapi_runtime": false,
-    "optional_flet_runtime": false,
+    "optional_flet_runtime": true,
     "editable_installation": true,
     "fresh_archive_installation": true,
     "release_checksum_inventory": true,
@@ -113,11 +122,15 @@
     "persistent_governance_tests": 22,
     "production_runtime_tests": 7,
     "release_finalization_tests": 10,
-    "migration_source": "0.5.0",
+    "migration_source": "0.5.1",
     "isolated_offline_wheel_installation": true,
-    "deterministic_v051_archive": true
+    "studio_phase1_tests": 7,
+    "studio_history_tests": 6,
+    "studio_runtime_tests": 4,
+    "studio_visual_validation_host": "windows",
+    "deterministic_v060rc1_archive": true
   },
-  "final_release_approved": true,
+  "final_release_approved": false,
   "not_production_ready": true,
   "release_candidate_validated": true
 }
