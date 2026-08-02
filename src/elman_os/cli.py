@@ -278,10 +278,10 @@ def _serve_command(host: str, port: int, generated_root: str) -> int:
     return 0
 
 
-def _studio_command(generated_root: str) -> int:
+def _studio_command(generated_root: str, database: str) -> int:
     from .studio import launch_studio
 
-    launch_studio(generated_root)
+    launch_studio(generated_root, database)
     return 0
 
 
@@ -431,6 +431,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="generated",
         help="Dossier parent des projets générés",
     )
+    studio.add_argument(
+        "--database",
+        default=".elman/elman.db",
+        help="Base SQLite consultée en lecture seule par Studio",
+    )
 
     technology = subparsers.add_parser(
         "technology",
@@ -481,7 +486,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "serve":
         return _serve_command(args.host, args.port, args.generated_root)
     if args.command == "studio":
-        return _studio_command(args.generated_root)
+        return _studio_command(args.generated_root, args.database)
     if args.command == "technology":
         return _technology_command(args.json)
     if args.command in {"audit-stack", "audit-python"}:

@@ -67,7 +67,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
 | Audit IA | HMAC persistant, isolé par tenant et partagé entre instances |
 | Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
-| ELMAN Studio | Phase 1 : planification et génération locale sous approbation humaine |
+| ELMAN Studio | Phase 2 : génération humaine-gated et historique SQLite en lecture seule |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
 
@@ -211,6 +211,15 @@ puis générer un starter avec le service du kernel.
 Toute nouvelle prévisualisation révoque l'approbation précédente. Studio
 n'effectue aucun déploiement automatique et n'appelle aucun fournisseur IA
 distant.
+
+La phase 2 consulte également l'historique SQLite en lecture seule. Une base
+absente n'est jamais créée par Studio.
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os studio `
+  --generated-root generated `
+  --database .elman\elman.db
+```
 
 ## API de contrôle optionnelle
 
