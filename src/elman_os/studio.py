@@ -539,8 +539,8 @@ def launch_studio(
                 )
                 refresh_history(None)
             finally:
-                workflow_run_button.disabled = False
                 workflow_approval_box.value = False
+                workflow_run_button.disabled = True
                 workflow_progress.value = 1.0
                 page.update()
 
