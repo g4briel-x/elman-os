@@ -142,3 +142,10 @@
 | `tests/test_release_v060rc1.py` | Cohérence PEP 440, manifeste, gates, documentation et archive RC. |
 | `docs/RELEASE.md` | Décision, preuves, frontières et procédure de tag de la release candidate. |
 | `scripts/verify_release_installation.py` | Construction et installation hors réseau de la roue `0.6.0rc1`. |
+
+## Release candidate v0.6.0-rc.2
+
+- `MIGRATION-v0.6.0-rc.1-to-v0.6.0-rc.2.md` : transition et retour arrière RC1 vers RC2.
+- `tests/test_release_v060rc2.py` : cohérence des versions, manifeste, gates et archive RC2.
+- `scripts/verify_release_installation.py` : roue et archive RC2 hors réseau.
+- `docs/RELEASE.md` : décision, preuves attendues et politique de tag RC2.

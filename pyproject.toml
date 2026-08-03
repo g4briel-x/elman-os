@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "elman-os-kernel"
-version = "0.6.0rc1"
-description = "ELMAN-OS v0.6.0-rc.1 : Studio local human-gated et workflows déterministes"
+version = "0.6.0rc2"
+description = "ELMAN-OS v0.6.0-rc.2 : release inventory hardening et transactions fail-closed"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Proprietary - ELMAN Technologies" }

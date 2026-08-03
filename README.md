@@ -1,15 +1,15 @@
-# ELMAN-OS Foundation Kit v0.6.0-rc.1
+# ELMAN-OS Foundation Kit v0.6.0-rc.2
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-La release candidate v0.6.0-rc.1 ajoute ELMAN Studio au kernel v0.5.1.
-Studio planifie et génère des starters sous approbation humaine, consulte
-l’historique SQLite en lecture seule et exécute des workflows déterministes
-locaux avec progression visible. Les états `.elman/` et `generated/` restent
-locaux et exclus des archives. Aucun fournisseur IA distant, credential réel,
-appel payant ou déploiement automatique n’est activé. Cette release candidate
-ne constitue pas une approbation finale de production :
+La release candidate v0.6.0-rc.2 consolide le périmètre fonctionnel de
+`v0.6.0-rc.1`. Elle élargit les exclusions de l’inventaire de release aux
+environnements, caches, IDE et dépendances locales, puis explicite que les
+transactions asynchrones ne suppriment jamais les exceptions. Les états
+`.elman/` et `generated/` restent locaux. Aucun fournisseur IA distant,
+credential réel, appel payant ou déploiement automatique n’est activé. Cette
+release candidate ne constitue pas une approbation finale de production :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -46,7 +46,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.6.0-rc.1 |
+| Capacité | Statut v0.6.0-rc.2 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -126,10 +126,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.5.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.6.0-rc.2.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.5.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.6.0-rc.2"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel

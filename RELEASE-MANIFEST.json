@@ -1,8 +1,8 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.6.0-rc.1",
-  "release_date": "2026-08-02",
+  "version": "0.6.0-rc.2",
+  "release_date": "2026-08-03",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
   "agent_counts": {
@@ -79,7 +79,10 @@
     "protected_generated_workspaces",
     "protected_elman_runtime_state",
     "v051_to_v060rc1_migration_validation",
-    "deterministic_v060rc1_archive"
+    "release_inventory_tooling_exclusions",
+    "transaction_exit_contract_hardening",
+    "v060rc1_to_v060rc2_migration_validation",
+    "deterministic_v060rc2_archive"
   ],
   "verification_scope": {
     "kernel_unittests": 278,
@@ -122,13 +125,13 @@
     "persistent_governance_tests": 22,
     "production_runtime_tests": 7,
     "release_finalization_tests": 10,
-    "migration_source": "0.5.1",
+    "migration_source": "0.6.0-rc.1",
     "isolated_offline_wheel_installation": true,
     "studio_phase1_tests": 7,
     "studio_history_tests": 6,
     "studio_runtime_tests": 4,
     "studio_visual_validation_host": "windows",
-    "deterministic_v060rc1_archive": true
+    "deterministic_v060rc2_archive": true
   },
   "final_release_approved": false,
   "not_production_ready": true,
