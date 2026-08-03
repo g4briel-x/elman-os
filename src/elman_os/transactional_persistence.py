@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from types import MappingProxyType
-from typing import Any, Protocol, runtime_checkable
+from typing import Any, Literal, Protocol, runtime_checkable
 
 _SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 _MAX_VALUE_BYTES = 1024 * 1024
@@ -151,7 +151,14 @@ class TransactionContext(Protocol):
         exc_type: type[BaseException] | None,
         exc: BaseException | None,
         traceback: object | None,
-    ) -> bool: ...
+    ) -> Literal[False] | None:
+        """Never suppress an in-flight exception.
+
+        Returning a truthy value here would silently swallow errors raised
+        inside ``async with backend.transaction(...):`` blocks -- including
+        quota-exceeded and audit-integrity failures -- so every
+        implementation of this contract must return ``False`` (or ``None``).
+        """
 
 
 class SQLitePersistence:
@@ -278,7 +285,7 @@ class _SQLiteTransaction:
         exc_type: type[BaseException] | None,
         exc: BaseException | None,
         traceback: object | None,
-    ) -> bool:
+    ) -> Literal[False]:
         connection = self._connection
         if connection is None:
             await self._release()
