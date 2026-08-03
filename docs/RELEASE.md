@@ -1,63 +1,40 @@
-# Validation de la release candidate v0.6.0-rc.1
+# Validation de la release candidate v0.6.0-rc.2
 
 ## Décision
 
-ELMAN-OS Foundation Kit `v0.6.0-rc.1` est une release candidate destinée à
-valider ELMAN Studio et son intégration au kernel avant promotion vers
-`v0.6.0`.
+ELMAN-OS Foundation Kit `v0.6.0-rc.2` consolide `v0.6.0-rc.1` avec un
+inventaire de release renforcé et un contrat transactionnel explicitement non
+suppressif.
 
-La version de distribution Python est `0.6.0rc1`. Cette release candidate
-n’est ni une approbation finale ni une autorisation de déploiement en
-production.
+La version Python est `0.6.0rc2`. Cette release candidate n’est ni une
+approbation finale ni une autorisation de production.
 
-## Périmètre livré
+## Périmètre
 
-- ELMAN Studio phase 1 : intention, plan, approbation et génération locale ;
-- phase 2 : historique SQLite strictement en lecture seule ;
-- phase 3 : workflows déterministes locaux avec suivi de progression ;
-- exécution hors du thread de l’interface ;
-- verdict, raison d’arrêt, preuves et décisions consultables ;
-- gate d’exécution réinitialisée après chaque workflow ;
-- protection des états locaux `.elman/` et `generated/` ;
-- kernel, authentification, persistance et gouvernance de `v0.5.1` conservés.
+- ELMAN Studio phases 1 à 3 ;
+- workflows déterministes locaux et approbation à usage unique ;
+- historique SQLite en lecture seule ;
+- `.elman/`, `generated/`, environnements, caches, IDE et dépendances locales
+  exclus de l’inventaire ;
+- transactions asynchrones qui ne suppriment jamais les exceptions.
 
-## Preuves de validation attendues
+## Preuves attendues
 
-- 278 tests unitaires réussis hors réseau ;
-- compilation Python réussie ;
-- `release-check` réussi ;
+- 278 tests unitaires hors réseau ;
+- `release-check` réussi avec 106 fichiers vérifiés ;
 - audit technologique réussi ;
-- roue `0.6.0rc1` construite et installée sans index ;
-- version importée vérifiée dans un environnement neuf ;
-- deux archives ZIP produites avec le même SHA-256 ;
-- matrice CI Windows, macOS et Linux sur Python 3.11 à 3.13 ;
-- aucun credential réel, appel payant ou fournisseur distant utilisé.
+- roue `0.6.0rc2` installée sans index ;
+- archive ZIP déterministe et reproductible ;
+- matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13.
 
-## Gates de production
-
-Les gates restent fermées :
+## Gates
 
 - `release_candidate_validated = true` ;
 - `final_release_approved = false` ;
-- `not_production_ready = true` ;
-- aucun déploiement automatique ;
-- aucune connectivité réelle de fournisseur IA certifiée.
+- `not_production_ready = true`.
 
-## Commandes de contrôle
+## Tags
 
-```powershell
-.\.venv\Scripts\python.exe -W error::ResourceWarning `
-  -m unittest discover -s tests -v
-
-.\.venv\Scripts\python.exe -m elman_os release-check .
-
-.\.venv\Scripts\python.exe scripts\verify_release_installation.py .
-```
-
-## Tag
-
-Le tag annoté `v0.6.0-rc.1` doit être créé uniquement sur le commit de `main`
-obtenu après fusion de la Pull Request et réussite de la matrice CI.
-
-Il ne doit pas être créé directement sur la branche
-`release/v0.6.0-rc.1`.
+Le tag `v0.6.0-rc.1` reste immuable. Le tag `v0.6.0-rc.2` sera créé uniquement
+sur `main`, après fusion de la PR RC2 et réussite de la CI. Il ne doit pas être
+créé sur `release/v0.6.0-rc.2`.

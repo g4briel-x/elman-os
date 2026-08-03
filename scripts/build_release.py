@@ -12,8 +12,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from elman_os.release import iter_release_files, write_release_checksums  # noqa: E402
 
-FIXED_TIMESTAMP = (2026, 8, 2, 0, 0, 0)
-ARCHIVE_PREFIX = "elman-os-foundation-kit-v0.6.0-rc.1"
+FIXED_TIMESTAMP = (2026, 8, 3, 0, 0, 0)
+ARCHIVE_PREFIX = "elman-os-foundation-kit-v0.6.0-rc.2"
 
 
 def build_archive(root: Path, output: Path) -> None:
@@ -34,7 +34,7 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=ROOT.parent / "ELMAN-OS-Foundation-Kit-v0.6.0-rc.1.zip",
+        default=ROOT.parent / "ELMAN-OS-Foundation-Kit-v0.6.0-rc.2.zip",
     )
     args = parser.parse_args()
     build_archive(ROOT, args.output.resolve())

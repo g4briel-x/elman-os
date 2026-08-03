@@ -1,5 +1,23 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.6.0-rc.2 — 2026-08-03
+
+### Renforcé
+
+- exclusion des environnements virtuels, caches, IDE et dépendances locales ;
+- inventaire SHA-256 limité aux fichiers effectivement distribuables ;
+- contrat `__aexit__` transactionnel explicitement non suppressif ;
+- propagation garantie des erreurs de quota, d’intégrité et d’audit.
+
+### Vérification
+
+- 278 tests unitaires réussis hors réseau ;
+- `release-check` et audit technologique réussis ;
+- roue `0.6.0rc2` installée hors réseau ;
+- archive ZIP déterministe et reproductible ;
+- gates de production maintenues fermées.
+
+
 ## v0.6.0-rc.1 — 2026-08-02
 
 ### Ajouté
