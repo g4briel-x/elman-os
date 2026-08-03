@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.6.0-rc.2"
-PACKAGE_VERSION = "0.6.0rc2"
+DISPLAY_VERSION = "0.6.0"
+PACKAGE_VERSION = "0.6.0"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -75,6 +75,7 @@ _REQUIRED_FILES = (
     "MIGRATION-v0.5.0-to-v0.5.1.md",
     "MIGRATION-v0.5.1-to-v0.6.0-rc.1.md",
     "MIGRATION-v0.6.0-rc.1-to-v0.6.0-rc.2.md",
+    "MIGRATION-v0.6.0-rc.2-to-v0.6.0.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
@@ -83,7 +84,7 @@ _REQUIRED_FILES = (
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
     "tests/test_release.py",
-    "tests/test_release_v060rc2.py",
+    "tests/test_release_v060.py",
     "scripts/verify_release_installation.py",
 )
 
@@ -359,7 +360,7 @@ def validate_release(
         )
         gates_ok = (
             manifest["release_candidate_validated"] is True
-            and manifest["final_release_approved"] is False
+            and manifest["final_release_approved"] is True
             and manifest["not_production_ready"] is True
             and scope["real_api_credentials_used"] is False
             and scope["paid_api_calls"] is False

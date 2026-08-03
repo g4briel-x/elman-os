@@ -149,3 +149,10 @@
 - `tests/test_release_v060rc2.py` : cohérence des versions, manifeste, gates et archive RC2.
 - `scripts/verify_release_installation.py` : roue et archive RC2 hors réseau.
 - `docs/RELEASE.md` : décision, preuves attendues et politique de tag RC2.
+
+## Version stable v0.6.0
+
+- `MIGRATION-v0.6.0-rc.2-to-v0.6.0.md` : promotion stable et retour arrière.
+- `tests/test_release_v060.py` : cohérence des versions, du manifeste, des gates et de l’archive stable.
+- `scripts/verify_release_installation.py` : validation hors réseau de la roue et de l’archive v0.6.0.
+- `docs/RELEASE.md` : décision de publication stable et politique de tag.
