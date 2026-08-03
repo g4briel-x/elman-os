@@ -1,5 +1,25 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.6.0 — 2026-08-03
+
+### Publication stable
+
+- promotion sans changement fonctionnel de `v0.6.0-rc.2` ;
+- ELMAN Studio phases 1 à 3 déclaré stable ;
+- inventaire SHA-256 et exclusions de tooling stabilisés ;
+- contrat transactionnel non suppressif conservé ;
+- documentation et migration stable ajoutées.
+
+### Vérification
+
+- 278 tests unitaires réussis hors réseau ;
+- 10 tests de finalisation stable réussis ;
+- matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13 ;
+- roue `0.6.0` installée hors réseau ;
+- archive ZIP déterministe et reproductible ;
+- distribution finale approuvée, déploiement production toujours fermé.
+
+
 ## v0.6.0-rc.2 — 2026-08-03
 
 ### Renforcé
