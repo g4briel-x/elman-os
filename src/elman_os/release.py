@@ -22,7 +22,25 @@ CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
 _IGNORED_DIRECTORY_NAMES = frozenset(
-    {".git", ".venv", "__pycache__", "build", "dist", "generated", ".elman"}
+    {
+        ".git",
+        ".venv",
+        "venv",
+        "__pycache__",
+        "build",
+        "dist",
+        "generated",
+        ".elman",
+        ".pytest_cache",
+        ".mypy_cache",
+        ".ruff_cache",
+        ".tox",
+        ".nox",
+        ".idea",
+        ".vscode",
+        "node_modules",
+        "htmlcov",
+    }
 )
 _WINDOWS_RESERVED_NAMES = frozenset(
     {
