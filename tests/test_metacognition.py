@@ -1,6 +1,6 @@
 import unittest
 
-from elman_os.domain import CycleResult, StopReason, Verdict
+from elman_os.domain import CycleResult, ReflectionReport, StopReason, Verdict
 from elman_os.metacognition import (
     LearningAgent,
     MemoryManager,
@@ -186,6 +186,135 @@ class SupervisorTests(unittest.TestCase):
         )
         self.assertEqual(decision.reason, StopReason.EXTERNAL_BLOCKER)
         self.assertTrue(decision.requires_human_decision)
+
+
+class ReflectiveAgentTests(unittest.TestCase):
+    def test_legacy_reflection_report_constructor_remains_valid(self) -> None:
+        report = ReflectionReport(
+            1,
+            ("worked",),
+            ("failed",),
+            ("gap",),
+            "correction",
+            "fingerprint",
+        )
+        self.assertEqual(report.probable_causes, ())
+        self.assertEqual(report.hypotheses_to_verify, ())
+        self.assertEqual(report.proposed_improvements, ())
+
+    def test_rework_exposes_causes_hypotheses_and_improvements(self) -> None:
+        reflector = ReflectiveAgent()
+        result = CycleResult(
+            proof_verdict=Verdict.REWORK_REQUIRED,
+            criteria_validated=False,
+            progress_score=0.4,
+            cost_units=1.0,
+            evidence=["proof-a"],
+            failure_fingerprint="rework-a",
+        )
+
+        report = reflector.review(2, result, None)
+
+        self.assertTrue(report.probable_causes)
+        self.assertTrue(report.hypotheses_to_verify)
+        self.assertTrue(report.proposed_improvements)
+        self.assertEqual(
+            report.recommended_correction,
+            "Réattribuer chaque finding à son propriétaire puis retester uniquement les gates affectées.",
+        )
+        self.assertIn(
+            report.recommended_correction,
+            report.proposed_improvements,
+        )
+
+    def test_missing_evidence_is_reflected_explicitly(self) -> None:
+        reflector = ReflectiveAgent()
+        result = CycleResult(
+            proof_verdict=Verdict.REWORK_REQUIRED,
+            criteria_validated=False,
+            progress_score=0.2,
+            cost_units=1.0,
+        )
+
+        report = reflector.review(1, result, None)
+
+        self.assertIn("Aucune preuve fournie par le cycle", report.evidence_gaps)
+        self.assertIn(
+            "Le cycle n'a pas produit de preuve vérifiable.",
+            report.probable_causes,
+        )
+        self.assertIn(
+            "Ajouter une preuve vérifiable pour chaque critère d'acceptation affecté.",
+            report.proposed_improvements,
+        )
+
+    def test_no_progress_adds_root_cause_hypothesis(self) -> None:
+        reflector = ReflectiveAgent()
+        previous = CycleResult(
+            proof_verdict=Verdict.REWORK_REQUIRED,
+            criteria_validated=False,
+            progress_score=0.5,
+            cost_units=1.0,
+            evidence=["proof-before"],
+        )
+        result = CycleResult(
+            proof_verdict=Verdict.REWORK_REQUIRED,
+            criteria_validated=False,
+            progress_score=0.5,
+            cost_units=1.0,
+            evidence=["proof-after"],
+        )
+
+        report = reflector.review(2, result, previous)
+
+        self.assertIn(
+            "La stratégie appliquée n'a pas augmenté le score de progression.",
+            report.probable_causes,
+        )
+        self.assertIn(
+            "La correction actuelle peut ne pas traiter la cause racine.",
+            report.hypotheses_to_verify,
+        )
+        self.assertIn(
+            "Changer une seule hypothèse de correction et mesurer son effet au cycle suivant.",
+            report.proposed_improvements,
+        )
+
+    def test_blocker_remains_advisory_and_requires_no_mutation(self) -> None:
+        reflector = ReflectiveAgent()
+        result = CycleResult(
+            proof_verdict=Verdict.BLOCKED,
+            criteria_validated=False,
+            progress_score=0.0,
+            cost_units=0.0,
+            evidence=["dependency-check"],
+            blocked_reason="Approval required",
+        )
+        before = (
+            result.proof_verdict,
+            result.criteria_validated,
+            result.progress_score,
+            result.cost_units,
+            tuple(result.evidence),
+            result.blocked_reason,
+        )
+
+        report = reflector.review(1, result, None)
+
+        after = (
+            result.proof_verdict,
+            result.criteria_validated,
+            result.progress_score,
+            result.cost_units,
+            tuple(result.evidence),
+            result.blocked_reason,
+        )
+        self.assertEqual(before, after)
+        self.assertIn("Blocage déclaré: Approval required", report.probable_causes)
+        self.assertIn(
+            "Escalader le blocage avec les preuves et la décision exacte attendue.",
+            report.proposed_improvements,
+        )
 
 
 class MemoryAndLearningTests(unittest.TestCase):

@@ -110,6 +110,9 @@ class ReflectiveAgent:
         worked: list[str] = []
         failed: list[str] = []
         gaps: list[str] = []
+        causes: list[str] = []
+        hypotheses: list[str] = []
+        improvements: list[str] = []
 
         if result.progress_score > 0:
             worked.append(f"Progression observée: {result.progress_score:.2f}")
@@ -117,6 +120,13 @@ class ReflectiveAgent:
             worked.append(f"{len(result.evidence)} preuve(s) fournie(s)")
         else:
             gaps.append("Aucune preuve fournie par le cycle")
+            causes.append("Le cycle n'a pas produit de preuve vérifiable.")
+            hypotheses.append(
+                "Le travail peut être partiellement correct mais insuffisamment démontré."
+            )
+            improvements.append(
+                "Ajouter une preuve vérifiable pour chaque critère d'acceptation affecté."
+            )
 
         if result.proof_verdict in {Verdict.REWORK_REQUIRED, Verdict.BLOCKED}:
             failed.append(f"Verdict final: {result.proof_verdict.value}")
@@ -124,16 +134,46 @@ class ReflectiveAgent:
             failed.append("Anomalie critique détectée")
         if previous and result.progress_score <= previous.progress_score:
             failed.append("Absence d'amélioration mesurable depuis le cycle précédent")
+            causes.append(
+                "La stratégie appliquée n'a pas augmenté le score de progression."
+            )
+            hypotheses.append(
+                "La correction actuelle peut ne pas traiter la cause racine."
+            )
+            improvements.append(
+                "Changer une seule hypothèse de correction et mesurer son effet au cycle suivant."
+            )
 
         correction = None
         if result.blocked_reason:
+            causes.append(f"Blocage déclaré: {result.blocked_reason}")
+            hypotheses.append(
+                "Une dépendance externe ou une décision humaine peut être nécessaire pour lever le blocage."
+            )
             correction = "Escalader le blocage avec les preuves et la décision exacte attendue."
         elif result.critical_findings:
+            causes.append("Un finding critique empêche une poursuite sûre.")
+            hypotheses.append(
+                "Le risque critique peut rendre toute correction automatique non sûre."
+            )
             correction = "Arrêter la production et soumettre le risque critique à décision humaine."
         elif result.proof_verdict == Verdict.REWORK_REQUIRED:
+            causes.append(
+                "Au moins un contrôle de preuve ou critère d'acceptation reste non satisfait."
+            )
+            hypotheses.append(
+                "Un finding non résolu ou une preuve insuffisante peut expliquer le besoin de reprise."
+            )
             correction = "Réattribuer chaque finding à son propriétaire puis retester uniquement les gates affectées."
         elif not result.criteria_validated:
+            causes.append("Les critères d'acceptation ne sont pas entièrement validés.")
+            hypotheses.append(
+                "Le critère non satisfait à plus fort impact peut être la principale source de l'échec."
+            )
             correction = "Cibler le critère d'acceptation non satisfait ayant le plus fort impact."
+
+        if correction is not None and correction not in improvements:
+            improvements.append(correction)
 
         return ReflectionReport(
             iteration=iteration,
@@ -142,6 +182,9 @@ class ReflectiveAgent:
             evidence_gaps=tuple(gaps),
             recommended_correction=correction,
             failure_fingerprint=result.failure_fingerprint,
+            probable_causes=tuple(causes),
+            hypotheses_to_verify=tuple(hypotheses),
+            proposed_improvements=tuple(improvements),
         )
 
 
