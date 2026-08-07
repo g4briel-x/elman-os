@@ -131,6 +131,9 @@ class ReflectionReport:
     evidence_gaps: tuple[str, ...]
     recommended_correction: str | None
     failure_fingerprint: str | None
+    probable_causes: tuple[str, ...] = ()
+    hypotheses_to_verify: tuple[str, ...] = ()
+    proposed_improvements: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
