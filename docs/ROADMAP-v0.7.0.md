@@ -171,6 +171,12 @@ jalons 5 et 6.
 - refus des résultats incomplets ;
 - rapport final signé.
 
+État : implémenté par le contrat `final_verification`. Neuf portes obligatoires
+contrôlent le plan, le journal, les sorties, les artefacts, les preuves, les
+politiques, les erreurs, les décisions et la supervision métacognitive. Chaque
+acceptation ou rejet produit un rapport HMAC-SHA-256 vérifiable. L’exposition
+du rapport et de ses preuves dans Studio reste couverte par le jalon 6.
+
 ### Jalon 6 — Intégration ELMAN Studio
 
 - visualisation du plan ;
