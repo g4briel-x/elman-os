@@ -205,6 +205,13 @@ réservés au jalon 7.
 - audit technologique ;
 - validation reproductible.
 
+État : préparé pour `v0.7.0-rc.1`. Les versions d’affichage et Python sont
+alignées, la migration depuis `v0.6.0` est documentée, l’inventaire SHA-256 est
+exhaustif, l’archive est comparée sur deux constructions indépendantes et la CI
+couvre désormais les PR vers `develop/v0.7.0` et `main`. Le tag reste interdit
+tant que la matrice Windows/macOS/Linux sur Python 3.11 à 3.13 n’a pas réussi
+sur la Pull Request de promotion.
+
 ## Premier incrément technique
 
 Le premier développement de v0.7.0 sera le contrat multi-agent du kernel.

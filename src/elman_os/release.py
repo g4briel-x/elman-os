@@ -16,8 +16,8 @@ from pathlib import Path, PurePosixPath
 
 from .technology_policy import audit_technology_policy
 
-DISPLAY_VERSION = "0.6.0"
-PACKAGE_VERSION = "0.6.0"
+DISPLAY_VERSION = "0.7.0-rc.1"
+PACKAGE_VERSION = "0.7.0rc1"
 CHECKSUM_FILENAME = "RELEASE-CHECKSUMS.sha256"
 _DIGEST_LINE = re.compile(r"^([0-9a-f]{64})  ([^\r\n]+)$")
 _RUNTIME_VERSION = re.compile(r'^__version__\s*=\s*"([^"]+)"\s*$', re.MULTILINE)
@@ -76,6 +76,7 @@ _REQUIRED_FILES = (
     "MIGRATION-v0.5.1-to-v0.6.0-rc.1.md",
     "MIGRATION-v0.6.0-rc.1-to-v0.6.0-rc.2.md",
     "MIGRATION-v0.6.0-rc.2-to-v0.6.0.md",
+    "MIGRATION-v0.6.0-to-v0.7.0-rc.1.md",
     "README.md",
     "RELEASE-MANIFEST.json",
     "RELEASE-CHECKSUMS.sha256",
@@ -84,7 +85,7 @@ _REQUIRED_FILES = (
     "src/elman_os/__init__.py",
     "src/elman_os/release.py",
     "tests/test_release.py",
-    "tests/test_release_v060.py",
+    "tests/test_release_v070rc1.py",
     "scripts/verify_release_installation.py",
 )
 
@@ -211,11 +212,12 @@ def _checksum_entries(path: Path) -> tuple[tuple[str, PurePosixPath], ...]:
 
 
 def verify_release_checksums(root: str | Path) -> tuple[int, tuple[str, ...]]:
-    """Verify the signed inventory boundary without following symlinks."""
+    """Verify hashes and reject every file outside the release inventory."""
 
     base = Path(root).resolve()
     failures: list[str] = []
     entries = _checksum_entries(base / CHECKSUM_FILENAME)
+    tracked_paths = {relative.as_posix() for _, relative in entries}
     for expected, relative in entries:
         candidate = base.joinpath(*relative.parts)
         try:
@@ -228,6 +230,14 @@ def verify_release_checksums(root: str | Path) -> tuple[int, tuple[str, ...]]:
             continue
         if not hashlib.sha256(resolved.read_bytes()).hexdigest() == expected:
             failures.append(f"{relative.as_posix()}:changed")
+    actual_paths = {
+        path.relative_to(base).as_posix()
+        for path in iter_release_files(base)
+    }
+    failures.extend(
+        f"{relative}:untracked"
+        for relative in sorted(actual_paths - tracked_paths)
+    )
     return len(entries), tuple(failures)
 
 
@@ -356,11 +366,11 @@ def validate_release(
         manifest_ok = (
             manifest["version"] == DISPLAY_VERSION
             and manifest["package_name"] == "elman-os-kernel"
-            and scope["kernel_unittests"] == 278
+            and scope["kernel_unittests"] == 1923
         )
         gates_ok = (
             manifest["release_candidate_validated"] is True
-            and manifest["final_release_approved"] is True
+            and manifest["final_release_approved"] is False
             and manifest["not_production_ready"] is True
             and scope["real_api_credentials_used"] is False
             and scope["paid_api_calls"] is False

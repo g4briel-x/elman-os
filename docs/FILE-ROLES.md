@@ -59,7 +59,7 @@
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
-| `docs/RELEASE.md` | décision v0.5.1, preuves de validation et limites opérationnelles |
+| `docs/RELEASE.md` | décision v0.7.0-rc.1, preuves de validation et limites opérationnelles |
 | `docs/JWT-OIDC-AUTHENTICATION.md` | frontière et politique d’authentification |
 | `docs/TRANSACTIONAL-PERSISTENCE.md` | stockage transactionnel isolé par tenant |
 | `docs/PERSISTENT-QUOTAS-AUDIT.md` | gouvernance persistante partagée entre instances |
@@ -101,13 +101,13 @@
 | `test_transactional_persistence.py` | transactions, tenants et concurrence multi-instance |
 | `test_persistent_governance.py` | quotas et chaînes d’audit persistants |
 | `test_production_runtime.py` | composition complète et API authentifiée |
-| `test_release_v051.py` | cohérence de la finalisation v0.5.1 |
+| `test_release_v070rc1.py` | cohérence de la release candidate v0.7.0-rc.1 |
 
 ## Scripts de release
 
 | Fichier | Rôle |
 |---|---|
-| `scripts/build_release.py` | construction ZIP déterministe v0.5.1 |
+| `scripts/build_release.py` | construction ZIP déterministe v0.7.0-rc.1 |
 | `scripts/verify_release_installation.py` | roue, installation isolée et archive hors réseau |
 
 ## ELMAN Studio MVP — phase 1
@@ -156,3 +156,17 @@
 - `tests/test_release_v060.py` : cohérence des versions, du manifeste, des gates et de l’archive stable.
 - `scripts/verify_release_installation.py` : validation hors réseau de la roue et de l’archive v0.6.0.
 - `docs/RELEASE.md` : décision de publication stable et politique de tag.
+
+## Release candidate v0.7.0-rc.1
+
+| Fichier | Rôle |
+|---|---|
+| `MIGRATION-v0.6.0-to-v0.7.0-rc.1.md` | migration, validation PowerShell et retour arrière depuis v0.6.0 |
+| `tests/test_release_v070rc1.py` | versions, manifeste, gates, CLI Studio, CI et archive RC |
+| `src/elman_os/cli.py` | expose officiellement le tableau read-only via `studio-oversight` |
+| `src/elman_os/release.py` | exige la couverture exhaustive de l’inventaire SHA-256 |
+| `scripts/build_release.py` | produit l’archive déterministe `v0.7.0-rc.1` |
+| `scripts/verify_release_installation.py` | installe la roue hors réseau et compare deux archives |
+| `.github/workflows/release-validation.yml` | valide les PR vers `develop/v0.7.0` et `main` |
+| `RELEASE-MANIFEST.json` | décrit le périmètre, les preuves et les gates fermées |
+| `RELEASE-CHECKSUMS.sha256` | inventaire exhaustif des fichiers distribués |

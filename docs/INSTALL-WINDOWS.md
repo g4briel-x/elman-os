@@ -1,4 +1,4 @@
-# Installation du Foundation Kit ELMAN-OS v0.4.0 sous Windows PowerShell
+# Installation du Foundation Kit ELMAN-OS v0.7.0-rc.1 sous Windows PowerShell
 
 PowerShell sert de terminal. Le kernel, les agents, l’orchestration, la
 métacognition, les plugins, la persistance et les tests sont exécutés par
@@ -19,10 +19,10 @@ projet n’ont pas été validées avec cette version.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.4.0.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.7.0-rc.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.4.0"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.7.0-rc.1"
 ```
 
 ## 3. Créer l’environnement
@@ -98,14 +98,28 @@ Limite sans réussite :
 
 L’extra API installe FastAPI et Uvicorn. Il n’est pas requis par le kernel.
 
-## 9. Commandes Git
+## 9. Ouvrir la supervision Studio v0.7
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -e ".[studio]"
+.\.venv\Scripts\python.exe -m elman_os studio-oversight `
+  --request .elman\final-verification-request.json `
+  --report .elman\final-verification-report.json `
+  --key-file .elman\final-report.key `
+  --key-id key:release-001
+```
+
+La projection est en lecture seule. Une signature absente ou invalide maintient
+la clôture dans un état refusé.
+
+## 10. Commandes Git
 
 À exécuter à la racine d’un dépôt Git initialisé :
 
 ```powershell
 git status -sb
 git add .
-git commit -m "feat: add authenticated AI execution audit"
+git commit -m "release: prepare ELMAN-OS v0.7.0-rc.1"
 git push
 ```
 
@@ -126,7 +140,7 @@ Ces dépendances sont optionnelles :
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[api]"
-.\.venv\Scripts\python.exe -m pip install -e ".[mobile]"
+.\.venv\Scripts\python.exe -m pip install -e ".[studio]"
 ```
 
 ### Build iOS sous Windows

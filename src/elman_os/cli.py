@@ -285,6 +285,24 @@ def _studio_command(generated_root: str, database: str) -> int:
     return 0
 
 
+def _studio_oversight_command(
+    request: str,
+    report: str | None,
+    key_file: str | None,
+    key_id: str | None,
+) -> int:
+    from .studio_v07 import main as studio_v07_main
+
+    arguments = ["--request", request]
+    if report is not None:
+        arguments.extend(("--report", report))
+    if key_file is not None:
+        arguments.extend(("--key-file", key_file))
+    if key_id is not None:
+        arguments.extend(("--key-id", key_id))
+    return studio_v07_main(arguments)
+
+
 def _technology_command(as_json: bool) -> int:
     policy = {
         "policy": "python-core-with-layer-bounded-specialized-languages",
@@ -437,6 +455,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Base SQLite consultée en lecture seule par Studio",
     )
 
+    oversight = subparsers.add_parser(
+        "studio-oversight",
+        help="Afficher le contrôle v0.7 en lecture seule et fail-closed",
+    )
+    oversight.add_argument(
+        "--request",
+        required=True,
+        help="Requête JSON de vérification finale",
+    )
+    oversight.add_argument("--report", help="Rapport final signé JSON")
+    oversight.add_argument(
+        "--key-file",
+        help="Fichier binaire contenant la clé HMAC ; jamais la clé en argument",
+    )
+    oversight.add_argument("--key-id", help="Identifiant de la clé du rapport")
+
     technology = subparsers.add_parser(
         "technology",
         help="Afficher la stack Python et les exceptions frontend bornées",
@@ -487,6 +521,13 @@ def main(argv: list[str] | None = None) -> int:
         return _serve_command(args.host, args.port, args.generated_root)
     if args.command == "studio":
         return _studio_command(args.generated_root, args.database)
+    if args.command == "studio-oversight":
+        return _studio_oversight_command(
+            args.request,
+            args.report,
+            args.key_file,
+            args.key_id,
+        )
     if args.command == "technology":
         return _technology_command(args.json)
     if args.command in {"audit-stack", "audit-python"}:

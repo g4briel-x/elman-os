@@ -1,15 +1,14 @@
-# ELMAN-OS Foundation Kit v0.6.0
+# ELMAN-OS Foundation Kit v0.7.0-rc.1
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-ELMAN-OS v0.6.0 est la promotion stable de `v0.6.0-rc.2`. Elle livre
-ELMAN Studio phases 1 à 3, l’inventaire de release durci et le contrat
-transactionnel fail-closed validés par la matrice multi-plateforme. Les états
-`.elman/` et `generated/` restent locaux. Aucun fournisseur IA distant,
-credential réel, appel payant ou déploiement automatique n’est activé. La
-distribution est stable, mais le déploiement de production reste soumis à
-une autorisation distincte :
+ELMAN-OS v0.7.0-rc.1 stabilise l’orchestration multi-agent, la supervision
+métacognitive, la mémoire structurée, le vérificateur final fail-closed et leur
+projection dans ELMAN Studio. Les états `.elman/` et `generated/` restent
+locaux. Aucun fournisseur IA distant, credential réel, appel payant ou
+déploiement automatique n’est activé. La distribution est une release
+candidate ; l’approbation finale et la production restent fermées :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -39,14 +38,23 @@ une autorisation distincte :
 - réservations de quota non rejouables, isolées par tenant et identité ;
 - inventaire SHA-256 et contrôle de release hors réseau ;
 - matrice CI Windows/macOS/Linux sur Python 3.11 à 3.13 ;
-- politique Python-first contrôlée par couche.
+- politique Python-first contrôlée par couche ;
+- contrats multi-agents immuables et catalogue déterministe ;
+- plans d’exécution, journal hashé, dispatch et reprise contrôlée ;
+- cycle transactionnel et persistance des états d’orchestration ;
+- détections métacognitives et décisions liées aux preuves ;
+- mémoire de projet append-only avec provenance et rétention ;
+- vérification finale à neuf portes et rapports HMAC ;
+- tableau Studio v0.7 en lecture seule via `studio-oversight` ;
+- inventaire SHA-256 exhaustif refusant les fichiers non suivis ;
+- archive reproductible comparée sur deux constructions.
 
 Le standard « 15+ années » décrit un niveau de méthode, de jugement et de
 rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.6.0 |
+| Capacité | Statut v0.7.0-rc.1 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -66,7 +74,10 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 | Stabilisation IA | Prévalidation et quotas atomiques par identité |
 | Audit IA | HMAC persistant, isolé par tenant et partagé entre instances |
 | Validation de release | Versions, SHA-256, secrets, chemins et politique contrôlés hors réseau |
-| ELMAN Studio | Phase 3 : génération, historique read-only et workflows locaux en direct |
+| ELMAN Studio | Phase 3 conservée + supervision v0.7 read-only et fail-closed |
+| Orchestration multi-agent v0.7 | Exécutable, déterministe et testée hors réseau |
+| Mémoire de projet | SQLite append-only, provenance, révisions et rétention |
+| Vérification finale | Neuf portes obligatoires et rapport HMAC |
 | Sandbox de processus/conteneurs | Non livrée |
 | Déploiement production/stores | Interdit sans approbation |
 
@@ -126,10 +137,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.6.0.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.7.0-rc.1.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.6.0"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.7.0-rc.1"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -220,6 +231,23 @@ absente n'est jamais créée par Studio.
   --database .elman\elman.db
 ```
 
+## ELMAN Studio — supervision v0.7
+
+La projection v0.7 expose le plan, les agents, les approbations, la mémoire,
+les preuves, les erreurs, la supervision et le rapport final. Elle reste en
+lecture seule et refuse la clôture tant que le rapport HMAC n’est pas vérifié.
+
+```powershell
+.\.venv\Scripts\python.exe -m elman_os studio-oversight `
+  --request .elman\final-verification-request.json `
+  --report .elman\final-verification-report.json `
+  --key-file .elman\final-report.key `
+  --key-id key:release-001
+```
+
+La clé HMAC doit être lue depuis un fichier local protégé ; elle ne doit jamais
+être copiée en texte brut dans la commande.
+
 ## API de contrôle optionnelle
 
 ```powershell
@@ -237,7 +265,7 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.4.0/
+elman-os-foundation-kit-v0.7.0-rc.1/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
 ├── MIGRATION-v0.3.1-to-v0.4.0.md
@@ -301,8 +329,9 @@ Les critères de gel, d’intégrité et de revue finale sont décrits dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-La publication stable requiert la fusion de cette promotion dans `main`, la
-validation de la matrice CI multi-plateforme et la création contrôlée du tag `v0.4.0`.
+La publication de la release candidate requiert la fusion de la branche
+`release/v0.7.0-rc.1` dans `main`, la validation de la matrice CI
+multi-plateforme et la création contrôlée du tag `v0.7.0-rc.1`.
 
 ## ELMAN Studio — workflows locaux en direct
 
