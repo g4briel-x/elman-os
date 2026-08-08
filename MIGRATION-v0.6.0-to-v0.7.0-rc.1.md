@@ -111,5 +111,6 @@ Si des essais ont modifié les données locales, restaurer explicitement les
 sauvegardes après avoir fermé ELMAN Studio et tout processus ELMAN-OS. Ne pas
 écraser `.elman/` ou `generated/` sans avoir vérifié la sauvegarde.
 
-Le tag `v0.7.0-rc.1` ne doit être créé qu’après fusion dans `main` et réussite
-de toute la matrice GitHub Actions.
+Le tag publié `v0.7.0-rc.1` pointe sur le commit fusionné de
+`develop/v0.7.0`, après réussite de toute la matrice GitHub Actions. La fusion
+vers `main` reste réservée à la promotion stable `v0.7.0`.

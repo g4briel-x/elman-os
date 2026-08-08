@@ -205,15 +205,15 @@ réservés au jalon 7.
 - audit technologique ;
 - validation reproductible.
 
-État : préparé pour `v0.7.0-rc.1`. Les versions d’affichage et Python sont
-alignées, la migration depuis `v0.6.0` est documentée, l’inventaire SHA-256 est
-exhaustif, l’archive est comparée sur deux constructions indépendantes et la CI
-couvre désormais les PR vers `develop/v0.7.0` et `main`. Le tag reste interdit
-tant que la matrice Windows/macOS/Linux sur Python 3.11 à 3.13 n’a pas réussi
-sur la Pull Request de promotion. Le blocage macOS découvert par cette matrice
-est corrigé par une reconnaissance strictement vérifiée de l’alias système
-`/var → /private/var` ; les symlinks imbriqués et les racines symlinkées restent
-refusés.
+État : `v0.7.0-rc.1` publiée et validée. La matrice Windows/macOS/Linux sur
+Python 3.11 à 3.13 a réussi, puis la validation d’installation propre depuis
+les artefacts GitHub a confirmé la roue, l’archive et un starter full-stack web
+et Android. `v0.7.0-rc.2` aligne les métadonnées et la gouvernance sur ces
+preuves sans changement fonctionnel. Le blocage macOS découvert pendant la
+matrice reste corrigé par une reconnaissance strictement vérifiée de l’alias
+système `/var → /private/var` ; les symlinks imbriqués et les racines
+symlinkées restent refusés. La promotion vers `main` demeure réservée au jalon
+stable `v0.7.0`.
 
 ## Premier incrément technique
 

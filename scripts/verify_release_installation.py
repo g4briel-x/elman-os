@@ -1,4 +1,4 @@
-"""Verify the v0.7.0-rc.1 wheel and reproducible archive offline."""
+"""Verify the v0.7.0-rc.2 wheel and reproducible archive offline."""
 
 from __future__ import annotations
 
@@ -11,8 +11,8 @@ import venv
 import zipfile
 from pathlib import Path
 
-DISPLAY_VERSION = "0.7.0-rc.1"
-PACKAGE_VERSION = "0.7.0rc1"
+DISPLAY_VERSION = "0.7.0-rc.2"
+PACKAGE_VERSION = "0.7.0rc2"
 ARCHIVE_PREFIX = f"elman-os-foundation-kit-v{DISPLAY_VERSION}/"
 
 
@@ -34,7 +34,7 @@ def environment_python(environment: Path) -> Path:
 
 def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
-    with tempfile.TemporaryDirectory(prefix="elman-os-v070rc1-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="elman-os-v070rc2-") as temporary:
         work = Path(temporary)
         wheels = work / "wheels"
         wheels.mkdir()
@@ -48,7 +48,7 @@ def main() -> int:
         )
         wheel_files = tuple(wheels.glob(f"elman_os_kernel-{PACKAGE_VERSION}-*.whl"))
         if len(wheel_files) != 1:
-            raise RuntimeError("Roue ELMAN-OS 0.7.0rc1 absente ou ambiguë")
+            raise RuntimeError("Roue ELMAN-OS 0.7.0rc2 absente ou ambiguë")
 
         environment = work / "venv"
         venv.EnvBuilder(with_pip=True, clear=True).create(environment)
@@ -60,12 +60,12 @@ def main() -> int:
         )
         run(
             str(isolated_python), "-c",
-            "import elman_os; assert elman_os.__version__ == '0.7.0rc1'",
+            "import elman_os; assert elman_os.__version__ == '0.7.0rc2'",
             cwd=work,
         )
 
-        archive = work / "ELMAN-OS-Foundation-Kit-v0.7.0-rc.1-a.zip"
-        second_archive = work / "ELMAN-OS-Foundation-Kit-v0.7.0-rc.1-b.zip"
+        archive = work / "ELMAN-OS-Foundation-Kit-v0.7.0-rc.2-a.zip"
+        second_archive = work / "ELMAN-OS-Foundation-Kit-v0.7.0-rc.2-b.zip"
         run(
             sys.executable, str(root / "scripts" / "build_release.py"),
             "--output", str(archive), cwd=root,
@@ -77,24 +77,25 @@ def main() -> int:
         if hashlib.sha256(archive.read_bytes()).digest() != hashlib.sha256(
             second_archive.read_bytes()
         ).digest():
-            raise RuntimeError("Les deux archives v0.7.0-rc.1 diffèrent")
+            raise RuntimeError("Les deux archives v0.7.0-rc.2 diffèrent")
         with zipfile.ZipFile(archive) as package:
             names = package.namelist()
             if not names or any(
                 not name.startswith(ARCHIVE_PREFIX) for name in names
             ):
-                raise RuntimeError("Préfixe d’archive v0.7.0-rc.1 invalide")
+                raise RuntimeError("Préfixe d’archive v0.7.0-rc.2 invalide")
             required = {
                 ARCHIVE_PREFIX + "pyproject.toml",
                 ARCHIVE_PREFIX + "RELEASE-MANIFEST.json",
                 ARCHIVE_PREFIX + "RELEASE-CHECKSUMS.sha256",
                 ARCHIVE_PREFIX + "MIGRATION-v0.6.0-to-v0.7.0-rc.1.md",
+                ARCHIVE_PREFIX + "MIGRATION-v0.7.0-rc.1-to-v0.7.0-rc.2.md",
             }
             if not required.issubset(names):
-                raise RuntimeError("Archive v0.7.0-rc.1 incomplète")
+                raise RuntimeError("Archive v0.7.0-rc.2 incomplète")
 
-    print("WHEEL 0.7.0rc1 INSTALLEE HORS RESEAU : PASS")
-    print("ARCHIVE REPRODUCTIBLE 0.7.0-rc.1 : PASS")
+    print("WHEEL 0.7.0rc2 INSTALLEE HORS RESEAU : PASS")
+    print("ARCHIVE REPRODUCTIBLE 0.7.0-rc.2 : PASS")
     return 0
 
 

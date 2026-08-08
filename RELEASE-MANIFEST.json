@@ -1,7 +1,7 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.7.0-rc.1",
+  "version": "0.7.0-rc.2",
   "release_date": "2026-08-08",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
@@ -99,7 +99,10 @@
     "strict_checksum_inventory_coverage",
     "verified_macos_var_system_alias",
     "v060_to_v070rc1_migration_validation",
-    "deterministic_v070rc1_archive"
+    "validated_v070rc1_clean_install",
+    "v070rc1_to_v070rc2_migration_validation",
+    "multi_platform_ci_validation_recorded",
+    "deterministic_v070rc2_archive"
   ],
   "verification_scope": {
     "kernel_unittests": 1938,
@@ -107,8 +110,8 @@
     "python_compilation": true,
     "technology_audit": true,
     "local_validation_host": "linux",
-    "windows_execution": false,
-    "macos_execution": false,
+    "windows_execution": true,
+    "macos_execution": true,
     "linux_execution": true,
     "ci_matrix_configured": {
       "operating_systems": [
@@ -121,7 +124,7 @@
         "3.12",
         "3.13"
       ],
-      "executed_in_this_bundle_build": false
+      "executed_in_this_bundle_build": true
     },
     "windows_python_3_13_regressions_fixed": [
       "sqlite_file_handles",
@@ -147,7 +150,7 @@
     "persistent_governance_tests": 22,
     "production_runtime_tests": 7,
     "release_finalization_tests": 15,
-    "migration_source": "0.6.0",
+    "migration_source": "0.7.0-rc.1",
     "isolated_offline_wheel_installation": true,
     "studio_phase1_tests": 7,
     "studio_history_tests": 6,
@@ -159,9 +162,11 @@
     "studio_v07_tests": 46,
     "strict_inventory_coverage": true,
     "official_studio_oversight_cli": true,
-    "deterministic_v070rc1_archive": true,
+    "deterministic_v070rc2_archive": true,
     "reproducible_archive_comparison": true,
-    "multi_platform_ci_pending": true
+    "clean_install_validation": true,
+    "clean_install_validation_host": "windows",
+    "multi_platform_ci_pending": false
   },
   "final_release_approved": false,
   "not_production_ready": true,

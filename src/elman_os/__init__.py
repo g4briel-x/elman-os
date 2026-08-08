@@ -109,7 +109,7 @@ __all__ = [
     "validate_release",
 ]
 
-__version__ = "0.7.0rc1"
+__version__ = "0.7.0rc2"
 
 # Transactional persistence boundary (additive to SQLiteKernelStore).
 from .transactional_persistence import (

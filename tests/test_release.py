@@ -210,7 +210,7 @@ class StableReleaseTests(unittest.TestCase):
             path = release / "pyproject.toml"
             path.write_text(
                 path.read_text(encoding="utf-8").replace(
-                    'version = "0.7.0rc1"',
+                    'version = "0.7.0rc2"',
                     'version = "0.7.0"',
                 ),
                 encoding="utf-8",

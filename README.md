@@ -1,14 +1,17 @@
-# ELMAN-OS Foundation Kit v0.7.0-rc.1
+# ELMAN-OS Foundation Kit v0.7.0-rc.2
 
 ELMAN-OS est une fabrique logicielle multi-agents destinée à transformer une
 intention en application SaaS web, mobile ou full-stack traçable.
 
-ELMAN-OS v0.7.0-rc.1 stabilise l’orchestration multi-agent, la supervision
-métacognitive, la mémoire structurée, le vérificateur final fail-closed et leur
-projection dans ELMAN Studio. Les états `.elman/` et `generated/` restent
-locaux. Aucun fournisseur IA distant, credential réel, appel payant ou
-déploiement automatique n’est activé. La distribution est une release
-candidate ; l’approbation finale et la production restent fermées :
+ELMAN-OS v0.7.0-rc.2 conserve sans changement fonctionnel l’orchestration
+multi-agent, la supervision métacognitive, la mémoire structurée, le
+vérificateur final fail-closed et leur projection dans ELMAN Studio. Cette
+candidate enregistre les preuves multiplateformes et la validation
+d’installation propre de `v0.7.0-rc.1`, puis aligne la gouvernance du tag sur
+le cycle `develop/v0.7.0`. Les états `.elman/` et `generated/` restent locaux.
+Aucun fournisseur IA distant, credential réel, appel payant ou déploiement
+automatique n’est activé. L’approbation finale et la production restent
+fermées :
 
 - 1 orchestrateur : ELMAN Nexus ;
 - 15 agents spécialisés ;
@@ -54,7 +57,7 @@ rigueur. Il ne prétend pas attribuer aux agents une carrière humaine réelle.
 
 ## Statut fonctionnel
 
-| Capacité | Statut v0.7.0-rc.1 |
+| Capacité | Statut v0.7.0-rc.2 |
 |---|---|
 | Registre des 21 agents | Exécutable |
 | Prompts et frontières d’autorité | Exécutables |
@@ -137,10 +140,10 @@ qui les exige.
 
 ```powershell
 Expand-Archive `
-  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.7.0-rc.1.zip" `
+  "$env:USERPROFILE\Downloads\ELMAN-OS-Foundation-Kit-v0.7.0-rc.2.zip" `
   -DestinationPath "$env:USERPROFILE\Desktop"
 
-Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.7.0-rc.1"
+Set-Location "$env:USERPROFILE\Desktop\elman-os-foundation-kit-v0.7.0-rc.2"
 
 py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip setuptools wheel
@@ -265,7 +268,7 @@ Endpoints initiaux :
 ## Structure
 
 ```text
-elman-os-foundation-kit-v0.7.0-rc.1/
+elman-os-foundation-kit-v0.7.0-rc.2/
 ├── CHANGELOG.md
 ├── MIGRATION-v0.2.1-to-v0.3.0.md
 ├── MIGRATION-v0.3.1-to-v0.4.0.md
@@ -329,9 +332,10 @@ Les critères de gel, d’intégrité et de revue finale sont décrits dans
 - FastAPI et Flet sont des extras optionnels non requis par le kernel ;
 - un build iOS signé exige macOS et Xcode.
 
-La publication de la release candidate requiert la fusion de la branche
-`release/v0.7.0-rc.1` dans `main`, la validation de la matrice CI
-multi-plateforme et la création contrôlée du tag `v0.7.0-rc.1`.
+La publication de `v0.7.0-rc.2` requiert la fusion de
+`release/v0.7.0-rc.2` dans `develop/v0.7.0`, la réussite de la matrice CI sur
+le commit fusionné, puis la création contrôlée du tag. La promotion stable
+vers `main` appartient au jalon distinct `v0.7.0`.
 
 ## ELMAN Studio — workflows locaux en direct
 

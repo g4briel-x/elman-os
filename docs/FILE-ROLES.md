@@ -60,7 +60,7 @@
 | `docs/AI-OPENAI-COMPATIBLE.md` | protocole HTTP, configuration et sécurité des adaptateurs |
 | `docs/AI-EXECUTION-AUDIT.md` | garanties d'identité, minimisation et intégrité des traces |
 | `docs/AI-KERNEL-STABILIZATION.md` | prévalidation, quotas et reprise d'audit |
-| `docs/RELEASE.md` | décision v0.7.0-rc.1, preuves de validation et limites opérationnelles |
+| `docs/RELEASE.md` | décision v0.7.0-rc.2, preuves de validation et limites opérationnelles |
 | `docs/JWT-OIDC-AUTHENTICATION.md` | frontière et politique d’authentification |
 | `docs/TRANSACTIONAL-PERSISTENCE.md` | stockage transactionnel isolé par tenant |
 | `docs/PERSISTENT-QUOTAS-AUDIT.md` | gouvernance persistante partagée entre instances |
@@ -102,14 +102,14 @@
 | `test_transactional_persistence.py` | transactions, tenants et concurrence multi-instance |
 | `test_persistent_governance.py` | quotas et chaînes d’audit persistants |
 | `test_production_runtime.py` | composition complète et API authentifiée |
-| `test_release_v070rc1.py` | cohérence de la release candidate v0.7.0-rc.1 |
+| `test_release_v070rc2.py` | cohérence de la release candidate v0.7.0-rc.2 |
 | `test_path_security.py` | alias macOS vérifié et refus des symlinks non approuvés |
 
 ## Scripts de release
 
 | Fichier | Rôle |
 |---|---|
-| `scripts/build_release.py` | construction ZIP déterministe v0.7.0-rc.1 |
+| `scripts/build_release.py` | construction ZIP déterministe v0.7.0-rc.2 |
 | `scripts/verify_release_installation.py` | roue, installation isolée et archive hors réseau |
 
 ## ELMAN Studio MVP — phase 1
@@ -172,3 +172,14 @@
 | `.github/workflows/release-validation.yml` | valide les PR vers `develop/v0.7.0` et `main` |
 | `RELEASE-MANIFEST.json` | décrit le périmètre, les preuves et les gates fermées |
 | `RELEASE-CHECKSUMS.sha256` | inventaire exhaustif des fichiers distribués |
+
+## Release candidate v0.7.0-rc.2
+
+| Fichier | Rôle |
+|---|---|
+| `MIGRATION-v0.7.0-rc.1-to-v0.7.0-rc.2.md` | transition documentaire et retour arrière vers la RC1 immuable |
+| `tests/test_release_v070rc2.py` | versions, preuves CI, validation propre, gates et archive RC2 |
+| `docs/RELEASE.md` | preuves acquises, critères RC2 et gouvernance `develop` vers `main` |
+| `scripts/build_release.py` | produit l’archive déterministe `v0.7.0-rc.2` |
+| `scripts/verify_release_installation.py` | installe la roue RC2 hors réseau et compare deux archives |
+| `RELEASE-MANIFEST.json` | enregistre la matrice multiplateforme et maintient les gates fermées |
