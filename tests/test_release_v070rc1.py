@@ -30,7 +30,17 @@ class ReleaseV070RC1Tests(unittest.TestCase):
         self.assertEqual(self.manifest["version"], "0.7.0-rc.1")
         self.assertEqual(
             self.manifest["verification_scope"]["kernel_unittests"],
-            1923,
+            1938,
+        )
+        self.assertEqual(
+            self.manifest["verification_scope"][
+                "macos_path_regressions_fixed"
+            ],
+            [
+                "verified_system_var_alias",
+                "nested_symlink_rejection_preserved",
+                "symlink_persistence_root_rejection_preserved",
+            ],
         )
 
     def test_manifest_declares_v07_boundaries(self) -> None:

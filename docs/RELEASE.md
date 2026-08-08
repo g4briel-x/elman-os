@@ -20,10 +20,12 @@ aucun fournisseur IA distant.
 - vérificateur final fail-closed et rapport HMAC ;
 - ELMAN Studio v0.7 en lecture seule via `studio-oversight` ;
 - inventaire SHA-256 exhaustif et archive reproductible.
+- prise en charge vérifiée de l’alias système macOS `/var → /private/var`,
+  sans assouplissement des autres contrôles de symlink.
 
 ## Preuves locales requises
 
-- 1 923 tests réussis avec `ResourceWarning` traité comme erreur ;
+- 1 938 tests réussis avec `ResourceWarning` traité comme erreur ;
 - compilation de tous les fichiers Python ;
 - `release-check 0.7.0-rc.1` réussi ;
 - audit technologique réussi ;

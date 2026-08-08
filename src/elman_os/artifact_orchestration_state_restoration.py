@@ -48,6 +48,7 @@ from .execution_plan import (
     ExecutionPlan,
     ExecutionPlanError,
 )
+from .path_security import is_trusted_macos_var_alias
 
 
 ARTIFACT_ORCHESTRATION_RESTORATION_FORMAT_VERSION: Final[int] = 1
@@ -224,6 +225,8 @@ def _reject_symlink_components(path: Path) -> None:
     for component in chain:
         try:
             if component.exists() and component.is_symlink():
+                if is_trusted_macos_var_alias(component):
+                    continue
                 raise ArtifactOrchestrationRestorationIntegrityError(
                     f"symlink path component is forbidden: {component}"
                 )

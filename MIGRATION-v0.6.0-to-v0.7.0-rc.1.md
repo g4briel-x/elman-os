@@ -19,6 +19,8 @@ de release.
 - mémoire de projet SQLite append-only avec provenance et rétention ;
 - vérificateur final à neuf portes et rapport signé HMAC-SHA-256 ;
 - projection ELMAN Studio v0.7 en lecture seule ;
+- prise en charge fail-closed de l’alias système macOS vérifié
+  `/var → /private/var` ;
 - inventaire SHA-256 exhaustif qui refuse désormais les fichiers non suivis ;
 - archive `v0.7.0-rc.1` construite deux fois et comparée bit à bit.
 
@@ -61,7 +63,7 @@ py -3.13 -m venv .venv
 Résultats attendus :
 
 - version importée `0.7.0rc1` ;
-- 1 923 tests réussis hors réseau ;
+- 1 938 tests réussis hors réseau ;
 - release-check `0.7.0-rc.1` en PASS ;
 - inventaire SHA-256 exhaustif ;
 - roue installée hors réseau ;
@@ -87,6 +89,8 @@ rapport signé et vérifié, Studio refuse d’afficher la clôture comme autori
 
 - Python 3.11, 3.12 et 3.13 sont ciblés ;
 - Windows, macOS et Linux sont couverts par la matrice GitHub Actions ;
+- seuls l’alias système macOS `/var → /private/var` et sa cible inchangée sont
+  reconnus ; tout autre symlink de composant ou de racine reste interdit ;
 - la validation locale de ce bundle ne remplace pas la matrice distante ;
 - les fournisseurs IA réels et le déploiement automatique restent non validés ;
 - aucune donnée locale n’est migrée automatiquement.

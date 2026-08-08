@@ -50,6 +50,7 @@ from .execution_checkpoint import (
 )
 from .execution_journal import ExecutionJournal, ExecutionJournalError
 from .execution_plan import ExecutionPlan, ExecutionPlanError
+from .path_security import is_trusted_macos_var_alias
 
 
 ARTIFACT_ORCHESTRATION_SELECTED_STATE_RESUME_PERSISTENCE_FORMAT_VERSION: Final[
@@ -223,6 +224,8 @@ def _reject_symlink_components(path: Path) -> None:
     for component in _path_components(path):
         try:
             if component.exists() and component.is_symlink():
+                if is_trusted_macos_var_alias(component):
+                    continue
                 raise ArtifactOrchestrationSelectedStateResumePersistenceIntegrityError(
                     f"symlink path component is forbidden: {component}"
                 )

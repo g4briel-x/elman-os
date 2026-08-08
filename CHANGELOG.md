@@ -17,11 +17,13 @@
 - refus de tout fichier distribué absent de l’inventaire SHA-256 ;
 - matrice CI activée pour les PR vers `develop/v0.7.0` et `main` ;
 - archive déterministe construite deux fois et comparée bit à bit ;
+- alias système macOS `/var → /private/var` vérifié sans autoriser les
+  symlinks imbriqués ou contrôlables par l’utilisateur ;
 - approbation finale et déploiement production maintenus fermés.
 
 ### Vérification locale
 
-- 1 923 tests unitaires hors réseau attendus ;
+- 1 938 tests unitaires hors réseau attendus ;
 - roue `0.7.0rc1` installée dans un environnement isolé ;
 - release-check, audit technologique et inventaire complet ;
 - validation multi-plateforme requise sur GitHub avant le tag RC.

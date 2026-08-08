@@ -97,11 +97,12 @@
     "fail_closed_final_verification",
     "read_only_studio_v07_oversight",
     "strict_checksum_inventory_coverage",
+    "verified_macos_var_system_alias",
     "v060_to_v070rc1_migration_validation",
     "deterministic_v070rc1_archive"
   ],
   "verification_scope": {
-    "kernel_unittests": 1923,
+    "kernel_unittests": 1938,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
@@ -126,6 +127,11 @@
       "sqlite_file_handles",
       "short_path_canonicalization",
       "portable_path_separators"
+    ],
+    "macos_path_regressions_fixed": [
+      "verified_system_var_alias",
+      "nested_symlink_rejection_preserved",
+      "symlink_persistence_root_rejection_preserved"
     ],
     "optional_fastapi_runtime": false,
     "optional_flet_runtime": true,

@@ -210,7 +210,10 @@ alignées, la migration depuis `v0.6.0` est documentée, l’inventaire SHA-256 
 exhaustif, l’archive est comparée sur deux constructions indépendantes et la CI
 couvre désormais les PR vers `develop/v0.7.0` et `main`. Le tag reste interdit
 tant que la matrice Windows/macOS/Linux sur Python 3.11 à 3.13 n’a pas réussi
-sur la Pull Request de promotion.
+sur la Pull Request de promotion. Le blocage macOS découvert par cette matrice
+est corrigé par une reconnaissance strictement vérifiée de l’alias système
+`/var → /private/var` ; les symlinks imbriqués et les racines symlinkées restent
+refusés.
 
 ## Premier incrément technique
 

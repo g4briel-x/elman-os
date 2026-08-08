@@ -366,7 +366,7 @@ def validate_release(
         manifest_ok = (
             manifest["version"] == DISPLAY_VERSION
             and manifest["package_name"] == "elman-os-kernel"
-            and scope["kernel_unittests"] == 1923
+            and scope["kernel_unittests"] == 1938
         )
         gates_ok = (
             manifest["release_candidate_validated"] is True

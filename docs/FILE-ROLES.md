@@ -39,6 +39,7 @@
 | `src/elman_os/audit.py` | identité, autorisation, chaîne signée et persistance JSONL durable |
 | `src/elman_os/governance.py` | compatibilité, quotas par identité et runtime IA stabilisé |
 | `src/elman_os/release.py` | validation hors réseau, portabilité et intégrité SHA-256 |
+| `src/elman_os/path_security.py` | vérification fail-closed de l’alias système macOS `/var → /private/var` |
 | `src/elman_os/plugins.py` | permissions et plugins internes |
 | `src/elman_os/technology_policy.py` | frontières Python et langages spécialisés |
 | `src/elman_os/api.py` | control plane FastAPI optionnel |
@@ -102,6 +103,7 @@
 | `test_persistent_governance.py` | quotas et chaînes d’audit persistants |
 | `test_production_runtime.py` | composition complète et API authentifiée |
 | `test_release_v070rc1.py` | cohérence de la release candidate v0.7.0-rc.1 |
+| `test_path_security.py` | alias macOS vérifié et refus des symlinks non approuvés |
 
 ## Scripts de release
 
