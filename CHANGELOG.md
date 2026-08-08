@@ -1,5 +1,24 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.7.0-rc.2 — 2026-08-08
+
+### Corrigé
+
+- alignement des versions d’affichage, Python et archive sur `v0.7.0-rc.2` ;
+- enregistrement des preuves CI Windows, macOS et Linux sur Python 3.11 à
+  3.13 obtenues pendant la validation de `v0.7.0-rc.1` ;
+- enregistrement de l’installation propre depuis les artefacts GitHub publiés ;
+- correction de la gouvernance : les tags RC sont créés sur le commit fusionné
+  de `develop/v0.7.0`, tandis que `main` reste réservé à la version stable.
+
+### Vérification
+
+- 1 938 tests unitaires hors réseau ;
+- `release-check`, inventaire SHA-256 et audit technologique réussis ;
+- roue `0.7.0rc2` installable hors réseau ;
+- archive ZIP déterministe et reproductible ;
+- approbation finale et déploiement production maintenus fermés.
+
 ## v0.7.0-rc.1 — 2026-08-08
 
 ### Ajouté
