@@ -158,6 +158,10 @@ validation humaine explicite.
 - règles de rétention ;
 - exclusion des secrets.
 
+État : implémenté par le contrat `project_memory` et sa persistance SQLite
+append-only. L’intégration à l’orchestrateur et à Studio reste couverte par les
+jalons 5 et 6.
+
 ### Jalon 5 — Vérification finale
 
 - validation des sorties ;
