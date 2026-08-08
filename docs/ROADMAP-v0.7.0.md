@@ -187,6 +187,14 @@ du rapport et de ses preuves dans Studio reste couverte par le jalon 6.
 - rapports métacognitifs ;
 - approbations explicites.
 
+État : implémenté par la projection en lecture seule `studio_v07`. Studio expose
+le plan, les agents, la progression, les approbations, la mémoire, les preuves,
+les erreurs, la supervision et les neuf portes du rapport final. La clôture
+reste fail-closed tant que la signature HMAC du rapport n'est pas vérifiée et
+que toutes les approbations affichées ne sont pas accordées. Le basculement de
+l'entrée Studio stable et la régénération des métadonnées de distribution sont
+réservés au jalon 7.
+
 ### Jalon 7 — Stabilisation v0.7.0
 
 - migration depuis v0.6.0 ;
