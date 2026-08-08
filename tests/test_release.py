@@ -76,6 +76,14 @@ class ChecksumTests(unittest.TestCase):
             ("src/example.py:missing",),
         )
 
+    def test_untracked_file_is_detected(self) -> None:
+        write_release_checksums(self.root)
+        (self.root / "injected.txt").write_text("unexpected\n", encoding="utf-8")
+        self.assertEqual(
+            verify_release_checksums(self.root)[1],
+            ("injected.txt:untracked",),
+        )
+
     def test_malformed_checksum_line_is_rejected(self) -> None:
         (self.root / CHECKSUM_FILENAME).write_text("invalid\n", encoding="utf-8")
         with self.assertRaises(ReleaseIntegrityError):
@@ -201,7 +209,10 @@ class StableReleaseTests(unittest.TestCase):
         try:
             path = release / "pyproject.toml"
             path.write_text(
-                path.read_text(encoding="utf-8").replace('version = "0.6.0"', 'version = "0.6.1"'),
+                path.read_text(encoding="utf-8").replace(
+                    'version = "0.7.0rc1"',
+                    'version = "0.7.0"',
+                ),
                 encoding="utf-8",
             )
             report = validate_release(release)

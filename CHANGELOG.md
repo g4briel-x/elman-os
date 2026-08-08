@@ -1,5 +1,33 @@
 # Journal des versions — ELMAN-OS Foundation Kit
 
+## v0.7.0-rc.1 — 2026-08-08
+
+### Ajouté
+
+- contrats multi-agents immuables, plans déterministes et journal hashé ;
+- orchestration d’artefacts transactionnelle avec checkpoints et reprise contrôlée ;
+- supervision métacognitive indépendante et findings liés aux preuves ;
+- mémoire de projet append-only, révisions, provenance, recherche et rétention ;
+- vérificateur final fail-closed à neuf portes avec rapport signé HMAC ;
+- tableau de supervision ELMAN Studio v0.7 en lecture seule ;
+- commande officielle `elman-os studio-oversight`.
+
+### Renforcé
+
+- refus de tout fichier distribué absent de l’inventaire SHA-256 ;
+- matrice CI activée pour les PR vers `develop/v0.7.0` et `main` ;
+- archive déterministe construite deux fois et comparée bit à bit ;
+- alias système macOS `/var → /private/var` vérifié sans autoriser les
+  symlinks imbriqués ou contrôlables par l’utilisateur ;
+- approbation finale et déploiement production maintenus fermés.
+
+### Vérification locale
+
+- 1 938 tests unitaires hors réseau attendus ;
+- roue `0.7.0rc1` installée dans un environnement isolé ;
+- release-check, audit technologique et inventaire complet ;
+- validation multi-plateforme requise sur GitHub avant le tag RC.
+
 ## v0.6.0 — 2026-08-03
 
 ### Publication stable

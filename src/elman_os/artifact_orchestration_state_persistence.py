@@ -29,6 +29,7 @@ from .agent_contracts import canonical_json
 from .artifact_transaction_orchestration_adapter import (
     ArtifactTransactionOrchestrationResult,
 )
+from .path_security import is_trusted_macos_var_alias
 
 
 ARTIFACT_ORCHESTRATION_PERSISTENCE_FORMAT_VERSION: Final[int] = 1
@@ -202,6 +203,8 @@ def _path_components(path: Path) -> tuple[Path, ...]:
 def _reject_symlink_components(path: Path) -> None:
     for component in _path_components(path):
         if component.exists() and component.is_symlink():
+            if is_trusted_macos_var_alias(component):
+                continue
             raise ArtifactOrchestrationPersistenceIntegrityError(
                 f"symlink path component is forbidden: {component}"
             )

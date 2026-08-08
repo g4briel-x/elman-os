@@ -1,8 +1,8 @@
 {
   "product": "ELMAN-OS",
   "artifact": "Foundation Kit",
-  "version": "0.6.0",
-  "release_date": "2026-08-03",
+  "version": "0.7.0-rc.1",
+  "release_date": "2026-08-08",
   "python_requires": ">=3.11",
   "package_name": "elman-os-kernel",
   "agent_counts": {
@@ -84,16 +84,31 @@
     "v060rc1_to_v060rc2_migration_validation",
     "v060rc2_to_v060_migration_validation",
     "stable_v060_promotion",
-    "deterministic_v060_archive"
+    "deterministic_v060_archive",
+    "immutable_multi_agent_contracts",
+    "deterministic_execution_plans",
+    "hash_chained_execution_journal",
+    "approval_gated_step_dispatch",
+    "checkpoint_resume_control",
+    "artifact_transaction_lifecycle",
+    "persisted_orchestration_state",
+    "metacognitive_supervision",
+    "structured_project_memory",
+    "fail_closed_final_verification",
+    "read_only_studio_v07_oversight",
+    "strict_checksum_inventory_coverage",
+    "verified_macos_var_system_alias",
+    "v060_to_v070rc1_migration_validation",
+    "deterministic_v070rc1_archive"
   ],
   "verification_scope": {
-    "kernel_unittests": 278,
+    "kernel_unittests": 1938,
     "generated_starter_unittests": 2,
     "python_compilation": true,
     "technology_audit": true,
     "local_validation_host": "linux",
-    "windows_execution": true,
-    "macos_execution": true,
+    "windows_execution": false,
+    "macos_execution": false,
     "linux_execution": true,
     "ci_matrix_configured": {
       "operating_systems": [
@@ -106,12 +121,17 @@
         "3.12",
         "3.13"
       ],
-      "executed_in_this_bundle_build": true
+      "executed_in_this_bundle_build": false
     },
     "windows_python_3_13_regressions_fixed": [
       "sqlite_file_handles",
       "short_path_canonicalization",
       "portable_path_separators"
+    ],
+    "macos_path_regressions_fixed": [
+      "verified_system_var_alias",
+      "nested_symlink_rejection_preserved",
+      "symlink_persistence_root_rejection_preserved"
     ],
     "optional_fastapi_runtime": false,
     "optional_flet_runtime": true,
@@ -126,16 +146,24 @@
     "transactional_persistence_tests": 20,
     "persistent_governance_tests": 22,
     "production_runtime_tests": 7,
-    "release_finalization_tests": 10,
-    "migration_source": "0.6.0-rc.2",
+    "release_finalization_tests": 15,
+    "migration_source": "0.6.0",
     "isolated_offline_wheel_installation": true,
     "studio_phase1_tests": 7,
     "studio_history_tests": 6,
     "studio_runtime_tests": 4,
     "studio_visual_validation_host": "windows",
-    "deterministic_v060_archive": true
+    "deterministic_v060_archive": true,
+    "project_memory_tests": 38,
+    "final_verification_tests": 43,
+    "studio_v07_tests": 46,
+    "strict_inventory_coverage": true,
+    "official_studio_oversight_cli": true,
+    "deterministic_v070rc1_archive": true,
+    "reproducible_archive_comparison": true,
+    "multi_platform_ci_pending": true
   },
-  "final_release_approved": true,
+  "final_release_approved": false,
   "not_production_ready": true,
   "release_candidate_validated": true
 }
